@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   height="1024"
+   viewBox="0 -960 1024 1024"
+   width="1024"
+   fill="#1f1f1f"
+   version="1.1"
+   id="svg14014"
+   sodipodi:docname="logo.svg"
+   inkscape:export-filename="192.png"
+   inkscape:export-xdpi="18"
+   inkscape:export-ydpi="18"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs14018" />
+  <sodipodi:namedview
+     id="namedview14016"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     showgrid="false"
+     inkscape:zoom="0.66861979"
+     inkscape:cx="571.32619"
+     inkscape:cy="504.77118"
+     inkscape:window-width="2560"
+     inkscape:window-height="1351"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg14014" />
+  <rect
+     style="fill:#ffffff;fill-opacity:1;stroke:#1f1f1f;stroke-width:40.96;stroke-linejoin:bevel;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
+     id="rect22824"
+     width="983.03998"
+     height="983.03998"
+     x="20.480001"
+     y="-939.51996"
+     ry="127.24586"
+     rx="0" />
+  <path
+     id="rect22824-8"
+     style="fill:#1f1f1f;fill-opacity:1;stroke:none;stroke-width:426.667;stroke-linejoin:round;stroke-opacity:1"
+     d="M 0,-294.33333 V -68.583339 C 0,4.8480629 59.151937,64 132.58334,64 H 891.41666 C 964.84806,64 1024,4.8480629 1024,-68.583339 V -294.33333 Z" />
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:324.773px;line-height:1.4;font-family:Bahnschrift;-inkscape-font-specification:'Bahnschrift, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:justify;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:18.3943;stroke-linejoin:bevel;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
+     x="169.30739"
+     y="-33.339088"
+     id="text24711"><tspan
+       sodipodi:role="line"
+       id="tspan24709"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:324.773px;font-family:Bahnschrift;-inkscape-font-specification:'Bahnschrift, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:18.3943"
+       x="169.30739"
+       y="-33.339088">Nmg</tspan></text>
+  <path
+     d="M 512,-332.18824 Q 412.85298,-357.15331 348.30043,-445.95766 283.74787,-534.762 283.74787,-643.18176 V -817.22401 L 512,-902.81852 l 228.25213,85.59451 v 174.04225 q 0,108.41976 -64.55256,197.2241 Q 611.14702,-357.15331 512,-332.18824 Z m 0,-59.91618 q 74.18194,-23.5385 122.68552,-94.15401 48.50358,-70.6155 48.50358,-156.92333 V -777.99318 L 512,-842.18912 340.8109,-777.99318 v 134.81142 q 0,86.30783 48.50358,156.92333 48.50358,70.61551 122.68552,94.15401 z m 0,-225.39898 z"
+     id="path133"
+     style="stroke-width:0.713288" />
+</svg>
