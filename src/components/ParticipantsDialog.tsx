@@ -47,7 +47,7 @@ export default function ParticipantsDialog(props: ParticipantDialogProps) {
     }
 
     return (
-        <Dialog open={props.open} onClose={props.handleClose} fullWidth>
+        <Dialog open={props.open} fullWidth>
             <DialogTitle>Beteiligte hinzufügen</DialogTitle>
             <DialogContent>
                 <Stack direction={"column"} spacing={1} sx={{pt: 1}}>
