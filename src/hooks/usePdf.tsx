@@ -1,4 +1,4 @@
-import {PDFDocument, rgb, StandardFonts} from 'pdf-lib';
+import {PDFDocument, StandardFonts} from 'pdf-lib';
 import useStore from "../stores/useStore.tsx"
 import dayjs from "dayjs";
 
@@ -310,7 +310,6 @@ export function usePdf() {
                     y: 171 - (index * 17),
                     size: 8,
                     font: helveticaFont,
-                    color: rgb(1, 0, 0)
                 })
 
             })
