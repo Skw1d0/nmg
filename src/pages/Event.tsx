@@ -110,7 +110,7 @@ function Event() {
                 <Navbar/>
                 <Box sx={{margin: 1}}>
                     <Typography>Datensatz konnte nicht geladen werden.</Typography>
-                    <Link href="/">Zurück zur Übersicht</Link>
+                    <Link href={import.meta.env.BASE_URL}>Zurück zur Übersicht</Link>
                 </Box>
             </>
         )
