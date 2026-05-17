@@ -1,8 +1,5 @@
 {
   "name": "Nmg",
-  "start_url": "/nmg/index.html",
-  "scope": "/app/",
-  "display": "standalone",
   "icons": [
     {
       "src": "512.png",
@@ -14,5 +11,7 @@
       "type": "image/png",
       "sizes": "192x192"
     }
-  ]
+  ],
+  "start_url": ".",
+  "display": "standalone"
 }
