@@ -1,12 +1,8 @@
 {
   "name": "Nmg",
-  "start_url": ".",
+  "start_url": "/nmg/index.html",
+  "scope": "/app/",
   "display": "standalone",
-  "display_override": [
-    "window-controls-overlay",
-    "tabbed"
-  ],
-  "handle_links": "auto",
   "icons": [
     {
       "src": "512.png",
