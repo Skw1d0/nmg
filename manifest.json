@@ -1,5 +1,12 @@
 {
   "name": "Nmg",
+  "start_url": ".",
+  "display": "standalone",
+  "display_override": [
+    "window-controls-overlay",
+    "tabbed"
+  ],
+  "handle_links": "auto",
   "icons": [
     {
       "src": "512.png",
@@ -11,7 +18,5 @@
       "type": "image/png",
       "sizes": "192x192"
     }
-  ],
-  "start_url": ".",
-  "display": "standalone"
+  ]
 }
