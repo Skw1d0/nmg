@@ -317,13 +317,16 @@ export function usePdf() {
             // PDF generieren
             const pdfBytes = await pdfDoc.save();
             // @ts-ignore
-            const blob = new Blob([pdfBytes], {type: 'application/pdf'});
+            // const blob = new Blob([pdfBytes], {type: 'application/pdf'});
+            const blob = new Blob([pdfBytes], {type: 'application/octet-stream'});
             const docUrl = URL.createObjectURL(blob);
 
             if (action === 'save') {
                 // Option A: Datei herunterladen / speichern
                 const link = document.createElement('a');
                 link.href = docUrl;
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
                 link.download = `${dayjs(event?.protectionFrom).format("YYYYMMDD")}_Schutzmaßnahme_${event?.description}.pdf`;
                 link.click();
             } else if (action === 'print') {
