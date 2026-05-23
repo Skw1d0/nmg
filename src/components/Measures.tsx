@@ -1,15 +1,19 @@
-import useStore, {type Event, type Measure, type Participant} from "../stores/useStore.tsx";
+import useStore, {type Event, type Measure, type Participant} from "../hooks/useStore.tsx";
 import dayjs, {type Dayjs} from "dayjs";
 import {
     Button, Card, CardActions, CardContent, Fab,
     Stack,
 } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import {Add} from "@mui/icons-material";
+import {Add, Bolt, Map, PictureInPicture, LocationPin} from "@mui/icons-material";
 import {DateTimePicker} from "@mui/x-date-pickers";
 import {useState} from "react";
 import MeasuresDialog from "./MeasuresDialog.tsx";
 import MeasureTextBox from "./MeasureTextBox.tsx";
+import data from "../tools/data.ts";
+import IconButton from "@mui/material/IconButton";
+import useOpenWebsites from "../hooks/useOpenWebsite.ts";
+
 
 type MeasuresProps = {
     id: string;
@@ -17,16 +21,19 @@ type MeasuresProps = {
 
 export default function Measures(props: MeasuresProps) {
     const {changeEventById} = useStore()
+    const {openAPN, openOpenrailwaymaps, openGoogleMaps} = useOpenWebsites()
 
     const event = useStore((state) => state.events.find((e) => e.id === props.id))
     const [measureDialogOpen, setMeasureDialogOpen] = useState<boolean>(false);
+    const [selectedMeasure, setSelectedMeasure] = useState<Measure | undefined>(undefined);
 
     function handleMeasureDialogOpen() {
-        setMeasureDialogOpen(true);
+        setSelectedMeasure(undefined)
+        setMeasureDialogOpen(true)
     }
 
     function handleMeasureDialogClose() {
-        setMeasureDialogOpen(false);
+        setMeasureDialogOpen(false)
     }
 
     function handleDeleteMeasureById(id: string) {
@@ -132,6 +139,11 @@ export default function Measures(props: MeasuresProps) {
         changeEventById(event.id, newEvent);
     }
 
+    function handleEditMeasure(measure: Measure) {
+        setSelectedMeasure(measure);
+        setMeasureDialogOpen(true);
+    }
+
     return (
         <>
             <Stack direction="column" spacing={1}>
@@ -147,7 +159,73 @@ export default function Measures(props: MeasuresProps) {
                                 <Stack direction="column" spacing={1} sx={{pb: 2}}>
                                     <Typography
                                         variant={"h5"}>{measure.locationFrom} {measure.locationTo && ` - ${measure.locationTo}`}</Typography>
-                                    <Typography sx={{mb: 1}}>{measure.locationDetails}</Typography>
+                                    <Typography sx={{mb: 1, fontStyle: "italic"}}>{measure.locationDetails}</Typography>
+                                    <Stack direction="column" spacing="1">
+                                        {data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationFrom) && (
+                                            <Stack direction="row" spacing={1}
+                                                   sx={{display: "flex", alignItems: "center"}}>
+                                                <Typography>
+                                                    {data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationFrom)?.betriebsstellentypen.map((bst) => {
+                                                        if (bst === "bahnhof") return "Bf ";
+                                                        if (bst === "bahnhofsteil") return "Bft ";
+                                                        if (bst === "haltepunkt") return "Hp ";
+                                                        if (bst === "abzweigstelle") return "Azwst ";
+                                                        if (bst === "ueberleitstelle") return "Üst ";
+                                                    })}
+                                                </Typography>
+                                                <Typography>
+                                                    {data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationFrom)?.ds100}
+                                                </Typography>
+                                                {data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationFrom)?.elektrifiziert &&
+                                                    <Bolt color="warning"/>}
+                                                <Typography sx={{flexGrow: 1}}></Typography>
+                                                <IconButton color="inherit"
+                                                            onClick={() => openAPN(data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationFrom)?.ds100)}>
+                                                    <PictureInPicture/>
+                                                </IconButton>
+                                                <IconButton color="inherit"
+                                                            onClick={() => openOpenrailwaymaps(data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationFrom)?.geo_koordinaten.breite, data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationFrom)?.geo_koordinaten.laenge)}>
+                                                    <LocationPin/>
+                                                </IconButton>
+                                                <IconButton color="inherit"
+                                                            onClick={() => openGoogleMaps(data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationFrom)?.geo_koordinaten.breite, data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationFrom)?.geo_koordinaten.laenge)}>
+                                                    <Map/>
+                                                </IconButton>
+                                            </Stack>
+                                        )}
+                                        {data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationTo) && (
+                                            <Stack direction="row" spacing={1}
+                                                   sx={{display: "flex", alignItems: "center"}}>
+                                                <Typography>
+                                                    {data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationFrom)?.betriebsstellentypen.map((bst) => {
+                                                        if (bst === "bahnhof") return "Bf ";
+                                                        if (bst === "bahnhofsteil") return "Bft ";
+                                                        if (bst === "haltepunkt") return "Hp ";
+                                                        if (bst === "abzweigstelle") return "Azwst ";
+                                                        if (bst === "ueberleitstelle") return "Üst ";
+                                                    })}
+                                                </Typography>
+                                                <Typography>
+                                                    {data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationTo)?.ds100}
+                                                </Typography>
+                                                {data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationTo)?.elektrifiziert &&
+                                                    <Bolt color="warning"/>}
+                                                <Typography sx={{flexGrow: 1}}></Typography>
+                                                <IconButton color="inherit"
+                                                            onClick={() => openAPN(data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationTo)?.ds100)}>
+                                                    <PictureInPicture/>
+                                                </IconButton>
+                                                <IconButton color="inherit"
+                                                            onClick={() => openOpenrailwaymaps(data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationTo)?.geo_koordinaten.breite, data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationTo)?.geo_koordinaten.laenge)}>
+                                                    <LocationPin/>
+                                                </IconButton>
+                                                <IconButton color="inherit"
+                                                            onClick={() => openGoogleMaps(data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationTo)?.geo_koordinaten.breite, data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationTo)?.geo_koordinaten.laenge)}>
+                                                    <Map/>
+                                                </IconButton>
+                                            </Stack>
+                                        )}
+                                    </Stack>
                                     <MeasureTextBox type={measure.measure}/>
                                 </Stack>
                                 <Stack direction="column" spacing={1} sx={{pb: 2}}>
@@ -192,7 +270,7 @@ export default function Measures(props: MeasuresProps) {
                         </CardContent>
                         <CardActions>
                             <Typography sx={{flexGrow: 1}}/>
-                            {/*<Button>Bearbeiten</Button>*/}
+                            <Button onClick={() => handleEditMeasure(measure)}>Bearbeiten</Button>
                             <Button onClick={() => handleDeleteMeasureById(measure.id)}>Löschen</Button>
                         </CardActions>
                     </Card>
@@ -211,9 +289,11 @@ export default function Measures(props: MeasuresProps) {
             >
                 <Add/>
             </Fab>
-            <MeasuresDialog id={props.id}
+            <MeasuresDialog key={selectedMeasure?.id}
+                            eventId={props.id}
                             open={measureDialogOpen}
-                            handleClose={handleMeasureDialogClose}/>
+                            handleClose={handleMeasureDialogClose}
+                            selectedMeasure={selectedMeasure}/>
         </>
 
     )

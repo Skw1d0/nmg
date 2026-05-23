@@ -1,4 +1,4 @@
-import useStore, {type Event} from "../stores/useStore.tsx"
+import useStore, {type Event, type Participant} from "../hooks/useStore.tsx"
 import {
     Box,
     Button, Card, CardActions, CardContent, CardHeader, Fab,
@@ -21,6 +21,7 @@ export default function Participants(props: ParticipantProps) {
 
     const event = useStore((state) => state.events.find((e) => e.id === props.id))
     const [participantsDialogOpen, setParticipantsDialogOpen] = useState<boolean>(false);
+    const [selectedParticipant, setSelectedParticipant] = useState<Participant | undefined>(undefined);
 
     function handleParticipantsDialogClose() {
         setParticipantsDialogOpen(false);
@@ -83,6 +84,11 @@ export default function Participants(props: ParticipantProps) {
         changeEventById(event.id, newEvent);
     }
 
+    function handleEditParticipant(participant: Participant) {
+        setSelectedParticipant(participant)
+        setParticipantsDialogOpen(true)
+    }
+
     return (
         <>
             <Box>
@@ -97,7 +103,8 @@ export default function Participants(props: ParticipantProps) {
                                        spacing={1}
                                        sx={{width: "100%"}}>
                                     <Stack direction="column" sx={{pb: 2}}>
-                                        <Typography>{participant.name} ({participant.function})</Typography>
+                                        <Typography>{participant.name} {participant.function && ` (${participant.function})`}</Typography>
+
                                         <Link
                                             href={`tel:${participant.call}`}>{participant.call}</Link>
                                     </Stack>
@@ -125,7 +132,7 @@ export default function Participants(props: ParticipantProps) {
                             </CardContent>
                             <CardActions>
                                 <Typography sx={{flexGrow: 1}}/>
-                                {/*<Button>Bearbeiten</Button>*/}
+                                <Button onClick={() => handleEditParticipant(participant)}>Bearbeiten</Button>
                                 <Button onClick={() => handleDeleteParticipantsById(participant.id)}>Löschen</Button>
                             </CardActions>
                         </Card>
@@ -145,9 +152,11 @@ export default function Participants(props: ParticipantProps) {
             >
                 <Add/>
             </Fab>
-            <ParticipantsDialog id={props.id}
+            <ParticipantsDialog key={selectedParticipant?.id}
+                                eventId={props.id}
                                 open={participantsDialogOpen}
-                                handleClose={handleParticipantsDialogClose}/>
+                                handleClose={handleParticipantsDialogClose}
+                                selectedParticipant={selectedParticipant}/>
         </>
     )
 }

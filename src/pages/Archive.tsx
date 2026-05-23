@@ -7,7 +7,7 @@ import {
 
 } from "@mui/material";
 import {useNavigate} from "react-router";
-import useStore from "../stores/useStore.tsx";
+import useStore from "../hooks/useStore.tsx";
 import dayjs from "dayjs";
 import Typography from "@mui/material/Typography";
 

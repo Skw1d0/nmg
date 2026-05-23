@@ -1,4 +1,4 @@
-import useStore, {type Event, type MeasureType} from "../stores/useStore.tsx";
+import useStore, {type Event, type Measure, type MeasureType} from "../hooks/useStore.tsx";
 import {useState} from "react";
 import {
     Autocomplete,
@@ -20,19 +20,21 @@ import data from "../tools/data.ts"
 import IconButton from "@mui/material/IconButton";
 
 type MeasuresDialogProps = {
-    id: string;
+    eventId: string;
     open: boolean
     handleClose: () => void
+    selectedMeasure?: Measure
 }
 
 export default function MeasuresDialog(props: MeasuresDialogProps) {
     const {changeEventById} = useStore()
 
-    const event = useStore((state) => state.events.find((e) => e.id === props.id))
-    const [measureLocationFrom, setMeasureLocationFrom] = useState<string | null>(null);
-    const [measureLocationTo, setMeasureLocationTo] = useState<string | null>(null);
-    const [measureLocationDetails, setMeasureLocationDetails] = useState<string>("");
-    const [measureMeasure, setMeasureMeasure] = useState<MeasureType>("1");
+    const event = useStore((state) => state.events.find((e) => e.id === props.eventId))
+
+    const [measureLocationFrom, setMeasureLocationFrom] = useState<string>(props.selectedMeasure ? props.selectedMeasure.locationFrom : "")
+    const [measureLocationTo, setMeasureLocationTo] = useState<string>(props.selectedMeasure ? props.selectedMeasure.locationTo : "")
+    const [measureLocationDetails, setMeasureLocationDetails] = useState<string>(props.selectedMeasure ? props.selectedMeasure.locationDetails : "")
+    const [measureMeasure, setMeasureMeasure] = useState<MeasureType>(props.selectedMeasure ? props.selectedMeasure.measure : "1")
 
     function handleChangeMeasure(event: SelectChangeEvent) {
         setMeasureMeasure(event.target.value as MeasureType)
@@ -57,6 +59,29 @@ export default function MeasuresDialog(props: MeasuresDialogProps) {
                     participantsLifted: []
                 }
             ]
+        }
+
+        changeEventById(event.id, newEvent);
+        props.handleClose();
+    }
+
+    function handleEditMeasure() {
+        if (!event) return
+
+        const newEvent: Event = {
+            ...event,
+            measures: event.measures.map((measure) => {
+                if (measure.id === props.selectedMeasure?.id) {
+                    return {
+                        ...measure,
+                        locationFrom: measureLocationFrom,
+                        locationTo: measureLocationTo,
+                        locationDetails: measureLocationDetails,
+                        measure: measureMeasure,
+                    }
+                }
+                return measure
+            })
         }
 
         changeEventById(event.id, newEvent);
@@ -123,7 +148,7 @@ export default function MeasuresDialog(props: MeasuresDialogProps) {
                             } else if (newValue && newValue.ds100) {
                                 setMeasureLocationFrom(newValue.langname);
                             } else {
-                                setMeasureLocationFrom(null);
+                                setMeasureLocationFrom("");
                             }
                         }}
                         onInputChange={(_event, newInputValue) => {
@@ -188,7 +213,7 @@ export default function MeasuresDialog(props: MeasuresDialogProps) {
                             } else if (newValue && newValue.ds100) {
                                 setMeasureLocationTo(newValue.langname);
                             } else {
-                                setMeasureLocationTo(null);
+                                setMeasureLocationTo("");
                             }
                         }}
                         onInputChange={(_event, newInputValue) => {
@@ -293,7 +318,11 @@ export default function MeasuresDialog(props: MeasuresDialogProps) {
                 </Stack>
             </DialogContent>
             <DialogActions>
-                <Button variant="contained" onClick={handleAddMeasure}>Hinzufügen</Button>
+                {!props.selectedMeasure ? (
+                    <Button variant="contained" onClick={handleAddMeasure}>Hinzufügen</Button>
+                ) : (
+                    <Button variant="contained" onClick={handleEditMeasure}>Speichern</Button>
+                )}
                 <Button variant="outlined" onClick={props.handleClose}>Abbrechen</Button>
             </DialogActions>
         </Dialog>

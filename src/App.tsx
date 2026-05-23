@@ -3,7 +3,7 @@ import {ThemeProvider} from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import {LocalizationProvider} from "@mui/x-date-pickers";
 import 'dayjs/locale/de';
-import useStore from "./stores/useStore.tsx";
+import useStore from "./hooks/useStore.tsx";
 
 import {lightTheme, darkTheme} from "./styles/theme.ts";
 

@@ -1,5 +1,5 @@
 import {Card, CardContent, CardHeader, TextField} from "@mui/material";
-import useStore from "../stores/useStore.tsx";
+import useStore from "../hooks/useStore.tsx";
 
 interface NotesProps {
     id: string;

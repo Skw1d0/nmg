@@ -14,7 +14,7 @@ import {
 import {Home, Close, DarkMode, LightMode, NoteAdd} from "@mui/icons-material";
 import {useState} from "react";
 import {useNavigate} from "react-router";
-import useStore from "../stores/useStore.tsx";
+import useStore from "../hooks/useStore.tsx";
 
 function Navbar() {
     const [open, setOpen] = useState(false);

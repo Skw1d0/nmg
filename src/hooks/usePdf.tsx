@@ -1,5 +1,5 @@
 import {PDFDocument, StandardFonts} from 'pdf-lib';
-import useStore from "../stores/useStore.tsx"
+import useStore from "./useStore.tsx"
 import dayjs from "dayjs";
 
 export function usePdf() {

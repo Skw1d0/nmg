@@ -1,7 +1,7 @@
 import {Autocomplete, Box, Card, CardContent, CardHeader, Stack, TextField} from "@mui/material";
 import {DateTimePicker} from "@mui/x-date-pickers";
 import dayjs, {type Dayjs} from "dayjs";
-import useStore from "../stores/useStore.tsx";
+import useStore from "../hooks/useStore.tsx";
 import {Descriptions, Districts} from "../tools/data.ts";
 
 

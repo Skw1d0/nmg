@@ -1,26 +1,26 @@
 import {Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField} from "@mui/material";
 import {useState} from "react";
-import useStore, {type Event} from "../stores/useStore.tsx";
-import {v4 as uuidv4} from "uuid";
+import useStore, {type Event, type Participant} from "../hooks/useStore.tsx";
+import {v4 as uuid4} from "uuid";
 import {Participants} from "../tools/data.ts";
 
 type ParticipantDialogProps = {
-    // event: Event
-    id: string;
+    eventId: string
     open: boolean
     handleClose: () => void
-    // handleChangeEvent: (e: Event) => void;
+    selectedParticipant?: Participant
 }
 
 export default function ParticipantsDialog(props: ParticipantDialogProps) {
     const {changeEventById} = useStore()
 
     // const [event] = useState<Event>(props.event)
-    const event = useStore((state) => state.events.find((e) => e.id === props.id))
-    const [participantsOrganisation, setParticipantsOrganisation] = useState("");
-    const [participantsFunction, setParticipantsFunction] = useState("");
-    const [participantsName, setParticipantsName] = useState("");
-    const [participantsCall, setParticipantsCall] = useState("");
+    const event = useStore((state) => state.events.find((e) => e.id === props.eventId))
+
+    const [participantsOrganisation, setParticipantsOrganisation] = useState(props.selectedParticipant ? props.selectedParticipant.organisation : "")
+    const [participantsFunction, setParticipantsFunction] = useState(props.selectedParticipant ? props.selectedParticipant.function : "")
+    const [participantsName, setParticipantsName] = useState(props.selectedParticipant ? props.selectedParticipant.name : "")
+    const [participantsCall, setParticipantsCall] = useState(props.selectedParticipant ? props.selectedParticipant.call : "")
 
     function handleAddParticipants() {
         if (!event) return
@@ -30,7 +30,7 @@ export default function ParticipantsDialog(props: ParticipantDialogProps) {
             participants: [
                 ...event.participants,
                 {
-                    id: uuidv4(),
+                    id: uuid4(),
                     organisation: participantsOrganisation,
                     function: participantsFunction,
                     name: participantsName,
@@ -42,6 +42,28 @@ export default function ParticipantsDialog(props: ParticipantDialogProps) {
         }
 
         // props.handleChangeEvent(newEvent);
+        changeEventById(event.id, newEvent);
+        props.handleClose();
+    }
+
+    function handleEditParticipant() {
+        if (!event) return
+
+        const newEvent = {
+            ...event,
+            participants: event.participants.map((participant) => {
+                if (participant.id === props.selectedParticipant?.id) {
+                    return {
+                        ...participant,
+                        organisation: participantsOrganisation,
+                        name: participantsName,
+                        function: participantsFunction,
+                    }
+                }
+                return participant
+            }),
+        }
+
         changeEventById(event.id, newEvent);
         props.handleClose();
     }
@@ -65,7 +87,7 @@ export default function ParticipantsDialog(props: ParticipantDialogProps) {
                                       setParticipantsOrganisation(newInputValue);
                                   }}
                                   renderInput={(params) => <TextField {...params}
-                                                                      label="Beschreibung des Ereignisses"/>}/>
+                                                                      label="EVU/ EIU, Institut/ Organisation"/>}/>
                     <TextField label={"Name"}
                                value={participantsName}
                                onChange={(event) => setParticipantsName(event.target.value)}
@@ -81,7 +103,11 @@ export default function ParticipantsDialog(props: ParticipantDialogProps) {
                 </Stack>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleAddParticipants} variant="contained">Hinzufügen</Button>
+                {props.selectedParticipant ? (
+                    <Button onClick={handleEditParticipant} variant="contained">Speichern</Button>
+                ) : (
+                    <Button onClick={handleAddParticipants} variant="contained">Hinzufügen</Button>
+                )}
                 <Button onClick={props.handleClose} variant="outlined">Abbrechen</Button>
             </DialogActions>
         </Dialog>

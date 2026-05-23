@@ -1,5 +1,5 @@
 import {Box, Typography} from "@mui/material";
-import type {MeasureType} from "../stores/useStore.tsx";
+import type {MeasureType} from "../hooks/useStore.tsx";
 import {Bolt, FrontHand, Hearing, HighlightOff, Speed, Visibility} from "@mui/icons-material";
 
 interface MeasureTextBoxProps {
