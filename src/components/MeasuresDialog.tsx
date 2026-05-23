@@ -76,12 +76,45 @@ export default function MeasuresDialog(props: MeasuresDialogProps) {
             <DialogTitle>Maßnahme hinzufügen</DialogTitle>
             <DialogContent>
                 <Stack direction={"column"} spacing={2} sx={{mt: 1}}>
+                    {/*<Autocomplete*/}
+                    {/*    freeSolo*/}
+                    {/*    options={options}*/}
+                    {/*    getOptionLabel={(option) => {*/}
+                    {/*        if (typeof option === 'string') return option;*/}
+                    {/*        return option.langname;*/}
+                    {/*    }}*/}
+                    {/*    value={options.find((opt) => opt.ds100 === measureLocationFrom) || measureLocationFrom || ""}*/}
+                    {/*    onChange={(_event, newValue) => {*/}
+                    {/*        if (typeof newValue === 'string') {*/}
+                    {/*            setMeasureLocationFrom(newValue);*/}
+                    {/*        } else if (newValue && newValue.ds100) {*/}
+                    {/*            setMeasureLocationFrom(newValue.langname);*/}
+                    {/*        } else {*/}
+                    {/*            setMeasureLocationFrom(null);*/}
+                    {/*        }*/}
+                    {/*    }}*/}
+                    {/*    onInputChange={(_event, newInputValue) => {*/}
+                    {/*        setMeasureLocationFrom(newInputValue);*/}
+                    {/*    }}*/}
+                    {/*    filterOptions={(options, params) => {*/}
+                    {/*        const input = params.inputValue.toLowerCase();*/}
+                    {/*        const filtered = options.filter(*/}
+                    {/*            (option) =>*/}
+                    {/*                option.langname.toLowerCase().includes(input) ||*/}
+                    {/*                option.ds100.toLowerCase().includes(input)*/}
+                    {/*        );*/}
+                    {/*        return filtered.slice(0, 10);*/}
+                    {/*    }}*/}
+                    {/*    renderInput={(params) => (*/}
+                    {/*        <TextField {...params} label="Im Bahnhof/ von Zmst/ von Zfst"/>*/}
+                    {/*    )}*/}
+                    {/*/>*/}
                     <Autocomplete
                         freeSolo
                         options={options}
                         getOptionLabel={(option) => {
                             if (typeof option === 'string') return option;
-                            return option.langname;
+                            return `${option.ds100} - ${option.langname}`;
                         }}
                         value={options.find((opt) => opt.ds100 === measureLocationFrom) || measureLocationFrom || ""}
                         onChange={(_event, newValue) => {
@@ -97,13 +130,39 @@ export default function MeasuresDialog(props: MeasuresDialogProps) {
                             setMeasureLocationFrom(newInputValue);
                         }}
                         filterOptions={(options, params) => {
-                            const input = params.inputValue.toLowerCase();
-                            const filtered = options.filter(
-                                (option) =>
-                                    option.langname.toLowerCase().includes(input) ||
-                                    option.ds100.toLowerCase().includes(input)
-                            );
-                            return filtered.slice(0, 10);
+                            // Bereinigt die Eingabe von Leerzeichen und Bindestrichen am Ende
+                            const input = params.inputValue.trim().toLowerCase().replace(/[- ]+$/, "");
+                            if (!input) return options.slice(0, 10);
+
+                            return options
+                                .filter(
+                                    (option) =>
+                                        option.ds100.toLowerCase().includes(input) ||
+                                        option.langname.toLowerCase().includes(input)
+                                )
+                                .sort((a, b) => {
+                                    const aDs = a.ds100.toLowerCase();
+                                    const bDs = b.ds100.toLowerCase();
+
+                                    // 1. Priorität: Exakter DS100-Treffer (z.B. "mh" getippt für "MH")
+                                    if (aDs === input && bDs !== input) return -1;
+                                    if (bDs === input && aDs !== input) return 1;
+
+                                    // 2. Priorität: DS100 beginnt mit der Eingabe (z.B. "m" oder "mh")
+                                    const aStartsDs = aDs.startsWith(input);
+                                    const bStartsDs = bDs.startsWith(input);
+                                    if (aStartsDs && !bStartsDs) return -1;
+                                    if (!aStartsDs && bStartsDs) return 1;
+
+                                    // 3. Priorität: Irgendein anderer DS100-Treffer
+                                    const aMatchDs = aDs.includes(input);
+                                    const bMatchDs = bDs.includes(input);
+                                    if (aMatchDs && !bMatchDs) return -1;
+                                    if (!aMatchDs && bMatchDs) return 1;
+
+                                    return 0;
+                                })
+                                .slice(0, 10);
                         }}
                         renderInput={(params) => (
                             <TextField {...params} label="Im Bahnhof/ von Zmst/ von Zfst"/>
@@ -114,9 +173,13 @@ export default function MeasuresDialog(props: MeasuresDialogProps) {
                     <Autocomplete
                         freeSolo
                         options={options}
+                        // getOptionLabel={(option) => {
+                        //     if (typeof option === 'string') return option;
+                        //     return option.langname;
+                        // }}
                         getOptionLabel={(option) => {
                             if (typeof option === 'string') return option;
-                            return option.langname;
+                            return `${option.ds100} - ${option.langname}`;
                         }}
                         value={options.find((opt) => opt.ds100 === measureLocationTo) || measureLocationTo || ""}
                         onChange={(_event, newValue) => {
@@ -131,14 +194,49 @@ export default function MeasuresDialog(props: MeasuresDialogProps) {
                         onInputChange={(_event, newInputValue) => {
                             setMeasureLocationTo(newInputValue);
                         }}
+                        // filterOptions={(options, params) => {
+                        //     const input = params.inputValue.toLowerCase();
+                        //     const filtered = options.filter(
+                        //         (option) =>
+                        //             option.langname.toLowerCase().includes(input) ||
+                        //             option.ds100.toLowerCase().includes(input)
+                        //     );
+                        //     return filtered.slice(0, 10);
+                        // }}
                         filterOptions={(options, params) => {
-                            const input = params.inputValue.toLowerCase();
-                            const filtered = options.filter(
-                                (option) =>
-                                    option.langname.toLowerCase().includes(input) ||
-                                    option.ds100.toLowerCase().includes(input)
-                            );
-                            return filtered.slice(0, 10);
+                            // Bereinigt die Eingabe von Leerzeichen und Bindestrichen am Ende
+                            const input = params.inputValue.trim().toLowerCase().replace(/[- ]+$/, "");
+                            if (!input) return options.slice(0, 10);
+
+                            return options
+                                .filter(
+                                    (option) =>
+                                        option.ds100.toLowerCase().includes(input) ||
+                                        option.langname.toLowerCase().includes(input)
+                                )
+                                .sort((a, b) => {
+                                    const aDs = a.ds100.toLowerCase();
+                                    const bDs = b.ds100.toLowerCase();
+
+                                    // 1. Priorität: Exakter DS100-Treffer (z.B. "mh" getippt für "MH")
+                                    if (aDs === input && bDs !== input) return -1;
+                                    if (bDs === input && aDs !== input) return 1;
+
+                                    // 2. Priorität: DS100 beginnt mit der Eingabe (z.B. "m" oder "mh")
+                                    const aStartsDs = aDs.startsWith(input);
+                                    const bStartsDs = bDs.startsWith(input);
+                                    if (aStartsDs && !bStartsDs) return -1;
+                                    if (!aStartsDs && bStartsDs) return 1;
+
+                                    // 3. Priorität: Irgendein anderer DS100-Treffer
+                                    const aMatchDs = aDs.includes(input);
+                                    const bMatchDs = bDs.includes(input);
+                                    if (aMatchDs && !bMatchDs) return -1;
+                                    if (!aMatchDs && bMatchDs) return 1;
+
+                                    return 0;
+                                })
+                                .slice(0, 10);
                         }}
                         renderInput={(params) => (
                             <TextField {...params} label="Bahnhofsgleis(e)/ bis Zmst/ bis Zfst"/>

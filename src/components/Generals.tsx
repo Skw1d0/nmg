@@ -2,14 +2,15 @@ import {Autocomplete, Box, Card, CardContent, CardHeader, Stack, TextField} from
 import {DateTimePicker} from "@mui/x-date-pickers";
 import dayjs, {type Dayjs} from "dayjs";
 import useStore from "../stores/useStore.tsx";
-import {Descriptions} from "../tools/data.ts";
+import {Descriptions, Districts} from "../tools/data.ts";
+
 
 type GeneralsProps = {
     id: string;
 }
 
 export default function Generals(props: GeneralsProps) {
-    const {changeEventById} = useStore()
+    const {changeEventById, changeDistrict, changeInitials, changeName} = useStore()
 
     const event = useStore((state) => state.events.find((e) => e.id === props.id))
     if (!event) return null;
@@ -77,6 +78,7 @@ export default function Generals(props: GeneralsProps) {
             name: value
         }
 
+        changeName(value);
         changeEventById(event.id, newEvent);
     }
 
@@ -88,6 +90,7 @@ export default function Generals(props: GeneralsProps) {
             initials: value
         }
 
+        changeInitials(value)
         changeEventById(event.id, newEvent);
     }
 
@@ -99,6 +102,7 @@ export default function Generals(props: GeneralsProps) {
             district: value
         }
 
+        changeDistrict(value)
         changeEventById(event.id, newEvent);
     }
 
@@ -149,9 +153,17 @@ export default function Generals(props: GeneralsProps) {
                                            sx={{width: 260}}
                                 />
                             </Stack>
-                            <TextField label="Notfallbezirk"
-                                       value={event.district}
-                                       onChange={(e) => handleChangeDistrict(e.target.value)}/>
+                            <Autocomplete freeSolo
+                                          options={Districts}
+                                          value={event.district}
+                                          onChange={(_event, newValue) => {
+                                              handleChangeDistrict(newValue || "")
+                                          }}
+                                          onInputChange={(_event, newInputValue) => {
+                                              handleChangeDistrict(newInputValue);
+                                          }}
+                                          renderInput={(params) => <TextField {...params}
+                                                                              label="Notfallbezirk"/>}/>
                             <TextField label="Ereignisnummer"
                                        value={event.eventNumber}
                                        onChange={(e) => handleChangeEventNumber(e.target.value)}

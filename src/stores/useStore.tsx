@@ -1,6 +1,6 @@
 import {Dayjs} from "dayjs";
 import dayjs from "dayjs";
-import {v4 as uuidv4} from "uuid";
+import {v4 as uuid4} from "uuid";
 import {create} from "zustand/react";
 import {persist} from "zustand/middleware";
 
@@ -46,6 +46,9 @@ export interface Event {
 
 type State = {
     darkMode: boolean,
+    name: string,
+    initials: string,
+    district: string,
     events: Event[],
 }
 
@@ -56,6 +59,9 @@ type Action = {
     getEventById: (id: string | undefined) => Event | undefined;
     deleteEventById: (id: string) => void;
     changeEventById: (id: string, value: Event) => void;
+    changeName: (name: string) => void;
+    changeInitials: (initials: string) => void;
+    changeDistrict: (district: string) => void;
 }
 
 const useStore = create<State & Action>()(
@@ -69,16 +75,16 @@ const useStore = create<State & Action>()(
             setDarkMode: (value: boolean) => set(() => ({darkMode: value})),
             toggleDarkMode: () => set((state) => ({darkMode: !state.darkMode})),
             addNewEvent: () => {
-                const {events} = get()
-                const newID = uuidv4();
+                const {events, name, initials, district} = get()
+                const newID = uuid4();
                 const newEvents: Event[] = [
                     ...events,
                     {
                         id: newID,
                         description: "",
-                        name: "",
-                        initials: "",
-                        district: "",
+                        name: name || "",
+                        initials: initials || "",
+                        district: district || "",
                         eventNumber: "",
                         protectionFrom: dayjs(),
                         protectionUntil: null,
@@ -111,6 +117,15 @@ const useStore = create<State & Action>()(
                     return event
                 })
                 set({events: newEvents})
+            },
+            changeName: (value: string) => {
+                set({name: value})
+            },
+            changeInitials: (value: string) => {
+                set({initials: value})
+            },
+            changeDistrict: (value: string) => {
+                set({district: value})
             },
         }),
         {
