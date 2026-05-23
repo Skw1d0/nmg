@@ -1,5 +1,6 @@
 {
   "name": "Nmg",
+  "short_name": "Nmg",
   "icons": [
     {
       "src": "512.png",
@@ -12,6 +13,9 @@
       "sizes": "192x192"
     }
   ],
-  "start_url": ".",
-  "display": "standalone"
+  "start_url": "/index.html",
+  "display": "standalone",
+  "scope": "/",
+  "background_color": "#ffffff",
+  "theme_color": "#000000"
 }
