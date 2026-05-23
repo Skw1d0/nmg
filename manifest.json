@@ -13,9 +13,9 @@
       "sizes": "192x192"
     }
   ],
-  "start_url": ".",
+  "start_url": "/nmg/",
   "display": "standalone",
-  "scope": "./",
+  "scope": "/nmg/",
   "background_color": "#ffffff",
   "theme_color": "#000000"
 }
