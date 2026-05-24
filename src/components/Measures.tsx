@@ -5,14 +5,13 @@ import {
     Stack,
 } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import {Add, Bolt, Map, PictureInPicture, LocationPin} from "@mui/icons-material";
+import {Add} from "@mui/icons-material";
 import {DateTimePicker} from "@mui/x-date-pickers";
 import {useState} from "react";
 import MeasuresDialog from "./MeasuresDialog.tsx";
 import MeasureTextBox from "./MeasureTextBox.tsx";
 import data from "../tools/data.ts";
-import IconButton from "@mui/material/IconButton";
-import useOpenWebsites from "../hooks/useOpenWebsite.ts";
+import LocationInfo from "./LocationInfo.tsx";
 
 
 type MeasuresProps = {
@@ -21,7 +20,6 @@ type MeasuresProps = {
 
 export default function Measures(props: MeasuresProps) {
     const {changeEventById} = useStore()
-    const {openAPN, openOpenrailwaymaps, openGoogleMaps} = useOpenWebsites()
 
     const event = useStore((state) => state.events.find((e) => e.id === props.id))
     const [measureDialogOpen, setMeasureDialogOpen] = useState<boolean>(false);
@@ -162,68 +160,10 @@ export default function Measures(props: MeasuresProps) {
                                     <Typography sx={{mb: 1, fontStyle: "italic"}}>{measure.locationDetails}</Typography>
                                     <Stack direction="column" spacing="1">
                                         {data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationFrom) && (
-                                            <Stack direction="row" spacing={1}
-                                                   sx={{display: "flex", alignItems: "center"}}>
-                                                <Typography>
-                                                    {data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationFrom)?.betriebsstellentypen.map((bst) => {
-                                                        if (bst === "bahnhof") return "Bf ";
-                                                        if (bst === "bahnhofsteil") return "Bft ";
-                                                        if (bst === "haltepunkt") return "Hp ";
-                                                        if (bst === "abzweigstelle") return "Azwst ";
-                                                        if (bst === "ueberleitstelle") return "Üst ";
-                                                    })}
-                                                </Typography>
-                                                <Typography>
-                                                    {data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationFrom)?.ds100}
-                                                </Typography>
-                                                {data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationFrom)?.elektrifiziert &&
-                                                    <Bolt color="warning"/>}
-                                                <Typography sx={{flexGrow: 1}}></Typography>
-                                                <IconButton color="inherit"
-                                                            onClick={() => openAPN(data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationFrom)?.ds100)}>
-                                                    <PictureInPicture/>
-                                                </IconButton>
-                                                <IconButton color="inherit"
-                                                            onClick={() => openOpenrailwaymaps(data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationFrom)?.geo_koordinaten.breite, data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationFrom)?.geo_koordinaten.laenge)}>
-                                                    <LocationPin/>
-                                                </IconButton>
-                                                <IconButton color="inherit"
-                                                            onClick={() => openGoogleMaps(data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationFrom)?.geo_koordinaten.breite, data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationFrom)?.geo_koordinaten.laenge)}>
-                                                    <Map/>
-                                                </IconButton>
-                                            </Stack>
+                                            <LocationInfo location={measure.locationFrom}/>
                                         )}
                                         {data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationTo) && (
-                                            <Stack direction="row" spacing={1}
-                                                   sx={{display: "flex", alignItems: "center"}}>
-                                                <Typography>
-                                                    {data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationFrom)?.betriebsstellentypen.map((bst) => {
-                                                        if (bst === "bahnhof") return "Bf ";
-                                                        if (bst === "bahnhofsteil") return "Bft ";
-                                                        if (bst === "haltepunkt") return "Hp ";
-                                                        if (bst === "abzweigstelle") return "Azwst ";
-                                                        if (bst === "ueberleitstelle") return "Üst ";
-                                                    })}
-                                                </Typography>
-                                                <Typography>
-                                                    {data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationTo)?.ds100}
-                                                </Typography>
-                                                {data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationTo)?.elektrifiziert &&
-                                                    <Bolt color="warning"/>}
-                                                <Typography sx={{flexGrow: 1}}></Typography>
-                                                <IconButton color="inherit"
-                                                            onClick={() => openAPN(data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationTo)?.ds100)}>
-                                                    <PictureInPicture/>
-                                                </IconButton>
-                                                <IconButton color="inherit"
-                                                            onClick={() => openOpenrailwaymaps(data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationTo)?.geo_koordinaten.breite, data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationTo)?.geo_koordinaten.laenge)}>
-                                                    <LocationPin/>
-                                                </IconButton>
-                                                <IconButton color="inherit"
-                                                            onClick={() => openGoogleMaps(data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationTo)?.geo_koordinaten.breite, data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === measure.locationTo)?.geo_koordinaten.laenge)}>
-                                                    <Map/>
-                                                </IconButton>
-                                            </Stack>
+                                            <LocationInfo location={measure.locationTo}/>
                                         )}
                                     </Stack>
                                     <MeasureTextBox type={measure.measure}/>

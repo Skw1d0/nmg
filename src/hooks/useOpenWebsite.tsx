@@ -1,4 +1,15 @@
 export default function useOpenWebsites() {
+    // async function checkAPN(ds100: string | undefined): Promise<boolean> {
+    //     try {
+    //         // const check = await fetch(`https://trassenfinder.de/apn/${ds100}`)
+    //         const check = await fetch(`/api-trassen/apn/${ds100}`);
+    //         return check.ok;
+    //     } catch {
+    //         return false;
+    //     }
+    // }
+
+
     function openAPN(ds100: string | undefined): void {
         if (!ds100) return;
 

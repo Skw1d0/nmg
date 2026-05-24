@@ -58,6 +58,7 @@ export default function ParticipantsDialog(props: ParticipantDialogProps) {
                         organisation: participantsOrganisation,
                         name: participantsName,
                         function: participantsFunction,
+                        call: participantsCall,
                     }
                 }
                 return participant

@@ -5,4 +5,13 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
     base: "/nmg/",
     plugins: [react()],
+    // server: {
+    //     proxy: {
+    //         '/api-trassen': {
+    //             target: 'https://trassenfinder.de',
+    //             changeOrigin: true,
+    //             rewrite: (path) => path.replace(/^\/api-trassen/, '')
+    //         }
+    //     }
+    // }
 })
