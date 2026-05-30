@@ -11,6 +11,7 @@ import {
     ArrowBackIos,
     Delete,
     Folder,
+    FormatListBulleted,
     People,
     Save,
     Shield
@@ -27,6 +28,7 @@ import Participants from "../components/Participants.tsx";
 import Measures from "../components/Measures.tsx";
 import Notes from "../components/Notes.tsx";
 import IconButton from "@mui/material/IconButton";
+import MyNotes from "../components/MyNotes.tsx";
 
 function Event() {
     const navigate = useNavigate()
@@ -138,7 +140,8 @@ function Event() {
                     {componentID === 0 && <Generals id={id}/>}
                     {componentID === 1 && <Measures id={id}/>}
                     {componentID === 2 && <Participants id={id}/>}
-                    {componentID === 3 && <Notes id={id}/>}
+                    {/*{componentID === 3 && <Notes id={id}/>}*/}
+                    {componentID === 3 && <MyNotes id={id}/>}
                 </Stack>
                 <Paper
                     // sx={{position: "fixed", bottom: 0, left: 0, right: 0}}
@@ -151,7 +154,8 @@ function Event() {
                         <BottomNavigationAction label="Allgemeines" icon={<Folder/>}/>
                         <BottomNavigationAction label="Maßnahme" icon={<Shield/>}/>
                         <BottomNavigationAction label="Beteiligte" icon={<People/>}/>
-                        <BottomNavigationAction label="Notizen" icon={<NotesIcon/>}/>
+                        {/*<BottomNavigationAction label="Notizen" icon={<NotesIcon/>}/>*/}
+                        <BottomNavigationAction label="Notizen" icon={<FormatListBulleted/>}/>
                     </BottomNavigation>
                 </Paper>
             </Box>

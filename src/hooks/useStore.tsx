@@ -28,6 +28,12 @@ export interface Measure {
     participantsLifted: Participant[];
 }
 
+export interface MyNotes {
+    id: string;
+    date: Dayjs;
+    note: string;
+}
+
 export interface Event {
     id: string;
     description: string;
@@ -42,6 +48,7 @@ export interface Event {
     participants: Participant[];
     measures: Measure[];
     notes: string;
+    myNotes: MyNotes[];
 }
 
 type State = {
@@ -92,7 +99,8 @@ const useStore = create<State & Action>()(
                         onSiteUntil: null,
                         participants: [],
                         measures: [],
-                        notes: ""
+                        notes: "",
+                        myNotes: []
                     }
                 ]
                 set({events: newEvents})

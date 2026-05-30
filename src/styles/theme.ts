@@ -13,9 +13,6 @@ export type THEME = (typeof THEME)[keyof typeof THEME];
 
 export const lightTheme = createTheme(
     {
-        typography: {
-            // fontSize: 20,
-        },
         palette: {
             primary: {
                 light: "#878C96",
@@ -48,15 +45,7 @@ export const lightTheme = createTheme(
 
 export const darkTheme = createTheme(
     {
-        typography: {
-            // fontSize: 20,
-        },
         palette: {
-            // primary: {
-            //   light: "#878C96",
-            //   main: "#3C414B",
-            //   dark: "#282D37",
-            // },
             primary: {
                 light: "#ffffffff",
                 main: "#d6d6d6ff",
@@ -77,7 +66,6 @@ export const darkTheme = createTheme(
                 main: "#408335",
                 dark: "#165C27",
             },
-
             background: {
                 default: "#131821",
                 paper: "#282D37",
