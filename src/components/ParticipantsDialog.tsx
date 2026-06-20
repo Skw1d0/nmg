@@ -2,7 +2,7 @@ import {Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle,
 import {useState} from "react";
 import useStore, {type Event, type Participant} from "../hooks/useStore.tsx";
 import {v4 as uuid4} from "uuid";
-import {Participants} from "../tools/data.ts";
+import {Participants, ParticipantsFunctions} from "../tools/data.ts";
 
 type ParticipantDialogProps = {
     eventId: string
@@ -93,10 +93,21 @@ export default function ParticipantsDialog(props: ParticipantDialogProps) {
                                value={participantsName}
                                onChange={(event) => setParticipantsName(event.target.value)}
                     />
-                    <TextField label={"Funktion"}
-                               value={participantsFunction}
-                               onChange={(event) => setParticipantsFunction(event.target.value)}
-                    />
+                    {/*<TextField label={"Funktion"}*/}
+                    {/*           value={participantsFunction}*/}
+                    {/*           onChange={(event) => setParticipantsFunction(event.target.value)}*/}
+                    {/*/>*/}
+                    <Autocomplete freeSolo
+                                  options={ParticipantsFunctions}
+                                  value={participantsFunction}
+                                  onChange={(_event, newValue) => {
+                                      setParticipantsFunction(newValue || "")
+                                  }}
+                                  onInputChange={(_event, newInputValue) => {
+                                      setParticipantsFunction(newInputValue);
+                                  }}
+                                  renderInput={(params) => <TextField {...params}
+                                                                      label="Funktion"/>}/>
                     <TextField label={"Rufnummer"}
                                value={participantsCall}
                                onChange={(event) => setParticipantsCall(event.target.value)}

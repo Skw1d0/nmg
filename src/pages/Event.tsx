@@ -17,7 +17,6 @@ import {
     Shield
 } from "@mui/icons-material";
 import MenuIcon from '@mui/icons-material/Menu';
-import NotesIcon from '@mui/icons-material/Notes';
 import {useNavigate, useParams} from "react-router";
 import {useState} from "react";
 import useStore from "../hooks/useStore.tsx";
@@ -26,7 +25,6 @@ import type {Event as EventType} from "../hooks/useStore.tsx";
 import Generals from "../components/Generals.tsx";
 import Participants from "../components/Participants.tsx";
 import Measures from "../components/Measures.tsx";
-import Notes from "../components/Notes.tsx";
 import IconButton from "@mui/material/IconButton";
 import MyNotes from "../components/MyNotes.tsx";
 

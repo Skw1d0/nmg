@@ -82,12 +82,27 @@ export const Participants = [
     "Bundespolizei",
     "Landespolizei",
     "Rettungsdienst",
-    "Notdienst EVU",
+    "DB Regio",
+    "DB Fernverkehr",
+    "DB Cargo",
     "Nmg Assistent",
     "Aufgleisleiter",
+    "Einhebeleiter",
     "THW",
     "EBA",
     "BEU",
+]
+
+export const ParticipantsFunctions = [
+    "Einsatzleiter",
+    "Notdienst",
+    "POW",
+    "PM",
+    "POM",
+    "PHM",
+    "PK",
+    "POK",
+    "PHK",
 ]
 
 export const Districts = [
