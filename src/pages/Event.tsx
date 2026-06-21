@@ -2,7 +2,7 @@ import Navbar from "../components/Navbar.tsx";
 import {
     BottomNavigation, BottomNavigationAction,
     Box,
-    Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl,
+    Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, FormControl,
     Link, Menu, MenuItem, MenuList, Paper,
     Stack, TextField,
 } from "@mui/material";
@@ -120,39 +120,34 @@ function Event() {
         <>
             <Box sx={{display: "flex", flexDirection: "column", height: "100dvh"}}>
                 <Navbar/>
-                <Stack direction="column" spacing={1}
-                       sx={{flexGrow: 1, overflow: "auto", scrollbarWidth: "none", px: 1, pt: 1, pb: 7}}>
-                    <Stack direction="row" spacing={2}>
-                        <Button startIcon={<ArrowBackIos/>}
-                                onClick={() => navigate("/")}
-                                color="primary"
-                                variant="contained">Zurück</Button>
-                        <Typography sx={{flexGrow: 1}}></Typography>
-                        {/*<Button variant="contained" startIcon={<Save/>}*/}
-                        {/*        onClick={handleOpenExportDialog}>Speichern</Button>*/}
-                        {/*<Button variant="outlined">Löschen</Button>*/}
-                        <IconButton onClick={handleOpenMenu} color="inherit">
-                            <MenuIcon/>
-                        </IconButton>
+                <Container maxWidth="md"
+                           sx={{flexGrow: 1, overflow: "auto", scrollbarWidth: "none", p: 1, pb: 7.5}}>
+                    <Stack direction="column" spacing={1}>
+                        <Stack direction="row" spacing={2}>
+                            <Button startIcon={<ArrowBackIos/>}
+                                    onClick={() => navigate("/")}
+                                    color="primary"
+                                    variant="contained">Zurück</Button>
+                            <Typography sx={{flexGrow: 1}}></Typography>
+                            <IconButton onClick={handleOpenMenu} color="inherit">
+                                <MenuIcon/>
+                            </IconButton>
+                        </Stack>
+                        {componentID === 0 && <Generals id={id}/>}
+                        {componentID === 1 && <Measures id={id}/>}
+                        {componentID === 2 && <Participants id={id}/>}
+                        {/*{componentID === 3 && <Notes id={id}/>}*/}
+                        {componentID === 3 && <MyNotes id={id}/>}
                     </Stack>
-                    {componentID === 0 && <Generals id={id}/>}
-                    {componentID === 1 && <Measures id={id}/>}
-                    {componentID === 2 && <Participants id={id}/>}
-                    {/*{componentID === 3 && <Notes id={id}/>}*/}
-                    {componentID === 3 && <MyNotes id={id}/>}
-                </Stack>
-                <Paper
-                    // sx={{position: "fixed", bottom: 0, left: 0, right: 0}}
-                    elevation={3}>
+                </Container>
+                <Paper elevation={3}>
                     <BottomNavigation showLabels
                                       value={componentID}
                                       onChange={(_event, newValue) => setComponentID(newValue)}
-                                      sx={{minHeight: 70}}
-                    >
+                                      sx={{minHeight: 70}}>
                         <BottomNavigationAction label="Allgemeines" icon={<Folder/>}/>
                         <BottomNavigationAction label="Maßnahme" icon={<Shield/>}/>
                         <BottomNavigationAction label="Beteiligte" icon={<People/>}/>
-                        {/*<BottomNavigationAction label="Notizen" icon={<NotesIcon/>}/>*/}
                         <BottomNavigationAction label="Notizen" icon={<FormatListBulleted/>}/>
                     </BottomNavigation>
                 </Paper>

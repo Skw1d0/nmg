@@ -2,7 +2,7 @@ import {Add, ArrowForwardIos} from "@mui/icons-material";
 import Navbar from "../components/Navbar.tsx";
 import {
     Box,
-    Button, Card, CardActions, CardHeader,
+    Button, Card, CardActions, CardHeader, Container,
     Fab,
 
 } from "@mui/material";
@@ -24,9 +24,9 @@ export default function Archive() {
         <>
             <Box sx={{display: "flex", flexDirection: "column", height: "100dvh"}}>
                 <Navbar/>
-                {events.length > 0 ? (
-                    <Box sx={{flexGrow: 1, overflow: "auto", p: 1}}>
-                        {events.map((event) => (
+                <Container maxWidth="md" sx={{flexGrow: 1, overflow: "auto", scrollbarWidth: "none", p: 1, pb: 7.5}}>
+                    {events.length > 0 ?
+                        events.map((event) => (
                             <Card key={event.id} variant="outlined" sx={{mb: 1}}>
                                 <CardHeader title={event.description}
                                             subheader={dayjs(event.protectionFrom).format("DD.MM.YYYY HH:mm")}/>
@@ -37,11 +37,10 @@ export default function Archive() {
                                     >Bearbeiten</Button>
                                 </CardActions>
                             </Card>
-                        ))}
-                    </Box>
-                ) : (
-                    <Typography sx={{m: 2}}>Bitte ein neues Ereignis anlegen</Typography>
-                )}
+                        )) : (
+                            <Typography sx={{m: 2}}>Bitte ein neues Ereignis anlegen</Typography>
+                        )}
+                </Container>
                 {/*</Stack>*/}
             </Box>
             <Fab sx={{position: "fixed", bottom: 10, right: 10}}
