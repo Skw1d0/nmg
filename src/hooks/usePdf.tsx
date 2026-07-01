@@ -304,15 +304,24 @@ export function usePdf() {
                 })
             })
 
-            insertLineBreaks(event?.notes.replace(/[\r\n]+/g, '') || "", 95).map((line, index) => {
-                secondPage.drawText(line, {
+            // insertLineBreaks(event?.notes.replace(/[\r\n]+/g, '') || "", 95).map((line, index) => {
+            //     secondPage.drawText(line, {
+            //         x: 25,
+            //         y: 171 - (index * 17),
+            //         size: 8,
+            //         font: helveticaFont,
+            //     })
+            // })
+
+            event?.notes.split('\n').forEach((note, index) => {
+                secondPage.drawText(note, {
                     x: 25,
                     y: 171 - (index * 17),
-                    size: 8,
+                    size: 10,
                     font: helveticaFont,
                 })
-
             })
+
 
             // PDF generieren
             const pdfBytes = await pdfDoc.save();
@@ -322,14 +331,14 @@ export function usePdf() {
             const docUrl = URL.createObjectURL(blob);
 
             if (action === 'save') {
-                const dateStr = dayjs(event?.protectionFrom).format("YYYYMMDD");
+                // const dateStr = dayjs(event?.protectionFrom).format("YYYYMMDD");
 
                 // Option A: Datei herunterladen / speichern
                 const link = document.createElement('a');
                 link.href = docUrl;
                 link.target = '_blank';
                 link.rel = 'noopener noreferrer';
-                link.download = `${dateStr}_Schutzmaßnahme.pdf`;
+                link.download = `Schutzmaßnahme.pdf`;
                 link.click();
             } else if (action === 'print') {
                 // Option B: In neuem Tab öffnen (zuverlässigste Methode für den Druck)

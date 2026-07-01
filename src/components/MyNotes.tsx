@@ -100,6 +100,11 @@ export default function MyNotes(props: MyNotesProps) {
 
     function handleChangeNotes(value: string) {
         if (!event) return null;
+        const lines = value.split('\n');
+
+        if (lines.length > 5) return
+        const isEveryLineValid = lines.every(line => line.length <= 75);
+        if (!isEveryLineValid) return
 
         const newEvent = {
             ...event,
@@ -118,8 +123,7 @@ export default function MyNotes(props: MyNotesProps) {
                         <FormControl fullWidth>
                             <TextField fullWidth
                                        multiline
-                                       minRows={5}
-                                       maxRows={5}
+                                       rows={5}
                                        value={event.notes}
                                        onChange={(e) => handleChangeNotes(e.target.value)}
                                        label="Notizen"></TextField>

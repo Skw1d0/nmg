@@ -5,6 +5,8 @@ import Typography from "@mui/material/Typography";
 import {DarkMode, LightMode} from "@mui/icons-material";
 import useStore from "../hooks/useStore.tsx";
 import {Container} from "@mui/material";
+import logo from "../assets/512.png"
+
 
 function Navbar() {
     const {toggleDarkMode, darkMode} = useStore();
@@ -14,7 +16,8 @@ function Navbar() {
             <AppBar position="static" color="inherit" elevation={1} sx={{zIndex: 9999}}>
                 <Container maxWidth="md" disableGutters>
                     <Toolbar sx={{display: "flex", gap: 1}}>
-                        <Typography variant="h5" sx={{flexGrow: 1}}>Schutzmaßnahmen</Typography>
+                        <img src={logo} width={35} height={35} alt="logo"/>
+                        <Typography variant="h5" sx={{flexGrow: 1}}>Notes</Typography>
                         <IconButton color="primary" onClick={() => toggleDarkMode()}>
                             {darkMode ? <DarkMode/> : <LightMode/>}
                         </IconButton>
