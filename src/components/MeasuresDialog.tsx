@@ -190,7 +190,7 @@ export default function MeasuresDialog(props: MeasuresDialogProps) {
                                 .slice(0, 10);
                         }}
                         renderInput={(params) => (
-                            <TextField {...params} label="Im Bahnhof/ von Zmst/ von Zfst"/>
+                            <TextField {...params} label="Im Bahnhof/ von Zmst/ von Zfst" variant="filled"/>
                         )}
                     />
                     <Button onClick={switchFromTo}
@@ -264,11 +264,12 @@ export default function MeasuresDialog(props: MeasuresDialogProps) {
                                 .slice(0, 10);
                         }}
                         renderInput={(params) => (
-                            <TextField {...params} label="Bahnhofsgleis(e)/ bis Zmst/ bis Zfst"/>
+                            <TextField {...params} label="Bahnhofsgleis(e)/ bis Zmst/ bis Zfst" variant="filled"/>
                         )}
                     />
                     <TextField label={"bei Bedarf von km bis km/ in km/ von Sig bis Sig/ an Sig"}
                                value={measureLocationDetails}
+                               variant="filled"
                                onChange={(e) => {
                                    setMeasureLocationDetails(e.target.value)
                                }}
@@ -296,14 +297,14 @@ export default function MeasuresDialog(props: MeasuresDialogProps) {
                                    }
                                }}
                     />
-                    <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Maßnahme</InputLabel>
+                    <FormControl fullWidth variant="filled">
+                        <InputLabel id="measures-select-label">Maßnahme</InputLabel>
                         <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
+                            label="Maßnahme"
+                            labelId="measures-select-label"
+                            id="measures-select"
                             value={measureMeasure}
                             onChange={handleChangeMeasure}
-                            label="Maßnahme"
                         >
                             <MenuItem value={"1"}>Gleis(e) gesperrt/ Fahrten eingestellt</MenuItem>
                             <MenuItem value={"2"}>Oberleitung ausgeschalten und bahngeerdet</MenuItem>

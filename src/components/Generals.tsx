@@ -1,8 +1,8 @@
 import {Autocomplete, Box, Card, CardContent, CardHeader, Stack, TextField} from "@mui/material";
-import {DateTimePicker} from "@mui/x-date-pickers";
 import dayjs, {type Dayjs} from "dayjs";
 import useStore from "../hooks/useStore.tsx";
 import {Descriptions, Districts} from "../tools/data.ts";
+import {DateTimeInput} from "./DateTimeInput.tsx";
 
 
 type GeneralsProps = {
@@ -120,14 +120,8 @@ export default function Generals(props: GeneralsProps) {
     return (
         <Box>
             <Stack direction={"column"} spacing={1}>
-                {/*<Stack direction={"column"} spacing={1}>*/}
-                {/*    */}
-                {/*    <Typography>Beschreibung:</Typography>*/}
-                {/*    <TextField value={event.description}*/}
-                {/*               onChange={(e) => handleChangeDescription(e.target.value)}/>*/}
-                {/*</Stack>*/}
                 <Card variant="outlined">
-                    <CardHeader title="Allgemeine Angaben" subheader="Um welches Ereignis handelt es sich?"/>
+                    <CardHeader title="Allgemeines"/>
                     <CardContent>
                         <Stack direction="column" spacing={1}>
                             <Autocomplete freeSolo
@@ -140,14 +134,17 @@ export default function Generals(props: GeneralsProps) {
                                               handleChangeDescription(newInputValue);
                                           }}
                                           renderInput={(params) => <TextField {...params}
-                                                                              label="Beschreibung des Ereignisses"/>}/>
+                                                                              label="Beschreibung des Ereignisses"
+                                                                              variant="filled"/>}/>
                             <Stack direction="row" spacing={1}>
                                 <TextField label="Name"
+                                           variant="filled"
                                            value={event.name}
                                            onChange={(e) => handleChangeName(e.target.value)}
                                            fullWidth={true}
                                 />
                                 <TextField label="Namenszeichen"
+                                           variant="filled"
                                            value={event.initials}
                                            onChange={(e) => handleChangeInitials(e.target.value)}
                                            sx={{width: 260}}
@@ -163,8 +160,10 @@ export default function Generals(props: GeneralsProps) {
                                               handleChangeDistrict(newInputValue);
                                           }}
                                           renderInput={(params) => <TextField {...params}
-                                                                              label="Notfallbezirk"/>}/>
+                                                                              label="Notfallbezirk"
+                                                                              variant="filled"/>}/>
                             <TextField label="Ereignisnummer"
+                                       variant="filled"
                                        value={event.eventNumber}
                                        onChange={(e) => handleChangeEventNumber(e.target.value)}
                             />
@@ -172,56 +171,29 @@ export default function Generals(props: GeneralsProps) {
                     </CardContent>
                 </Card>
                 <Card variant="outlined">
-                    <CardHeader title="Gesamtschutzdauer" subheader="Wann begann der Schutz der Rettungskräfte?"/>
+                    <CardHeader title="Gesamtschutzdauer"/>
                     <CardContent>
                         <Stack direction={"column"} spacing={1}>
-                            {/*    <Typography>Gesamtschutzdauer:</Typography>*/}
-                            <DateTimePicker label={"Von"} sx={{width: "100%"}}
-                                            value={event.protectionFrom && dayjs(event.protectionFrom)}
-                                            onChange={(value) => handleChangeProtectionFrom(dayjs(value))}
-                                            slotProps={{
-                                                actionBar: {
-                                                    actions: ['today', 'cancel', 'accept'],
-                                                },
-                                            }}
-                            />
-                            <DateTimePicker label={"Bis"} sx={{width: "100%"}}
-                                            value={event.protectionUntil && dayjs(event.protectionUntil)}
-                                            onChange={(value) => handleChangeProtectionUntil(dayjs(value))}
-                                            slotProps={{
-                                                actionBar: {
-                                                    actions: ['today', 'cancel', 'accept'],
-                                                },
-                                            }}
-                            />
+                            <DateTimeInput label="Von"
+                                           value={dayjs(event.protectionFrom)}
+                                           handleChange={handleChangeProtectionFrom}/>
+                            <DateTimeInput label="Bis"
+                                           value={dayjs(event.protectionUntil)}
+                                           handleChange={handleChangeProtectionUntil}/>
                         </Stack>
                     </CardContent>
                 </Card>
                 <Card variant="outlined">
-                    <CardHeader title="Notfallmanager am Ereignisort" subheader="Wann warst du Vorort?"/>
+                    <CardHeader title="Notfallmanager am Ereignisort"/>
                     <CardContent>
                         <Stack direction={"column"} spacing={1}>
-                            {/*<Typography>Notfallmanager am Ereignisort:</Typography>*/}
-                            <DateTimePicker label={"Von"} sx={{width: "100%"}}
-                                            value={event.onSiteFrom && dayjs(event.onSiteFrom)}
-                                            onChange={(value) => handleChangeOnSiteFrom(dayjs(value))}
-                                            slotProps={{
-                                                actionBar: {
-                                                    actions: ['today', 'cancel', 'accept'],
-                                                },
-                                            }}
-                            />
-                            <DateTimePicker label={"Bis"} sx={{width: "100%"}}
-                                            value={event.onSiteUntil && dayjs(event.onSiteUntil)}
-                                            onChange={(value) => handleChangeOnSiteUntil(dayjs(value))}
-                                            slotProps={{
-                                                actionBar: {
-                                                    actions: ['today', 'cancel', 'accept'],
-                                                },
-                                            }}
-                            />
+                            <DateTimeInput label="Von"
+                                           value={event.onSiteFrom}
+                                           handleChange={handleChangeOnSiteFrom}/>
+                            <DateTimeInput label="Bis"
+                                           value={event.onSiteUntil}
+                                           handleChange={handleChangeOnSiteUntil}/>
                         </Stack>
-
                     </CardContent>
                 </Card>
             </Stack>

@@ -88,8 +88,10 @@ export default function ParticipantsDialog(props: ParticipantDialogProps) {
                                       setParticipantsOrganisation(newInputValue);
                                   }}
                                   renderInput={(params) => <TextField {...params}
-                                                                      label="EVU/ EIU, Institut/ Organisation"/>}/>
+                                                                      label="EVU/ EIU, Institut/ Organisation"
+                                                                      variant="filled"/>}/>
                     <TextField label={"Name"}
+                               variant="filled"
                                value={participantsName}
                                onChange={(event) => setParticipantsName(event.target.value)}
                     />
@@ -107,8 +109,9 @@ export default function ParticipantsDialog(props: ParticipantDialogProps) {
                                       setParticipantsFunction(newInputValue);
                                   }}
                                   renderInput={(params) => <TextField {...params}
-                                                                      label="Funktion"/>}/>
+                                                                      label="Funktion" variant="filled"/>}/>
                     <TextField label={"Rufnummer"}
+                               variant="filled"
                                value={participantsCall}
                                onChange={(event) => setParticipantsCall(event.target.value)}
                     />

@@ -6,11 +6,12 @@ import {
     Stack,
 } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import {DateTimePicker} from "@mui/x-date-pickers";
+// import {DateTimePicker} from "@mui/x-date-pickers";
 import dayjs, {type Dayjs} from "dayjs";
 import {useState} from "react";
 import ParticipantsDialog from "./ParticipantsDialog.tsx";
 import {Add} from "@mui/icons-material";
+import {DateTimeInput} from "./DateTimeInput.tsx";
 
 type ParticipantProps = {
     id: string;
@@ -108,26 +109,33 @@ export default function Participants(props: ParticipantProps) {
                                         <Link
                                             href={`tel:${participant.call}`}>{participant.call}</Link>
                                     </Stack>
-                                    <DateTimePicker label={"Anmeldung"}
-                                                    sx={{width: "100%"}}
-                                                    value={participant.from && dayjs(participant.from)}
-                                                    onChange={(value) => handleChangeParticipantsFrom(participant.id, dayjs(value))}
-                                                    slotProps={{
-                                                        actionBar: {
-                                                            actions: ['today', 'cancel', 'accept'],
-                                                        },
-                                                    }}
-                                    />
-                                    <DateTimePicker label={"Abmeldung"}
-                                                    sx={{width: "100%"}}
-                                                    value={participant.until && dayjs(participant.until)}
-                                                    onChange={(value) => handleChangeParticipantsUntil(participant.id, dayjs(value))}
-                                                    slotProps={{
-                                                        actionBar: {
-                                                            actions: ['today', 'cancel', 'accept'],
-                                                        },
-                                                    }}
-                                    />
+                                    {/*<DateTimePicker label={"Anmeldung"}*/}
+                                    {/*                sx={{width: "100%"}}*/}
+                                    {/*                value={participant.from && dayjs(participant.from)}*/}
+                                    {/*                onChange={(value) => handleChangeParticipantsFrom(participant.id, dayjs(value))}*/}
+                                    {/*                slotProps={{*/}
+                                    {/*                    actionBar: {*/}
+                                    {/*                        actions: ['today', 'cancel', 'accept'],*/}
+                                    {/*                    },*/}
+                                    {/*                }}*/}
+                                    {/*/>*/}
+                                    {/*<DateTimePicker label={"Abmeldung"}*/}
+                                    {/*                sx={{width: "100%"}}*/}
+                                    {/*                value={participant.until && dayjs(participant.until)}*/}
+                                    {/*                onChange={(value) => handleChangeParticipantsUntil(participant.id, dayjs(value))}*/}
+                                    {/*                slotProps={{*/}
+                                    {/*                    actionBar: {*/}
+                                    {/*                        actions: ['today', 'cancel', 'accept'],*/}
+                                    {/*                    },*/}
+                                    {/*                }}*/}
+                                    {/*/>*/}
+                                    <DateTimeInput label="Anmeldung"
+                                                   value={participant.from && dayjs(participant.from)}
+                                                   handleChange={(value) => handleChangeParticipantsFrom(participant.id, value)}/>
+                                    <DateTimeInput label="Abmeldung"
+                                                   value={participant.until && dayjs(participant.until)}
+                                                   handleChange={(value) => handleChangeParticipantsUntil(participant.id, value)}/>
+
                                 </Stack>
                             </CardContent>
                             <CardActions>

@@ -122,6 +122,7 @@ export default function MyNotes(props: MyNotesProps) {
                     <CardContent>
                         <FormControl fullWidth>
                             <TextField fullWidth
+                                       variant="filled"
                                        multiline
                                        rows={5}
                                        value={event.notes}

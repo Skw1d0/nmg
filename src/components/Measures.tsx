@@ -6,12 +6,13 @@ import {
 } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {Add} from "@mui/icons-material";
-import {DateTimePicker} from "@mui/x-date-pickers";
+// import {DateTimePicker} from "@mui/x-date-pickers";
 import {useState} from "react";
 import MeasuresDialog from "./MeasuresDialog.tsx";
 import MeasureTextBox from "./MeasureTextBox.tsx";
 import data from "../tools/data.ts";
 import LocationInfo from "./LocationInfo.tsx";
+import {DateTimeInput} from "./DateTimeInput.tsx";
 
 
 type MeasuresProps = {
@@ -169,16 +170,19 @@ export default function Measures(props: MeasuresProps) {
                                     <MeasureTextBox type={measure.measure}/>
                                 </Stack>
                                 <Stack direction="column" spacing={1} sx={{pb: 2}}>
-                                    <DateTimePicker label={"Eingeführt"}
-                                                    sx={{width: "100%"}}
-                                                    value={measure.from && dayjs(measure.from)}
-                                                    onChange={(value) => handleChangeMeasureFromById(measure.id, dayjs(value))}
-                                                    slotProps={{
-                                                        actionBar: {
-                                                            actions: ['today', 'cancel', 'accept'],
-                                                        },
-                                                    }}
-                                    />
+                                    {/*<DateTimePicker label={"Eingeführt"}*/}
+                                    {/*                sx={{width: "100%"}}*/}
+                                    {/*                value={measure.from && dayjs(measure.from)}*/}
+                                    {/*                onChange={(value) => handleChangeMeasureFromById(measure.id, dayjs(value))}*/}
+                                    {/*                slotProps={{*/}
+                                    {/*                    actionBar: {*/}
+                                    {/*                        actions: ['today', 'cancel', 'accept'],*/}
+                                    {/*                    },*/}
+                                    {/*                }}*/}
+                                    {/*/>*/}
+                                    <DateTimeInput label="Eingeführt"
+                                                   value={measure.from && dayjs(measure.from)}
+                                                   handleChange={(value) => handleChangeMeasureFromById(measure.id, value)}/>
                                     {measure.from && event.participants.map((participant) => (
                                         (dayjs(participant.until).unix() > dayjs(measure.from).unix() || !participant.until) &&
                                         <Button key={participant.id}
@@ -188,16 +192,19 @@ export default function Measures(props: MeasuresProps) {
                                     ))}
                                 </Stack>
                                 <Stack direction="column" spacing={1}>
-                                    <DateTimePicker label={"Aufgehoben"}
-                                                    sx={{width: "100%"}}
-                                                    value={measure.until && dayjs(measure.until)}
-                                                    onChange={(value) => handleChangeMeasureUntilById(measure.id, dayjs(value))}
-                                                    slotProps={{
-                                                        actionBar: {
-                                                            actions: ['today', 'cancel', 'accept'],
-                                                        },
-                                                    }}
-                                    />
+                                    {/*<DateTimePicker label={"Aufgehoben"}*/}
+                                    {/*                sx={{width: "100%"}}*/}
+                                    {/*                value={measure.until && dayjs(measure.until)}*/}
+                                    {/*                onChange={(value) => handleChangeMeasureUntilById(measure.id, dayjs(value))}*/}
+                                    {/*                slotProps={{*/}
+                                    {/*                    actionBar: {*/}
+                                    {/*                        actions: ['today', 'cancel', 'accept'],*/}
+                                    {/*                    },*/}
+                                    {/*                }}*/}
+                                    {/*/>*/}
+                                    <DateTimeInput label="Aufgehoben"
+                                                   value={measure.until && dayjs(measure.until)}
+                                                   handleChange={(value) => handleChangeMeasureUntilById(measure.id, value)}/>
                                     {measure.until && event.participants.map((participant) => (
                                         (dayjs(participant.until).unix() > dayjs(measure.until).unix() || !participant.until) &&
                                         <Button key={participant.id}

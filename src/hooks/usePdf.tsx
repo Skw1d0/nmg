@@ -85,27 +85,27 @@ export function usePdf() {
         })
     }
 
-    function insertLineBreaks(text: string, maxChars: number = 45) {
-        const words = text.split(' ');
-        const lines: string[] = [];
-        let currentLine = '';
-
-        words.forEach((word) => {
-            if ((currentLine + word).length > maxChars) {
-                lines.push(currentLine.trim());
-                currentLine = word + ' ';
-            } else {
-                currentLine += word + ' ';
-            }
-        });
-
-        if (currentLine) {
-            lines.push(currentLine.trim());
-        }
-
-        // Mappe die Textzeilen in React-Elemente mit <br />
-        return lines
-    }
+    // function insertLineBreaks(text: string, maxChars: number = 45) {
+    //     const words = text.split(' ');
+    //     const lines: string[] = [];
+    //     let currentLine = '';
+    //
+    //     words.forEach((word) => {
+    //         if ((currentLine + word).length > maxChars) {
+    //             lines.push(currentLine.trim());
+    //             currentLine = word + ' ';
+    //         } else {
+    //             currentLine += word + ' ';
+    //         }
+    //     });
+    //
+    //     if (currentLine) {
+    //         lines.push(currentLine.trim());
+    //     }
+    //
+    //     // Mappe die Textzeilen in React-Elemente mit <br />
+    //     return lines
+    // }
 
 
     async function generatePdf(pw: string, id: string, action: "save" | "print"): Promise<boolean> {
