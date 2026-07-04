@@ -5,14 +5,10 @@ import {
 } from "@mui/material";
 import {
     ArrowBackIos,
-    Folder,
     FolderOutlined,
     FormatListBulleted,
-    People,
     PeopleOutlined,
-    Shield,
     ShieldOutlined,
-
 } from "@mui/icons-material";
 import {useNavigate, useParams} from "react-router";
 import {useState} from "react";
