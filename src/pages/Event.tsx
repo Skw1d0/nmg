@@ -1,10 +1,9 @@
 import Navbar from "../components/Navbar.tsx";
 import {
     BottomNavigation, BottomNavigationAction,
-    Box, Button, Card, CardActions, CardHeader, Container, Paper
+    Box, Container, Paper
 } from "@mui/material";
 import {
-    ArrowBackIos,
     FolderOutlined,
     FormatListBulleted,
     PeopleOutlined,
@@ -18,6 +17,7 @@ import Participants from "../components/Participants.tsx";
 import Measures from "../components/Measures.tsx";
 import MyNotes from "../components/MyNotes.tsx";
 import NavbarEvent from "../components/NavbarEvent.tsx";
+import EventNotFound from "../components/EventNotFound.tsx";
 
 function Event() {
     const {id} = useParams()
@@ -34,14 +34,7 @@ function Event() {
                 <Navbar/>
                 <Container maxWidth="md"
                            sx={{flexGrow: 1, overflow: "auto", scrollbarWidth: "none", p: 1, pb: 7.5}}>
-                    <Card>
-                        <CardHeader title="Ups..." subheader="Das Ereignis konnte nicht geladen werden!"/>
-                        <CardActions>
-                            <Button variant="contained"
-                                    startIcon={<ArrowBackIos/>}
-                                    onClick={() => navigate("/")}>Zurück zur Startseite</Button>
-                        </CardActions>
-                    </Card>
+                    <EventNotFound onAdd={() => navigate("/")}/>
                 </Container>
             </>
         )
