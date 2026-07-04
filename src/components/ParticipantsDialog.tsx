@@ -1,8 +1,19 @@
-import {Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField} from "@mui/material";
+import {
+    Autocomplete,
+    Box,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Stack,
+    TextField
+} from "@mui/material";
 import {useState} from "react";
 import useStore, {type Event, type Participant} from "../hooks/useStore.tsx";
 import {v4 as uuid4} from "uuid";
 import {Participants, ParticipantsFunctions} from "../tools/data.ts";
+import InputContainer from "./InputContainer.tsx";
 
 type ParticipantDialogProps = {
     eventId: string
@@ -74,57 +85,61 @@ export default function ParticipantsDialog(props: ParticipantDialogProps) {
             <DialogTitle>Beteiligte hinzufügen</DialogTitle>
             <DialogContent>
                 <Stack direction={"column"} spacing={1} sx={{pt: 1}}>
-                    {/*<TextField label={"Organsiation"}*/}
-                    {/*           value={participantsOrganisation}*/}
-                    {/*           onChange={(event) => setParticipantsOrganisation(event.target.value)}*/}
-                    {/*/>*/}
-                    <Autocomplete freeSolo
-                                  options={Participants}
-                                  value={participantsOrganisation}
-                                  onChange={(_event, newValue) => {
-                                      setParticipantsOrganisation(newValue || "")
-                                  }}
-                                  onInputChange={(_event, newInputValue) => {
-                                      setParticipantsOrganisation(newInputValue);
-                                  }}
-                                  renderInput={(params) => <TextField {...params}
-                                                                      label="EVU/ EIU, Institut/ Organisation"
-                                                                      variant="filled"/>}/>
-                    <TextField label={"Name"}
-                               variant="filled"
-                               value={participantsName}
-                               onChange={(event) => setParticipantsName(event.target.value)}
-                    />
-                    {/*<TextField label={"Funktion"}*/}
-                    {/*           value={participantsFunction}*/}
-                    {/*           onChange={(event) => setParticipantsFunction(event.target.value)}*/}
-                    {/*/>*/}
-                    <Autocomplete freeSolo
-                                  options={ParticipantsFunctions}
-                                  value={participantsFunction}
-                                  onChange={(_event, newValue) => {
-                                      setParticipantsFunction(newValue || "")
-                                  }}
-                                  onInputChange={(_event, newInputValue) => {
-                                      setParticipantsFunction(newInputValue);
-                                  }}
-                                  renderInput={(params) => <TextField {...params}
-                                                                      label="Funktion" variant="filled"/>}/>
-                    <TextField label={"Rufnummer"}
-                               variant="filled"
-                               value={participantsCall}
-                               onChange={(event) => setParticipantsCall(event.target.value)}
-                    />
+                    <InputContainer>
+                        <Autocomplete freeSolo
+                                      options={Participants}
+                                      value={participantsOrganisation}
+                                      onChange={(_event, newValue) => {
+                                          setParticipantsOrganisation(newValue || "")
+                                      }}
+                                      onInputChange={(_event, newInputValue) => {
+                                          setParticipantsOrganisation(newInputValue);
+                                      }}
+                                      renderInput={(params) => <TextField {...params}
+                                                                          label="EVU/ EIU, Institut/ Organisation"/>}/>
+                    </InputContainer>
+                    <InputContainer>
+                        <TextField label={"Name"}
+                                   value={participantsName}
+                                   onChange={(event) => setParticipantsName(event.target.value)}
+                        />
+                    </InputContainer>
+                    <InputContainer>
+                        <Autocomplete freeSolo
+                                      options={ParticipantsFunctions}
+                                      value={participantsFunction}
+                                      onChange={(_event, newValue) => {
+                                          setParticipantsFunction(newValue || "")
+                                      }}
+                                      onInputChange={(_event, newInputValue) => {
+                                          setParticipantsFunction(newInputValue);
+                                      }}
+                                      renderInput={(params) => <TextField {...params}
+                                                                          label="Funktion"/>}/>
+                    </InputContainer>
+                    <InputContainer>
+                        <TextField label={"Rufnummer"}
+                                   value={participantsCall}
+                                   onChange={(event) => setParticipantsCall(event.target.value)}/>
+                    </InputContainer>
+                    <Box sx={{display: "flex", justifyContent: "end", gap: 1, pt: 2}}>
+                        {props.selectedParticipant ? (
+                            <Button onClick={handleEditParticipant} variant="contained">Speichern</Button>
+                        ) : (
+                            <Button onClick={handleAddParticipants} variant="contained">Hinzufügen</Button>
+                        )}
+                        <Button onClick={props.handleClose} variant="outlined">Abbrechen</Button>
+                    </Box>
                 </Stack>
             </DialogContent>
-            <DialogActions>
-                {props.selectedParticipant ? (
-                    <Button onClick={handleEditParticipant} variant="contained">Speichern</Button>
-                ) : (
-                    <Button onClick={handleAddParticipants} variant="contained">Hinzufügen</Button>
-                )}
-                <Button onClick={props.handleClose} variant="outlined">Abbrechen</Button>
-            </DialogActions>
+            {/*<DialogActions>*/}
+            {/*    {props.selectedParticipant ? (*/}
+            {/*        <Button onClick={handleEditParticipant} variant="contained">Speichern</Button>*/}
+            {/*    ) : (*/}
+            {/*        <Button onClick={handleAddParticipants} variant="contained">Hinzufügen</Button>*/}
+            {/*    )}*/}
+            {/*    <Button onClick={props.handleClose} variant="outlined">Abbrechen</Button>*/}
+            {/*</DialogActions>*/}
         </Dialog>
     )
 

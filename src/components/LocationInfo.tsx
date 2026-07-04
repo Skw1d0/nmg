@@ -61,17 +61,16 @@ export default function LocationInfo({location}: LocationInfoProps) {
             {data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === location)?.elektrifiziert &&
                 <Bolt color="warning"/>}
             <Typography sx={{flexGrow: 1}}></Typography>
-            <IconButton color="inherit"
-                // disabled={isDisabled}
-                        onClick={() => openAPN(data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === location)?.ds100)}>
+            <IconButton
+                onClick={() => openAPN(data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === location)?.ds100)}>
                 <PictureInPicture/>
             </IconButton>
-            <IconButton color="inherit"
-                        onClick={() => openOpenrailwaymaps(data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === location)?.geo_koordinaten.breite, data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === location)?.geo_koordinaten.laenge)}>
+            <IconButton
+                onClick={() => openOpenrailwaymaps(data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === location)?.geo_koordinaten.breite, data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === location)?.geo_koordinaten.laenge)}>
                 <LocationPin/>
             </IconButton>
-            <IconButton color="inherit"
-                        onClick={() => openGoogleMaps(data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === location)?.geo_koordinaten.breite, data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === location)?.geo_koordinaten.laenge)}>
+            <IconButton
+                onClick={() => openGoogleMaps(data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === location)?.geo_koordinaten.breite, data.ordnungsrahmen.betriebsstellen.find((e) => e.langname === location)?.geo_koordinaten.laenge)}>
                 <Map/>
             </IconButton>
         </Stack>

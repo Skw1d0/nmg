@@ -190,37 +190,37 @@ export function usePdf() {
             event?.participants.forEach((participant, index) => {
                 firstPage.drawText(participant.organisation, {
                     x: 65,
-                    y: 370 - (index * 22),
+                    y: 370 - (index * 21.2),
                     size: 10,
                     font: helveticaFont,
                 })
                 firstPage.drawText(participant.function, {
                     x: 205,
-                    y: 370 - (index * 22),
+                    y: 370 - (index * 21.2),
                     size: 10,
                     font: helveticaFont,
                 })
                 firstPage.drawText(participant.name, {
                     x: 290,
-                    y: 370 - (index * 22),
+                    y: 370 - (index * 21.2),
                     size: 10,
                     font: helveticaFont,
                 })
                 firstPage.drawText(participant.call, {
                     x: 430,
-                    y: 370 - (index * 22),
+                    y: 370 - (index * 21.2),
                     size: 10,
                     font: helveticaFont,
                 })
                 firstPage.drawText(participant.from ? dayjs(participant.from).format("DD.MM.YYYY / HH:mm") : "", {
                     x: 590,
-                    y: 370 - (index * 22),
+                    y: 370 - (index * 21.2),
                     size: 10,
                     font: helveticaFont,
                 })
                 firstPage.drawText(participant.until ? dayjs(participant.until).format("DD.MM.YYYY / HH:mm") : "", {
                     x: 710,
-                    y: 370 - (index * 22),
+                    y: 370 - (index * 21.2),
                     size: 10,
                     font: helveticaFont,
                 })
@@ -235,53 +235,65 @@ export function usePdf() {
                 font: helveticaFont,
             })
 
+            secondPage.drawText("2", {
+                x: 760,
+                y: 570,
+                size: 10,
+                font: helveticaFont,
+            })
+            secondPage.drawText("2", {
+                x: 810,
+                y: 570,
+                size: 10,
+                font: helveticaFont,
+            })
 
             event?.measures.forEach((measure, index) => {
                 secondPage.drawText(measure.locationFrom, {
                     x: 25,
-                    y: 450 - (index * 30),
+                    y: 450 - (index * 28),
                     size: 10,
                     font: helveticaFont,
                 })
                 secondPage.drawText(measure.locationTo, {
                     x: 125,
-                    y: 450 - (index * 30),
+                    y: 450 - (index * 28),
                     size: 10,
                     font: helveticaFont,
                 })
                 secondPage.drawText(measure.locationDetails, {
                     x: 225,
-                    y: 450 - (index * 30),
+                    y: 450 - (index * 28),
                     size: 10,
                     font: helveticaFont,
                 })
                 secondPage.drawText(measure.measure, {
                     x: 350,
-                    y: 450 - (index * 30),
+                    y: 450 - (index * 28),
                     size: 10,
                     font: helveticaFont,
                 })
                 secondPage.drawText(measure.from ? dayjs(measure.from).format("DD.MM. / HH:mm") : "", {
                     x: 410,
-                    y: 450 - (index * 30),
+                    y: 450 - (index * 28),
                     size: 10,
                     font: helveticaFont,
                 })
                 secondPage.drawText(event.initials, {
                     x: 565,
-                    y: 450 - (index * 30),
+                    y: 450 - (index * 28),
                     size: 10,
                     font: helveticaFont,
                 })
                 secondPage.drawText(measure.until ? dayjs(measure.until).format("DD.MM. / HH:mm") : "", {
                     x: 620,
-                    y: 450 - (index * 30),
+                    y: 450 - (index * 28),
                     size: 10,
                     font: helveticaFont,
                 })
                 secondPage.drawText(event.initials, {
                     x: 785,
-                    y: 450 - (index * 30),
+                    y: 450 - (index * 28),
                     size: 10,
                     font: helveticaFont,
                 })

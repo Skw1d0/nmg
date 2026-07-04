@@ -1,5 +1,5 @@
 import {Box, Typography} from "@mui/material";
-import type {MeasureType} from "../hooks/useStore.tsx";
+import useStore, {type MeasureType} from "../hooks/useStore.tsx";
 import {Bolt, FrontHand, Hearing, HighlightOff, Speed, Visibility} from "@mui/icons-material";
 
 interface MeasureTextBoxProps {
@@ -7,13 +7,15 @@ interface MeasureTextBoxProps {
 }
 
 export default function MeasureTextBox(props: MeasureTextBoxProps) {
+    const {darkMode} = useStore()
+
     let color = ""
     if (props.type === "1") color = "#c50000"
     if (props.type === "2") color = "#2f2fec"
     if (props.type === "A") color = "#c50000"
-    if (props.type === "B") color = "#634400"
-    if (props.type === "C") color = "#634400"
-    if (props.type === "D") color = "#634400"
+    if (props.type === "B") color = "#ac7600"
+    if (props.type === "C") color = "#ac7600"
+    if (props.type === "D") color = "#ac7600"
     if (props.type === "E") color = "#991ba3"
 
     return (
@@ -22,12 +24,10 @@ export default function MeasureTextBox(props: MeasureTextBoxProps) {
             flexDirection: "row",
             gap: 1,
             width: "100%",
-            borderRadius: 1,
-            // borderStyle: "solid",
+            borderRadius: 2,
             color: color,
-            backgroundColor: `color-mix(in srgb, ${color}, white 85%)`,
+            backgroundColor: darkMode ? `color-mix(in srgb, ${color}, black 80%)` : `color-mix(in srgb, ${color}, white 85%)`,
             p: 1
-
         }}>
             {(props.type === "1") && (<HighlightOff sx={{color: color}}/>)}
             {(props.type === "2") && (<Bolt sx={{color: color}}/>)}

@@ -1,17 +1,20 @@
 import useStore, {type Event, type Participant} from "../hooks/useStore.tsx"
 import {
     Box,
-    Button, Card, CardActions, CardContent, CardHeader, Fab,
+    Button, Fab,
     Link,
     Stack,
 } from "@mui/material";
 import Typography from "@mui/material/Typography";
-// import {DateTimePicker} from "@mui/x-date-pickers";
 import dayjs, {type Dayjs} from "dayjs";
 import {useState} from "react";
 import ParticipantsDialog from "./ParticipantsDialog.tsx";
-import {Add} from "@mui/icons-material";
+import {Add, ArrowForward, LocalPhone, People, Person} from "@mui/icons-material";
 import {DateTimeInput} from "./DateTimeInput.tsx";
+import ParticipantsEmptyState from "./ParticipantsEmptyState.tsx";
+import FormSection from "./FormSection.tsx";
+import InputContainer from "./InputContainer.tsx";
+import AnimatedCard from "./AnimatedCard.tsx";
 
 type ParticipantProps = {
     id: string;
@@ -29,6 +32,7 @@ export default function Participants(props: ParticipantProps) {
     }
 
     function handleParticipantsDialogOpen() {
+        setSelectedParticipant(undefined)
         setParticipantsDialogOpen(true);
     }
 
@@ -95,71 +99,106 @@ export default function Participants(props: ParticipantProps) {
             <Box>
                 <Stack direction={"column"} spacing={1}>
                     {event?.participants.length ? event.participants.map((participant) => (
-                        <Card key={participant.id}
-                              variant="outlined"
-                              sx={{mb: 1}}>
-                            <CardHeader title={participant.organisation}/>
-                            <CardContent>
+                        <AnimatedCard>
+                            <FormSection key={participant.id}
+                                         icon={<People color="secondary"/>}
+                                         title={participant.organisation}>
+
                                 <Stack direction="column"
                                        spacing={1}
                                        sx={{width: "100%"}}>
-                                    <Stack direction="column" sx={{pb: 2}}>
-                                        <Typography>{participant.name} {participant.function && ` (${participant.function})`}</Typography>
+                                    {(participant.name || participant.call) && (
+                                        <Stack direction="column" spacing={1} sx={{py: 2}}>
+                                            {participant.name && (
+                                                <Stack direction="row" spacing={1}>
+                                                    <Person fontSize="small"/>
+                                                    <Typography>{participant.name} {participant.function && ` (${participant.function})`}</Typography>
+                                                </Stack>
+                                            )}
+                                            {participant.call && (
+                                                <Stack direction="row" spacing={1}>
+                                                    <LocalPhone fontSize="small"/>
+                                                    <Link href={`tel:${participant.call}`}>{participant.call}</Link>
+                                                </Stack>
+                                            )}
+                                        </Stack>
+                                    )}
 
-                                        <Link
-                                            href={`tel:${participant.call}`}>{participant.call}</Link>
-                                    </Stack>
-                                    {/*<DateTimePicker label={"Anmeldung"}*/}
-                                    {/*                sx={{width: "100%"}}*/}
-                                    {/*                value={participant.from && dayjs(participant.from)}*/}
-                                    {/*                onChange={(value) => handleChangeParticipantsFrom(participant.id, dayjs(value))}*/}
-                                    {/*                slotProps={{*/}
-                                    {/*                    actionBar: {*/}
-                                    {/*                        actions: ['today', 'cancel', 'accept'],*/}
-                                    {/*                    },*/}
-                                    {/*                }}*/}
-                                    {/*/>*/}
-                                    {/*<DateTimePicker label={"Abmeldung"}*/}
-                                    {/*                sx={{width: "100%"}}*/}
-                                    {/*                value={participant.until && dayjs(participant.until)}*/}
-                                    {/*                onChange={(value) => handleChangeParticipantsUntil(participant.id, dayjs(value))}*/}
-                                    {/*                slotProps={{*/}
-                                    {/*                    actionBar: {*/}
-                                    {/*                        actions: ['today', 'cancel', 'accept'],*/}
-                                    {/*                    },*/}
-                                    {/*                }}*/}
-                                    {/*/>*/}
-                                    <DateTimeInput label="Anmeldung"
-                                                   value={participant.from && dayjs(participant.from)}
-                                                   handleChange={(value) => handleChangeParticipantsFrom(participant.id, value)}/>
-                                    <DateTimeInput label="Abmeldung"
-                                                   value={participant.until && dayjs(participant.until)}
-                                                   handleChange={(value) => handleChangeParticipantsUntil(participant.id, value)}/>
-
+                                    <InputContainer>
+                                        <Stack direction="row" spacing={1}>
+                                            <DateTimeInput label="Anmeldung"
+                                                           format="HH:mm"
+                                                           value={participant.from && dayjs(participant.from)}
+                                                           handleChange={(value) => handleChangeParticipantsFrom(participant.id, value)}/>
+                                            <Box sx={{display: "flex", alignItems: "center"}}>
+                                                <ArrowForward/>
+                                            </Box>
+                                            <DateTimeInput label="Abmeldung"
+                                                           format="HH:mm"
+                                                           value={participant.until && dayjs(participant.until)}
+                                                           handleChange={(value) => handleChangeParticipantsUntil(participant.id, value)}/>
+                                        </Stack>
+                                    </InputContainer>
                                 </Stack>
-                            </CardContent>
-                            <CardActions>
-                                <Typography sx={{flexGrow: 1}}/>
-                                <Button onClick={() => handleEditParticipant(participant)}>Bearbeiten</Button>
-                                <Button onClick={() => handleDeleteParticipantsById(participant.id)}>Löschen</Button>
-                            </CardActions>
-                        </Card>
+                                <Box sx={{
+                                    display: "flex",
+                                    justifyContent: "end"
+                                }}>
+                                    <Button onClick={() => handleEditParticipant(participant)}>Bearbeiten</Button>
+                                    <Button
+                                        onClick={() => handleDeleteParticipantsById(participant.id)}>Löschen</Button>
+                                </Box>
+                            </FormSection>
+                        </AnimatedCard>
+
+                        // <Card key={participant.id}
+                        //       variant="outlined"
+                        //       sx={{mb: 1}}>
+                        //     <CardHeader title={participant.organisation}/>
+                        //     <CardContent>
+                        //         <Stack direction="column"
+                        //                spacing={1}
+                        //                sx={{width: "100%"}}>
+                        //             <Stack direction="column" sx={{pb: 2}}>
+                        //                 <Typography>{participant.name} {participant.function && ` (${participant.function})`}</Typography>
+                        //
+                        //                 <Link
+                        //                     href={`tel:${participant.call}`}>{participant.call}</Link>
+                        //             </Stack>
+                        //             <DateTimeInput label="Anmeldung"
+                        //                            value={participant.from && dayjs(participant.from)}
+                        //                            handleChange={(value) => handleChangeParticipantsFrom(participant.id, value)}/>
+                        //             <DateTimeInput label="Abmeldung"
+                        //                            value={participant.until && dayjs(participant.until)}
+                        //                            handleChange={(value) => handleChangeParticipantsUntil(participant.id, value)}/>
+                        //
+                        //         </Stack>
+                        //     </CardContent>
+                        //     <CardActions>
+                        //         <Typography sx={{flexGrow: 1}}/>
+                        //         <Button onClick={() => handleEditParticipant(participant)}>Bearbeiten</Button>
+                        //         <Button onClick={() => handleDeleteParticipantsById(participant.id)}>Löschen</Button>
+                        //     </CardActions>
+                        // </Card>
                     )) : (
-                        <Typography sx={{py: 2}}>Bitte einen Beteiligten hinzufügen</Typography>
+                        <ParticipantsEmptyState onAdd={handleParticipantsDialogOpen}/>
                     )}
                     {/*<Button variant="contained"*/}
                     {/*        onClick={handleParticipantsDialogOpen}>Hinzufügen</Button>*/}
                 </Stack>
             </Box>
-            <Fab sx={{position: "fixed", bottom: 80, right: 10}}
-                 color="primary"
-                 aria-label="add"
-                 size="medium"
-                 variant="extended"
-                 onClick={handleParticipantsDialogOpen}
-            >
-                <Add/>
-            </Fab>
+            {event && event.participants.length > 0 && (
+                <Fab sx={{position: "fixed", bottom: 80, right: 10}}
+                     disabled={event && event?.participants.length > 14}
+                     color="primary"
+                     aria-label="add"
+                     size="medium"
+                     variant="extended"
+                     onClick={handleParticipantsDialogOpen}
+                >
+                    <Add/>
+                </Fab>
+            )}
             <ParticipantsDialog key={selectedParticipant?.id}
                                 eventId={props.id}
                                 open={participantsDialogOpen}

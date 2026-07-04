@@ -1,9 +1,7 @@
 import {
+    Box,
     Button,
-    Card,
-    CardActions,
-    CardContent, CardHeader,
-    Dialog, DialogActions, DialogContent,
+    Dialog, DialogContent,
     DialogTitle,
     Divider,
     Fab, FormControl,
@@ -12,10 +10,13 @@ import {
     Typography
 } from "@mui/material";
 import {useState} from "react";
-import {Add} from "@mui/icons-material";
+import {Add, FormatListBulleted, Notes} from "@mui/icons-material";
 import useStore, {type Event} from "../hooks/useStore.tsx";
 import {v4 as uuid4} from "uuid";
 import dayjs from "dayjs";
+import FormSection from "./FormSection.tsx";
+import InputContainer from "./InputContainer.tsx";
+import AnimatedCard from "./AnimatedCard.tsx";
 
 type MyNotesProps = {
     id: string
@@ -117,42 +118,79 @@ export default function MyNotes(props: MyNotesProps) {
     return (
         <>
             <Stack direction="column" spacing={1}>
-                <Card>
-                    <CardHeader title="Notizen" subheader="Notizen für die Schutzmaßnahme"/>
-                    <CardContent>
-                        <FormControl fullWidth>
-                            <TextField fullWidth
-                                       variant="filled"
-                                       multiline
-                                       rows={5}
-                                       value={event.notes}
-                                       onChange={(e) => handleChangeNotes(e.target.value)}
-                                       label="Notizen"></TextField>
-                        </FormControl>
-                    </CardContent>
-                </Card>
-                {event.myNotes?.map((myNote) => (
-                    <Card key={myNote.id}>
-                        <CardContent>
+                <AnimatedCard>
+                    <FormSection icon={<Notes color="secondary"/>} title={"Notizen für die Schutzmaßnahme"}>
+                        <InputContainer>
+                            <FormControl fullWidth>
+                                <TextField fullWidth
+                                           multiline
+                                           maxRows={5}
+                                           value={event.notes}
+                                           onChange={(e) => handleChangeNotes(e.target.value)}
+                                           label="Notizen"></TextField>
+                            </FormControl>
+                        </InputContainer>
+                    </FormSection>
+                </AnimatedCard>
+                {/*<Card>*/}
+                {/*    <CardHeader title="Notizen" subheader="Notizen für die Schutzmaßnahme"/>*/}
+                {/*    <CardContent>*/}
+                {/*        <FormControl fullWidth>*/}
+                {/*            <TextField fullWidth*/}
+                {/*                       variant="filled"*/}
+                {/*                       multiline*/}
+                {/*                       rows={5}*/}
+                {/*                       value={event.notes}*/}
+                {/*                       onChange={(e) => handleChangeNotes(e.target.value)}*/}
+                {/*                       label="Notizen"></TextField>*/}
+                {/*        </FormControl>*/}
+                {/*    </CardContent>*/}
+                {/*</Card>*/}
+
+
+                {event.myNotes?.map((myNote, index) => (
+                    <AnimatedCard>
+                        <FormSection icon={<FormatListBulleted color="secondary"/>}
+                                     title="Persönliche Notizen"
+                                     hideTitle={true}
+                                     badge={`${(index + 1).toString()} / ${(event.myNotes.length)}`}>
                             <Stack direction="column" spacing={1}>
-                                <Typography
-                                    sx={{fontSize: 13}}>{dayjs(myNote.date).format("DD.MM.YYYY HH.mm")}</Typography>
+                                <Typography color="secondary"
+                                            sx={{fontSize: 13}}>{dayjs(myNote.date).format("DD.MM.YYYY HH.mm")}</Typography>
                                 <Divider/>
-                                <Stack direction="column" spacing={0}>
-                                    {myNote.note.split("\n").map((zeile) => (
-                                            <Typography>{zeile}</Typography>
-                                        )
-                                    )}
-                                </Stack>
+                                {myNote.note.split("\n").map((zeile) => (
+                                    <Typography>{zeile}</Typography>
+                                ))}
                             </Stack>
-                        </CardContent>
-                        <CardActions sx={{justifyContent: "end"}}>
-                            <Button onClick={() => handleEditNoteById(myNote.id)}>Bearbeiten</Button>
-                            <Button onClick={() => handleDeleteNoteById(myNote.id)}>Löschen</Button>
-                        </CardActions>
-                    </Card>
+                            <Box sx={{display: "flex", justifyContent: "end"}}>
+                                <Button onClick={() => handleEditNoteById(myNote.id)}>Bearbeiten</Button>
+                                <Button onClick={() => handleDeleteNoteById(myNote.id)}>Löschen</Button>
+                            </Box>
+
+                        </FormSection>
+                    </AnimatedCard>
+                    // <Card key={myNote.id}>
+                    //     <CardContent>
+                    //         <Stack direction="column" spacing={1}>
+                    //             <Typography
+                    //                 sx={{fontSize: 13}}>{dayjs(myNote.date).format("DD.MM.YYYY HH.mm")}</Typography>
+                    //             <Divider/>
+                    //             <Stack direction="column" spacing={0}>
+                    //                 {myNote.note.split("\n").map((zeile) => (
+                    //                         <Typography>{zeile}</Typography>
+                    //                     )
+                    //                 )}
+                    //             </Stack>
+                    //         </Stack>
+                    //     </CardContent>
+                    //     <CardActions sx={{justifyContent: "end"}}>
+                    //         <Button onClick={() => handleEditNoteById(myNote.id)}>Bearbeiten</Button>
+                    //         <Button onClick={() => handleDeleteNoteById(myNote.id)}>Löschen</Button>
+                    //     </CardActions>
+                    // </Card>
                 ))}
             </Stack>
+
             <Fab sx={{position: "fixed", bottom: 80, right: 10}}
                  color="primary"
                  aria-label="add"
@@ -166,22 +204,32 @@ export default function MyNotes(props: MyNotesProps) {
                 <DialogTitle>Eigene Notiz hinzufügen</DialogTitle>
                 <DialogContent>
                     <FormControl fullWidth sx={{mt: 1}}>
-                        <TextField multiline
-                                   maxRows={3}
-                                   minRows={3}
-                                   value={note}
-                                   onChange={(e) => setNote(e.target.value)}
-                                   label="Notiz"/>
+                        <InputContainer>
+                            <TextField multiline
+                                       maxRows={3}
+                                // minRows={3}
+                                       value={note}
+                                       onChange={(e) => setNote(e.target.value)}
+                                       label="Eigene Notiz"/>
+                        </InputContainer>
                     </FormControl>
+                    <Box sx={{display: "flex", justifyContent: "end", pt: 2, gap: 1}}>
+                        {isEdit ? (
+                            <Button variant="contained" onClick={() => handleChangeNoteById(isEdit)}>Speichern</Button>
+                        ) : (
+                            <Button variant="contained" onClick={() => handleAddNote()}>Hinzufügen</Button>
+                        )}
+                        <Button variant="outlined" onClick={() => setOpen(false)}>Abbrechen</Button>
+                    </Box>
                 </DialogContent>
-                <DialogActions>
-                    {isEdit ? (
-                        <Button variant="contained" onClick={() => handleChangeNoteById(isEdit)}>Speichern</Button>
-                    ) : (
-                        <Button variant="contained" onClick={() => handleAddNote()}>Hinzufügen</Button>
-                    )}
-                    <Button variant="outlined" onClick={() => setOpen(false)}>Abbrechen</Button>
-                </DialogActions>
+                {/*<DialogActions>*/}
+                {/*    {isEdit ? (*/}
+                {/*        <Button variant="contained" onClick={() => handleChangeNoteById(isEdit)}>Speichern</Button>*/}
+                {/*    ) : (*/}
+                {/*        <Button variant="contained" onClick={() => handleAddNote()}>Hinzufügen</Button>*/}
+                {/*    )}*/}
+                {/*    <Button variant="outlined" onClick={() => setOpen(false)}>Abbrechen</Button>*/}
+                {/*</DialogActions>*/}
             </Dialog>
         </>
     )

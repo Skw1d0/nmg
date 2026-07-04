@@ -9,9 +9,10 @@ type DateTimePickerProps = {
     label: string;
     value: Dayjs | null;
     handleChange: (value: Dayjs) => void
+    format?: string;
 }
 
-export function DateTimeInput({label, value, handleChange}: DateTimePickerProps) {
+export function DateTimeInput({label, value, handleChange, format}: DateTimePickerProps) {
     const [open, setOpen] = useState(false);
     const safeValue = value && dayjs.isDayjs(value) && value.isValid() ? value : null;
 
@@ -23,18 +24,20 @@ export function DateTimeInput({label, value, handleChange}: DateTimePickerProps)
                         onChange={(value) => handleChange(dayjs(value))}
                         onOpen={() => setOpen(true)}
                         onClose={() => setOpen(false)}
+                        format={format}
+                        closeOnSelect
                         slotProps={{
                             actionBar: {
                                 actions: ['clear', 'cancel', 'accept'],
                             },
                             textField: {
-                                variant: "filled",
                                 slotProps: {
                                     input: {
                                         endAdornment: (
                                             <InputAdornment position="end">
                                                 <IconButton
                                                     // onClick={() => handleChange(dayjs())}
+                                                    sx={{m: -1}}
                                                     onMouseDown={(e) => e.preventDefault()}
                                                     onClick={(e) => {
                                                         e.stopPropagation();

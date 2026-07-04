@@ -1,8 +1,22 @@
-import {Autocomplete, Box, Card, CardContent, CardHeader, Stack, TextField} from "@mui/material";
+import {
+    Autocomplete,
+    Box,
+    Stack,
+    TextField
+} from "@mui/material";
 import dayjs, {type Dayjs} from "dayjs";
 import useStore from "../hooks/useStore.tsx";
 import {Descriptions, Districts} from "../tools/data.ts";
 import {DateTimeInput} from "./DateTimeInput.tsx";
+import {
+    AccessTimeFilled,
+    AdminPanelSettings,
+    ArrowForward,
+    Info,
+} from "@mui/icons-material";
+import FormSection from "./FormSection.tsx";
+import InputContainer from "./InputContainer.tsx";
+import AnimatedCard from "./AnimatedCard.tsx";
 
 
 type GeneralsProps = {
@@ -120,82 +134,178 @@ export default function Generals(props: GeneralsProps) {
     return (
         <Box>
             <Stack direction={"column"} spacing={1}>
-                <Card variant="outlined">
-                    <CardHeader title="Allgemeines"/>
-                    <CardContent>
+                <AnimatedCard>
+                    <FormSection icon={<Info color="secondary"/>} title="Allgemeines">
                         <Stack direction="column" spacing={1}>
-                            <Autocomplete freeSolo
-                                          options={Descriptions}
-                                          value={event.description}
-                                          onChange={(_event, newValue) => {
-                                              handleChangeDescription(newValue || "")
-                                          }}
-                                          onInputChange={(_event, newInputValue) => {
-                                              handleChangeDescription(newInputValue);
-                                          }}
-                                          renderInput={(params) => <TextField {...params}
-                                                                              label="Beschreibung des Ereignisses"
-                                                                              variant="filled"/>}/>
+                            <InputContainer>
+                                <Autocomplete freeSolo
+                                              options={Descriptions}
+                                              value={event.description}
+                                              onChange={(_event, newValue) => {
+                                                  handleChangeDescription(newValue || "")
+                                              }}
+                                              onInputChange={(_event, newInputValue) => {
+                                                  handleChangeDescription(newInputValue);
+                                              }}
+                                              renderInput={(params) => <TextField {...params}
+                                                                                  label="Beschreibung des Ereignisses"/>}
+                                />
+                            </InputContainer>
+                            <InputContainer>
+                                <Stack direction="row" spacing={1}>
+                                    <TextField
+                                        label="Name"
+                                        value={event.name}
+                                        onChange={(e) => handleChangeName(e.target.value)}
+                                        fullWidth={true}
+                                    />
+                                    <TextField
+                                        label="Namenszeichen"
+                                        value={event.initials}
+                                        onChange={(e) => handleChangeInitials(e.target.value)}
+                                        sx={{width: 260}}
+                                    />
+                                </Stack>
+                            </InputContainer>
+                            <InputContainer>
+                                <Autocomplete freeSolo
+                                              options={Districts}
+                                              value={event.district}
+                                              onChange={(_event, newValue) => {
+                                                  handleChangeDistrict(newValue || "")
+                                              }}
+                                              onInputChange={(_event, newInputValue) => {
+                                                  handleChangeDistrict(newInputValue);
+                                              }}
+                                              renderInput={(params) => <TextField {...params} label="Notfallbezirk"/>}
+                                />
+                            </InputContainer>
+                            <InputContainer>
+                                <TextField
+                                    label="Ereignisnummer"
+                                    value={event.eventNumber}
+                                    onChange={(e) => handleChangeEventNumber(e.target.value)}/>
+                            </InputContainer>
+                        </Stack>
+                    </FormSection>
+                </AnimatedCard>
+
+                <AnimatedCard>
+                    <FormSection icon={<AccessTimeFilled color="secondary"/>} title="Gesamtschutzdauer">
+                        <InputContainer>
                             <Stack direction="row" spacing={1}>
-                                <TextField label="Name"
-                                           variant="filled"
-                                           value={event.name}
-                                           onChange={(e) => handleChangeName(e.target.value)}
-                                           fullWidth={true}
-                                />
-                                <TextField label="Namenszeichen"
-                                           variant="filled"
-                                           value={event.initials}
-                                           onChange={(e) => handleChangeInitials(e.target.value)}
-                                           sx={{width: 260}}
-                                />
+                                <DateTimeInput label="Von"
+                                               format="HH:mm"
+                                               value={dayjs(event.protectionFrom)}
+                                               handleChange={handleChangeProtectionFrom}/>
+                                <Box sx={{display: "flex", alignItems: "center"}}>
+                                    <ArrowForward/>
+                                </Box>
+                                <DateTimeInput label="Bis"
+                                               format="HH:mm"
+                                               value={dayjs(event.protectionUntil)}
+                                               handleChange={handleChangeProtectionUntil}/>
                             </Stack>
-                            <Autocomplete freeSolo
-                                          options={Districts}
-                                          value={event.district}
-                                          onChange={(_event, newValue) => {
-                                              handleChangeDistrict(newValue || "")
-                                          }}
-                                          onInputChange={(_event, newInputValue) => {
-                                              handleChangeDistrict(newInputValue);
-                                          }}
-                                          renderInput={(params) => <TextField {...params}
-                                                                              label="Notfallbezirk"
-                                                                              variant="filled"/>}/>
-                            <TextField label="Ereignisnummer"
-                                       variant="filled"
-                                       value={event.eventNumber}
-                                       onChange={(e) => handleChangeEventNumber(e.target.value)}
-                            />
-                        </Stack>
-                    </CardContent>
-                </Card>
-                <Card variant="outlined">
-                    <CardHeader title="Gesamtschutzdauer"/>
-                    <CardContent>
-                        <Stack direction={"column"} spacing={1}>
-                            <DateTimeInput label="Von"
-                                           value={dayjs(event.protectionFrom)}
-                                           handleChange={handleChangeProtectionFrom}/>
-                            <DateTimeInput label="Bis"
-                                           value={dayjs(event.protectionUntil)}
-                                           handleChange={handleChangeProtectionUntil}/>
-                        </Stack>
-                    </CardContent>
-                </Card>
-                <Card variant="outlined">
-                    <CardHeader title="Notfallmanager am Ereignisort"/>
-                    <CardContent>
-                        <Stack direction={"column"} spacing={1}>
-                            <DateTimeInput label="Von"
-                                           value={event.onSiteFrom}
-                                           handleChange={handleChangeOnSiteFrom}/>
-                            <DateTimeInput label="Bis"
-                                           value={event.onSiteUntil}
-                                           handleChange={handleChangeOnSiteUntil}/>
-                        </Stack>
-                    </CardContent>
-                </Card>
+                        </InputContainer>
+                    </FormSection>
+                </AnimatedCard>
+                <AnimatedCard>
+                    <FormSection icon={<AdminPanelSettings color="secondary"/>}
+                                 title="Notfallmanager am Ereignisort">
+                        <InputContainer>
+                            <Stack direction="row" spacing={1}>
+                                <DateTimeInput label="Von"
+                                               format="HH:mm"
+                                               value={event.onSiteFrom}
+                                               handleChange={handleChangeOnSiteFrom}/>
+                                <Box sx={{display: "flex", alignItems: "center"}}>
+                                    <ArrowForward/>
+                                </Box>
+                                <DateTimeInput label="Bis"
+                                               format="HH:mm"
+                                               value={event.onSiteUntil}
+                                               handleChange={handleChangeOnSiteUntil}/>
+                            </Stack>
+                        </InputContainer>
+                    </FormSection>
+                </AnimatedCard>
+
+                {/*<Card variant="outlined">*/}
+                {/*    <CardHeader title="Allgemeines"/>*/}
+                {/*    <CardContent>*/}
+                {/*        <Stack direction="column" spacing={1}>*/}
+                {/*            <Autocomplete freeSolo*/}
+                {/*                          options={Descriptions}*/}
+                {/*                          value={event.description}*/}
+                {/*                          onChange={(_event, newValue) => {*/}
+                {/*                              handleChangeDescription(newValue || "")*/}
+                {/*                          }}*/}
+                {/*                          onInputChange={(_event, newInputValue) => {*/}
+                {/*                              handleChangeDescription(newInputValue);*/}
+                {/*                          }}*/}
+                {/*                          renderInput={(params) => <TextField {...params}*/}
+                {/*                                                              label="Beschreibung des Ereignisses"*/}
+                {/*                                                              variant="filled"/>}/>*/}
+                {/*            <Stack direction="row" spacing={1}>*/}
+                {/*                <TextField label="Name"*/}
+                {/*                           variant="filled"*/}
+                {/*                           value={event.name}*/}
+                {/*                           onChange={(e) => handleChangeName(e.target.value)}*/}
+                {/*                           fullWidth={true}*/}
+                {/*                />*/}
+                {/*                <TextField label="Namenszeichen"*/}
+                {/*                           variant="filled"*/}
+                {/*                           value={event.initials}*/}
+                {/*                           onChange={(e) => handleChangeInitials(e.target.value)}*/}
+                {/*                           sx={{width: 260}}*/}
+                {/*                />*/}
+                {/*            </Stack>*/}
+                {/*            <Autocomplete freeSolo*/}
+                {/*                          options={Districts}*/}
+                {/*                          value={event.district}*/}
+                {/*                          onChange={(_event, newValue) => {*/}
+                {/*                              handleChangeDistrict(newValue || "")*/}
+                {/*                          }}*/}
+                {/*                          onInputChange={(_event, newInputValue) => {*/}
+                {/*                              handleChangeDistrict(newInputValue);*/}
+                {/*                          }}*/}
+                {/*                          renderInput={(params) => <TextField {...params}*/}
+                {/*                                                              label="Notfallbezirk"*/}
+                {/*                                                              variant="filled"/>}/>*/}
+                {/*            <TextField label="Ereignisnummer"*/}
+                {/*                       variant="filled"*/}
+                {/*                       value={event.eventNumber}*/}
+                {/*                       onChange={(e) => handleChangeEventNumber(e.target.value)}*/}
+                {/*            />*/}
+                {/*        </Stack>*/}
+                {/*    </CardContent>*/}
+                {/*</Card>*/}
+                {/*<Card variant="outlined">*/}
+                {/*    <CardHeader title="Gesamtschutzdauer"/>*/}
+                {/*    <CardContent>*/}
+                {/*        <Stack direction={"column"} spacing={1}>*/}
+                {/*            <DateTimeInput label="Von"*/}
+                {/*                           value={dayjs(event.protectionFrom)}*/}
+                {/*                           handleChange={handleChangeProtectionFrom}/>*/}
+                {/*            <DateTimeInput label="Bis"*/}
+                {/*                           value={dayjs(event.protectionUntil)}*/}
+                {/*                           handleChange={handleChangeProtectionUntil}/>*/}
+                {/*        </Stack>*/}
+                {/*    </CardContent>*/}
+                {/*</Card>*/}
+                {/*<Card variant="outlined">*/}
+                {/*    <CardHeader title="Notfallmanager am Ereignisort"/>*/}
+                {/*    <CardContent>*/}
+                {/*        <Stack direction={"column"} spacing={1}>*/}
+                {/*            <DateTimeInput label="Von"*/}
+                {/*                           value={event.onSiteFrom}*/}
+                {/*                           handleChange={handleChangeOnSiteFrom}/>*/}
+                {/*            <DateTimeInput label="Bis"*/}
+                {/*                           value={event.onSiteUntil}*/}
+                {/*                           handleChange={handleChangeOnSiteUntil}/>*/}
+                {/*        </Stack>*/}
+                {/*    </CardContent>*/}
+                {/*</Card>*/}
             </Stack>
         </Box>
     )

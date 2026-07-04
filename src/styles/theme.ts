@@ -1,18 +1,72 @@
-"use client";
-
 import {createTheme} from "@mui/material";
-// import { deDE } from "@mui/x-data-grid/locales";
+import type {} from "@mui/x-date-pickers/themeAugmentation";
 import {deDE} from "@mui/x-date-pickers/locales"
+// import { deDE } from "@mui/x-data-grid/locales";
+//
+// export const THEME = {
+//     Light: 0,
+//     Dark: 1,
+// } as const;
 
-export const THEME = {
-    Light: 0,
-    Dark: 1,
-} as const;
-
-export type THEME = (typeof THEME)[keyof typeof THEME];
+// export type THEME = (typeof THEME)[keyof typeof THEME];
 
 export const lightTheme = createTheme(
     {
+        components: {
+            MuiAccordion: {
+                defaultProps: {
+                    square: false,
+                },
+                styleOverrides: {
+                    root: {
+                        overflow: 'hidden',
+                        '&:before': {
+                            display: 'none',
+                        },
+                        '&.Mui-expanded': {
+                            margin: 0,
+                        },
+                        '&:first-of-type': {
+                            borderTopLeftRadius: 8,
+                            borderTopRightRadius: 8,
+                        },
+                        '&:last-of-type': {
+                            borderBottomLeftRadius: 8,
+                            borderBottomRightRadius: 8,
+                        },
+                    },
+                },
+            },
+            MuiFormControl: {
+                defaultProps: {
+                    variant: "standard",
+                }
+            },
+            MuiTextField: {
+                defaultProps: {
+                    variant: "standard",
+                },
+            },
+            MuiPickersTextField: {
+                defaultProps: {
+                    variant: "standard",
+                },
+            },
+            MuiInputLabel: {
+                defaultProps: {
+                    shrink: true,
+                }
+            },
+            MuiBottomNavigationAction: {
+                styleOverrides: {
+                    root: {
+                        "&.Mui-selected": {
+                            color: "#EC0016",
+                        },
+                    },
+                },
+            },
+        },
         palette: {
             primary: {
                 light: "#878C96",
@@ -45,6 +99,70 @@ export const lightTheme = createTheme(
 
 export const darkTheme = createTheme(
     {
+        components: {
+            MuiAccordion: {
+                defaultProps: {
+                    square: false,
+                },
+                styleOverrides: {
+                    root: {
+                        overflow: 'hidden',
+                        '&:before': {
+                            display: 'none',
+                        },
+                        '&.Mui-expanded': {
+                            margin: 0,
+                        },
+                        '&:first-of-type': {
+                            borderTopLeftRadius: 8,
+                            borderTopRightRadius: 8,
+                        },
+                        '&:last-of-type': {
+                            borderBottomLeftRadius: 8,
+                            borderBottomRightRadius: 8,
+                        },
+                    },
+                },
+            },
+            MuiFormControl: {
+                defaultProps: {
+                    variant: "standard",
+                }
+            },
+            MuiTextField: {
+                defaultProps: {
+                    variant: "standard",
+                },
+            },
+            MuiPickersTextField: {
+                defaultProps: {
+                    variant: "standard",
+                },
+            },
+            MuiInputLabel: {
+                defaultProps: {
+                    shrink: true,
+                }
+            },
+            MuiDialog: {
+                styleOverrides: {
+                    paper: {
+                        // backgroundColor: "#1a1d24",
+                        backgroundImage: "none",
+
+                    }
+                }
+            },
+            MuiBottomNavigationAction: {
+                styleOverrides: {
+                    root: {
+                        "&.Mui-selected": {
+                            color: "#EC0016",
+                        },
+                    },
+                },
+            },
+        },
         palette: {
             primary: {
                 light: "#ffffffff",

@@ -1,5 +1,6 @@
 import AppBar from "@mui/material/AppBar";
 import {
+    Box,
     Button,
     Container,
     Dialog,
@@ -23,6 +24,7 @@ import {useState} from "react";
 import {usePdf} from "../hooks/usePdf.tsx";
 import * as React from "react";
 import dayjs from "dayjs";
+import InputContainer from "./InputContainer.tsx";
 
 type NavbarEventProps = {
     event: Event
@@ -100,15 +102,17 @@ function NavbarEvent(props: NavbarEventProps) {
                             <ArrowBack/>
                         </IconButton>
                         <Stack direction="column" spacing={0.2} sx={{flexGrow: 1}}>
-                            <Typography sx={{
-                                overflow: "hidden",
-                                maxHeight: 22,
-                                fontWeight: 900,
-                            }}>{props.event.description || "Ereignis"}</Typography>
                             <Typography
                                 sx={{
-                                    fontWeight: 100,
-                                    fontSize: 13
+                                    overflow: "hidden",
+                                    maxHeight: 22,
+                                    fontWeight: 800,
+                                }}>{props.event.description || "Ereignis"}</Typography>
+                            <Typography
+                                sx={{
+                                    fontWeight: 400,
+                                    fontSize: 13,
+                                    color: "secondary.main",
                                 }}>{dayjs(props.event.protectionFrom).format("DD.MM.YYYY")}</Typography>
                         </Stack>
                         <IconButton color="primary" onClick={() => toggleDarkMode()}>
@@ -155,25 +159,35 @@ function NavbarEvent(props: NavbarEventProps) {
                     <Stack direction="column" spacing={2}>
                         <Typography>Zum Erstellen des Schutzplanes ist ein Kennwort nötig. Dieses entschlüsselt den
                             Vordruck 123.2110V01.</Typography>
-                        <FormControl fullWidth>
-                            <TextField label="Kennwort"
-                                       variant="filled"
-                                       error={passwordError}
-                                       value={password}
-                                       onChange={(e) => handleChangePassword(e.target.value)}
-                            />
-                        </FormControl>
+                        <InputContainer>
+                            <FormControl fullWidth>
+                                <TextField label="Kennwort"
+                                           error={passwordError}
+                                           value={password}
+                                           onChange={(e) => handleChangePassword(e.target.value)}
+                                />
+                            </FormControl>
+                        </InputContainer>
+                        <Box sx={{display: "flex", justifyContent: "end", gap: 1}}>
+                            <Button color="primary"
+                                    variant="contained"
+                                    onClick={handleSavePdf}
+                                    startIcon={<IosShare/>}>Exportieren</Button>
+                            <Button color="primary"
+                                    variant="outlined"
+                                    onClick={handleCloseSaveDialog}>Abbrechen</Button>
+                        </Box>
                     </Stack>
                 </DialogContent>
-                <DialogActions>
-                    <Button color="primary"
-                            variant="contained"
-                            onClick={handleSavePdf}
-                            startIcon={<IosShare/>}>Exportieren</Button>
-                    <Button color="primary"
-                            variant="outlined"
-                            onClick={handleCloseSaveDialog}>Abbrechen</Button>
-                </DialogActions>
+                {/*<DialogActions>*/}
+                {/*    <Button color="primary"*/}
+                {/*            variant="contained"*/}
+                {/*            onClick={handleSavePdf}*/}
+                {/*            startIcon={<IosShare/>}>Exportieren</Button>*/}
+                {/*    <Button color="primary"*/}
+                {/*            variant="outlined"*/}
+                {/*            onClick={handleCloseSaveDialog}>Abbrechen</Button>*/}
+                {/*</DialogActions>*/}
             </Dialog>
         </>
     );

@@ -1,19 +1,22 @@
 import Navbar from "../components/Navbar.tsx";
 import {
     BottomNavigation, BottomNavigationAction,
-    Box, Container, Link, Paper,
+    Box, Button, Card, CardActions, CardHeader, Container, Paper
 } from "@mui/material";
-import Typography from "@mui/material/Typography";
 import {
+    ArrowBackIos,
     Folder,
+    FolderOutlined,
     FormatListBulleted,
     People,
+    PeopleOutlined,
     Shield,
+    ShieldOutlined,
+
 } from "@mui/icons-material";
-import {useParams} from "react-router";
+import {useNavigate, useParams} from "react-router";
 import {useState} from "react";
 import useStore from "../hooks/useStore.tsx";
-import type {Event as EventType} from "../hooks/useStore.tsx";
 import Generals from "../components/Generals.tsx";
 import Participants from "../components/Participants.tsx";
 import Measures from "../components/Measures.tsx";
@@ -23,18 +26,27 @@ import NavbarEvent from "../components/NavbarEvent.tsx";
 function Event() {
     const {id} = useParams()
     const {getEventById} = useStore()
-    
-    const [event] = useState<EventType | undefined>(id ? getEventById(id) : undefined)
+    const navigate = useNavigate();
+
+    // const [event] = useState<EventType | undefined>(id ? getEventById(id) : undefined)
+    const event = id ? getEventById(id) : null;
     const [componentID, setComponentID] = useState(0);
 
     if (!event || !id) {
         return (
             <>
                 <Navbar/>
-                <Box sx={{margin: 1}}>
-                    <Typography>Datensatz konnte nicht geladen werden.</Typography>
-                    <Link href={import.meta.env.BASE_URL}>Zurück zur Übersicht</Link>
-                </Box>
+                <Container maxWidth="md"
+                           sx={{flexGrow: 1, overflow: "auto", scrollbarWidth: "none", p: 1, pb: 7.5}}>
+                    <Card>
+                        <CardHeader title="Ups..." subheader="Das Ereignis konnte nicht geladen werden!"/>
+                        <CardActions>
+                            <Button variant="contained"
+                                    startIcon={<ArrowBackIos/>}
+                                    onClick={() => navigate("/")}>Zurück zur Startseite</Button>
+                        </CardActions>
+                    </Card>
+                </Container>
             </>
         )
     }
@@ -54,9 +66,9 @@ function Event() {
                                   value={componentID}
                                   onChange={(_event, newValue) => setComponentID(newValue)}
                                   sx={{minHeight: 70}}>
-                    <BottomNavigationAction label="Allgemeines" icon={<Folder/>}/>
-                    <BottomNavigationAction label="Maßnahme" icon={<Shield/>}/>
-                    <BottomNavigationAction label="Beteiligte" icon={<People/>}/>
+                    <BottomNavigationAction label="Allgemeines" icon={<FolderOutlined/>}/>
+                    <BottomNavigationAction label="Maßnahme" icon={<ShieldOutlined/>}/>
+                    <BottomNavigationAction label="Beteiligte" icon={<PeopleOutlined/>}/>
                     <BottomNavigationAction label="Notizen" icon={<FormatListBulleted/>}/>
                 </BottomNavigation>
             </Paper>

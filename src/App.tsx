@@ -1,9 +1,9 @@
-import {BrowserRouter, Routes, Route} from "react-router";
+import {HashRouter, Routes, Route} from "react-router";
 import {ThemeProvider} from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import {LocalizationProvider} from "@mui/x-date-pickers";
-import 'dayjs/locale/de';
 import useStore from "./hooks/useStore.tsx";
+import 'dayjs/locale/de';
 
 import {lightTheme, darkTheme} from "./styles/theme.ts";
 
@@ -17,12 +17,12 @@ function App() {
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={"de"}>
             <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
                 <CssBaseline/>
-                <BrowserRouter basename={import.meta.env.BASE_URL}>
+                <HashRouter>
                     <Routes>
                         <Route index element={<Archive/>}/>
                         <Route path="event/:id" element={<Event/>}/>
                     </Routes>
-                </BrowserRouter>
+                </HashRouter>
             </ThemeProvider>
         </LocalizationProvider>
     );

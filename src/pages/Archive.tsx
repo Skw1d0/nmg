@@ -1,10 +1,13 @@
-import {Add} from "@mui/icons-material";
+import {Add, RailwayAlert} from "@mui/icons-material";
 import Navbar from "../components/Navbar.tsx";
-import {Box, Card, CardHeader, Container, Fab} from "@mui/material";
+import {Box, Container, Fab, Stack} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {useNavigate} from "react-router";
 import useStore from "../hooks/useStore.tsx";
 import dayjs from "dayjs";
+import EventsEmptyState from "../components/EventsEmptyState.tsx";
+import FormSection from "../components/FormSection.tsx";
+import AnimatedCard from "../components/AnimatedCard.tsx";
 
 export default function Archive() {
     const navigate = useNavigate()
@@ -19,39 +22,56 @@ export default function Archive() {
         <>
             <Box sx={{display: "flex", flexDirection: "column", height: "100dvh"}}>
                 <Navbar/>
-                <Container maxWidth="md" sx={{flexGrow: 1, overflow: "auto", scrollbarWidth: "none", p: 1, pb: 7.5}}>
-                    {events.length > 0 ?
-                        events.map((event) => (
-                            <Card key={event.id} variant="outlined"
-                                  sx={{mb: 1, cursor: "pointer", minHeight: 100}}
-                                  onMouseDown={(e) => e.preventDefault()}
-                                  onClick={(e) => {
-                                      e.stopPropagation();
-                                      navigate(`/event/${event.id}`)
-                                  }}
-                            >
-                                <CardHeader title={event.description || "Ereignis"}
-                                            subheader={dayjs(event.protectionFrom).format("DD.MM.YYYY HH:mm")}/>
-                                {/*<CardActions sx={{display: "flex", justifyContent: "end"}}>*/}
-                                {/*    <Button variant="contained"*/}
-                                {/*            onClick={() => navigate(`/event/${event.id}`)}*/}
-                                {/*            endIcon={<ArrowForwardIos/>}*/}
-                                {/*    >Bearbeiten</Button>*/}
-                                {/*</CardActions>*/}
-                            </Card>
-                        )) : (
-                            <Typography sx={{m: 2}}>Bitte ein neues Ereignis anlegen</Typography>
-                        )}
+                <Container maxWidth="md"
+                           sx={{flexGrow: 1, overflow: "auto", scrollbarWidth: "none", p: 1, pb: 7.5}}>
+                    {events.length > 0 ? (
+                        <Stack direction="column" spacing={1}>
+                            {events.map((event) => (
+                                <AnimatedCard>
+                                    <Box
+                                        onMouseDown={(e) => e.preventDefault()}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            navigate(`/event/${event.id}`);
+                                        }}
+                                        sx={{cursor: "pointer"}}>
+                                        <FormSection icon={<RailwayAlert/>}
+                                                     title={event.description || "Ereignis"}>
+                                            <Typography color="secondary" variant="body2">
+                                                {dayjs(event.protectionFrom).format("DD.MM.YYYY HH:mm")} Uhr
+                                            </Typography>
+                                        </FormSection>
+                                    </Box>
+                                </AnimatedCard>
+                                // <Card key={event.id} variant="outlined"
+                                //       sx={{mb: 1, cursor: "pointer", minHeight: 100}}
+                                //       onMouseDown={(e) => e.preventDefault()}
+                                //       onClick={(e) => {
+                                //           e.stopPropagation();
+                                //           navigate(`/event/${event.id}`)
+                                //       }}
+                                // >
+                                //     <CardHeader title={event.description || "Ereignis"}
+                                //                 subheader={dayjs(event.protectionFrom).format("DD.MM.YYYY HH:mm")}/>
+                                // </Card>
+                            ))}
+                        </Stack>
+                    ) : (
+                        // <Typography sx={{m: 2}}>Bitte ein neues Ereignis anlegen</Typography>
+                        <EventsEmptyState onAdd={handleCreateNewEvent}/>
+                    )}
                 </Container>
                 {/*</Stack>*/}
             </Box>
-            <Fab sx={{position: "fixed", bottom: 10, right: 10}}
-                 color="primary"
-                 aria-label="add"
-                 onClick={handleCreateNewEvent}
-            >
-                <Add/>
-            </Fab>
+                {events.length > 0 && (
+                    <Fab sx={{position: "fixed", bottom: 10, right: 10}}
+                         color="primary"
+                         aria-label="add"
+                         onClick={handleCreateNewEvent}
+                    >
+                        <Add/>
+                    </Fab>
+                )}
         </>
     )
 }
