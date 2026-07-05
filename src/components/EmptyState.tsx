@@ -1,7 +1,15 @@
 import {Box, Typography, Button} from "@mui/material";
-import {RailwayAlert} from "@mui/icons-material"; // oder AddModerator, GppMaybe
+import type {ReactNode} from "react";
 
-function EventsEmptyState({onAdd}: { onAdd: () => void }) {
+type EmptyEventsStateProps = {
+    title: string;
+    subtitle: string;
+    buttonText: string;
+    icon: ReactNode;
+    onClick: () => void;
+}
+
+function EmptyState({title, subtitle, buttonText, icon, onClick}: EmptyEventsStateProps) {
     return (
         <Box sx={{
             display: "flex",
@@ -18,19 +26,20 @@ function EventsEmptyState({onAdd}: { onAdd: () => void }) {
                 display: "flex", alignItems: "center", justifyContent: "center",
                 mb: 2,
             }}>
-                <RailwayAlert sx={{fontSize: 60, color: "primary.main"}}/>
+                {icon}
+                {/*<RailwayAlert sx={{fontSize: 60, color: "primary.main"}}/>*/}
             </Box>
-            <Typography variant="subtitle1" sx={{fontWeight: 500}}>
-                Noch kein Ereignis
+            <Typography variant="subtitle1" sx={{fontWeight: 500}} color="secondary">
+                {title}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{mb: 2, maxWidth: 230}}>
-                Lege das erste Ereignis an, um sie hier zu sehen.
+                {subtitle}
             </Typography>
-            <Button variant="contained" onClick={onAdd}>
-                Ereignis hinzufügen
+            <Button variant="contained" onClick={onClick}>
+                {buttonText}
             </Button>
         </Box>
     )
 }
 
-export default EventsEmptyState;
+export default EmptyState;

@@ -10,9 +10,9 @@ export default function MeasureTextBox(props: MeasureTextBoxProps) {
     const {darkMode} = useStore()
 
     let color = ""
-    if (props.type === "1") color = "#c50000"
-    if (props.type === "2") color = "#2f2fec"
-    if (props.type === "A") color = "#c50000"
+    if (props.type === "1") color = darkMode ? "#ff7d8a" : "#EC0016"
+    if (props.type === "2") color = darkMode ? "#0080ff" : "#0000ea"
+    if (props.type === "A") color = darkMode ? "#ff7d8a" : "#EC0016"
     if (props.type === "B") color = "#ac7600"
     if (props.type === "C") color = "#ac7600"
     if (props.type === "D") color = "#ac7600"

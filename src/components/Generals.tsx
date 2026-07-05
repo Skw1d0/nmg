@@ -1,9 +1,4 @@
-import {
-    Autocomplete,
-    Box,
-    Stack,
-    TextField
-} from "@mui/material";
+import {Box, Stack} from "@mui/material";
 import dayjs, {type Dayjs} from "dayjs";
 import useStore from "../hooks/useStore.tsx";
 import {Descriptions, Districts} from "../tools/data.ts";
@@ -17,6 +12,8 @@ import {
 import FormSection from "./FormSection.tsx";
 import InputContainer from "./InputContainer.tsx";
 import AnimatedCard from "./AnimatedCard.tsx";
+import AutocompleteString from "./AutocompleteString.tsx";
+import TextFieldComponent from "./TextFieldComponent.tsx";
 
 
 type GeneralsProps = {
@@ -138,53 +135,81 @@ export default function Generals(props: GeneralsProps) {
                     <FormSection icon={<Info color="secondary"/>} title="Allgemeines">
                         <Stack direction="column" spacing={1}>
                             <InputContainer>
-                                <Autocomplete freeSolo
-                                              options={Descriptions}
-                                              value={event.description}
-                                              onChange={(_event, newValue) => {
-                                                  handleChangeDescription(newValue || "")
-                                              }}
-                                              onInputChange={(_event, newInputValue) => {
-                                                  handleChangeDescription(newInputValue);
-                                              }}
-                                              renderInput={(params) => <TextField {...params}
-                                                                                  label="Beschreibung des Ereignisses"/>}
+                                <AutocompleteString label="Beschreibung des Ereignisses"
+                                                    value={event.description}
+                                                    setValue={handleChangeDescription}
+                                                    options={Descriptions}
                                 />
+                                {/*<Autocomplete freeSolo*/}
+                                {/*              options={Descriptions}*/}
+                                {/*              value={event.description}*/}
+                                {/*              onChange={(_event, newValue) => {*/}
+                                {/*                  handleChangeDescription(newValue || "")*/}
+                                {/*              }}*/}
+                                {/*              onInputChange={(_event, newInputValue) => {*/}
+                                {/*                  handleChangeDescription(newInputValue);*/}
+                                {/*              }}*/}
+                                {/*              renderInput={(params) => <TextField {...params}*/}
+                                {/*                                                  label="Beschreibung des Ereignisses"/>}*/}
+                                {/*/>*/}
                             </InputContainer>
                             <InputContainer>
                                 <Stack direction="row" spacing={1}>
-                                    <TextField
-                                        label="Name"
-                                        value={event.name}
-                                        onChange={(e) => handleChangeName(e.target.value)}
-                                        fullWidth={true}
+                                    <TextFieldComponent label="Name"
+                                                        value={event.name}
+                                                        setValue={handleChangeName}
+                                                        fullWidth
+                                                        max={20}/>
+                                    {/*<TextField*/}
+                                    {/*    label="Name"*/}
+                                    {/*    value={event.name}*/}
+                                    {/*    onChange={(e) => handleChangeName(e.target.value)}*/}
+                                    {/*    fullWidth={true}*/}
+                                    {/*/>*/}
+
+
+                                    <TextFieldComponent label="Namenszeichen"
+                                                        value={event.initials}
+                                                        setValue={handleChangeInitials}
+                                                        max={5}
                                     />
-                                    <TextField
-                                        label="Namenszeichen"
-                                        value={event.initials}
-                                        onChange={(e) => handleChangeInitials(e.target.value)}
-                                        sx={{width: 260}}
-                                    />
+                                    {/*<TextField*/}
+                                    {/*    label="Namenszeichen"*/}
+                                    {/*    value={event.initials}*/}
+                                    {/*    onChange={(e) => handleChangeInitials(e.target.value)}*/}
+                                    {/*    sx={{width: 260}}*/}
+                                    {/*/>*/}
                                 </Stack>
                             </InputContainer>
                             <InputContainer>
-                                <Autocomplete freeSolo
-                                              options={Districts}
-                                              value={event.district}
-                                              onChange={(_event, newValue) => {
-                                                  handleChangeDistrict(newValue || "")
-                                              }}
-                                              onInputChange={(_event, newInputValue) => {
-                                                  handleChangeDistrict(newInputValue);
-                                              }}
-                                              renderInput={(params) => <TextField {...params} label="Notfallbezirk"/>}
+                                <AutocompleteString label="Notfallbezirk"
+                                                    value={event.district}
+                                                    setValue={handleChangeDistrict}
+                                                    options={Districts}
+                                                    max={25}
                                 />
+                                {/*<Autocomplete freeSolo*/}
+                                {/*              options={Districts}*/}
+                                {/*              value={event.district}*/}
+                                {/*              onChange={(_event, newValue) => {*/}
+                                {/*                  handleChangeDistrict(newValue || "")*/}
+                                {/*              }}*/}
+                                {/*              onInputChange={(_event, newInputValue) => {*/}
+                                {/*                  handleChangeDistrict(newInputValue);*/}
+                                {/*              }}*/}
+                                {/*              renderInput={(params) => <TextField {...params} label="Notfallbezirk"/>}*/}
+                                {/*/>*/}
                             </InputContainer>
                             <InputContainer>
-                                <TextField
-                                    label="Ereignisnummer"
-                                    value={event.eventNumber}
-                                    onChange={(e) => handleChangeEventNumber(e.target.value)}/>
+                                <TextFieldComponent label="Ereignisnummer"
+                                                    value={event.eventNumber}
+                                                    setValue={handleChangeEventNumber}
+                                                    max={15}
+                                />
+                                {/*<TextField*/}
+                                {/*    label="Ereignisnummer"*/}
+                                {/*    value={event.eventNumber}*/}
+                                {/*    onChange={(e) => handleChangeEventNumber(e.target.value)}/>*/}
                             </InputContainer>
                         </Stack>
                     </FormSection>

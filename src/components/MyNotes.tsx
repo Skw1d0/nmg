@@ -147,48 +147,50 @@ export default function MyNotes(props: MyNotesProps) {
                 {/*    </CardContent>*/}
                 {/*</Card>*/}
 
+                {event.myNotes?.map(
+                    (myNote, index) => (
+                        <AnimatedCard key={myNote.id}>
+                            <FormSection icon={<FormatListBulleted color="secondary"/>}
+                                         title="Persönliche Notizen"
+                                         hideTitle={true}
+                                         badge={`${(index + 1).toString()} / ${(event.myNotes.length)}`}>
+                                <Stack direction="column" spacing={1}>
+                                    <Typography color="secondary"
+                                                sx={{fontSize: 13}}>{dayjs(myNote.date).format("DD.MM.YYYY HH.mm")}</Typography>
+                                    <Divider/>
+                                    {myNote.note.split("\n").map((zeile, index) => (
+                                        <Typography key={myNote + "" + index}>{zeile}</Typography>
+                                    ))}
+                                </Stack>
+                                <Box sx={{display: "flex", justifyContent: "end"}}>
+                                    <Button onClick={() => handleEditNoteById(myNote.id)}>Bearbeiten</Button>
+                                    <Button onClick={() => handleDeleteNoteById(myNote.id)}>Löschen</Button>
+                                </Box>
+                            </FormSection>
+                        </AnimatedCard>
+                        // <Card key={myNote.id}>
+                        //     <CardContent>
+                        //         <Stack direction="column" spacing={1}>
+                        //             <Typography
+                        //                 sx={{fontSize: 13}}>{dayjs(myNote.date).format("DD.MM.YYYY HH.mm")}</Typography>
+                        //             <Divider/>
+                        //             <Stack direction="column" spacing={0}>
+                        //                 {myNote.note.split("\n").map((zeile) => (
+                        //                         <Typography>{zeile}</Typography>
+                        //                     )
+                        //                 )}
+                        //             </Stack>
+                        //         </Stack>
+                        //     </CardContent>
+                        //     <CardActions sx={{justifyContent: "end"}}>
+                        //         <Button onClick={() => handleEditNoteById(myNote.id)}>Bearbeiten</Button>
+                        //         <Button onClick={() => handleDeleteNoteById(myNote.id)}>Löschen</Button>
+                        //     </CardActions>
+                        // </Card>
 
-                {event.myNotes?.map((myNote, index) => (
-                    <AnimatedCard>
-                        <FormSection icon={<FormatListBulleted color="secondary"/>}
-                                     title="Persönliche Notizen"
-                                     hideTitle={true}
-                                     badge={`${(index + 1).toString()} / ${(event.myNotes.length)}`}>
-                            <Stack direction="column" spacing={1}>
-                                <Typography color="secondary"
-                                            sx={{fontSize: 13}}>{dayjs(myNote.date).format("DD.MM.YYYY HH.mm")}</Typography>
-                                <Divider/>
-                                {myNote.note.split("\n").map((zeile) => (
-                                    <Typography>{zeile}</Typography>
-                                ))}
-                            </Stack>
-                            <Box sx={{display: "flex", justifyContent: "end"}}>
-                                <Button onClick={() => handleEditNoteById(myNote.id)}>Bearbeiten</Button>
-                                <Button onClick={() => handleDeleteNoteById(myNote.id)}>Löschen</Button>
-                            </Box>
-
-                        </FormSection>
-                    </AnimatedCard>
-                    // <Card key={myNote.id}>
-                    //     <CardContent>
-                    //         <Stack direction="column" spacing={1}>
-                    //             <Typography
-                    //                 sx={{fontSize: 13}}>{dayjs(myNote.date).format("DD.MM.YYYY HH.mm")}</Typography>
-                    //             <Divider/>
-                    //             <Stack direction="column" spacing={0}>
-                    //                 {myNote.note.split("\n").map((zeile) => (
-                    //                         <Typography>{zeile}</Typography>
-                    //                     )
-                    //                 )}
-                    //             </Stack>
-                    //         </Stack>
-                    //     </CardContent>
-                    //     <CardActions sx={{justifyContent: "end"}}>
-                    //         <Button onClick={() => handleEditNoteById(myNote.id)}>Bearbeiten</Button>
-                    //         <Button onClick={() => handleDeleteNoteById(myNote.id)}>Löschen</Button>
-                    //     </CardActions>
-                    // </Card>
-                ))}
+                    )
+                )
+                }
             </Stack>
 
             <Fab sx={{position: "fixed", bottom: 80, right: 10}}
@@ -201,7 +203,7 @@ export default function MyNotes(props: MyNotesProps) {
                 <Add/>
             </Fab>
             <Dialog fullWidth open={open}>
-                <DialogTitle>Eigene Notiz hinzufügen</DialogTitle>
+                <DialogTitle>Notiz hinzufügen</DialogTitle>
                 <DialogContent>
                     <FormControl fullWidth sx={{mt: 1}}>
                         <InputContainer>
@@ -210,7 +212,7 @@ export default function MyNotes(props: MyNotesProps) {
                                 // minRows={3}
                                        value={note}
                                        onChange={(e) => setNote(e.target.value)}
-                                       label="Eigene Notiz"/>
+                                       label="Persönliche Notiz"/>
                         </InputContainer>
                     </FormControl>
                     <Box sx={{display: "flex", justifyContent: "end", pt: 2, gap: 1}}>

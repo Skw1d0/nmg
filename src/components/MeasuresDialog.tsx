@@ -1,23 +1,24 @@
 import useStore, {type Event, type Measure, type MeasureType} from "../hooks/useStore.tsx";
 import {useState} from "react";
 import {
-    Autocomplete, Box,
+    Box,
     Button,
     Dialog,
     DialogContent,
     DialogTitle,
-    FormControl, InputAdornment,
+    FormControl,
     InputLabel,
     MenuItem,
     Stack,
-    TextField
+
 } from "@mui/material";
 import Select, {type SelectChangeEvent} from "@mui/material/Select";
 import {v4 as uuid4} from "uuid";
-import {Cached, Clear} from "@mui/icons-material";
-import data from "../tools/data.ts"
-import IconButton from "@mui/material/IconButton";
+import {Cached} from "@mui/icons-material";
 import InputContainer from "./InputContainer.tsx";
+import AutocompleteBst from "./AutocompleteBst.tsx";
+import TextFieldComponent from "./TextFieldComponent.tsx";
+
 
 type MeasuresDialogProps = {
     eventId: string;
@@ -94,180 +95,62 @@ export default function MeasuresDialog(props: MeasuresDialogProps) {
         setMeasureLocationTo(tmpMeasureLocationFrom);
     }
 
-    const options = data.ordnungsrahmen.betriebsstellen;
-
     return (
         <Dialog open={props.open} fullWidth>
             <DialogTitle>Maßnahme hinzufügen</DialogTitle>
             <DialogContent>
                 <Stack direction={"column"} spacing={1} sx={{mt: 1}}>
                     <InputContainer>
-                        <Autocomplete
-                            freeSolo
-                            options={options}
-                            getOptionLabel={(option) => {
-                                if (typeof option === 'string') return option;
-                                return `${option.ds100} - ${option.langname}`;
-                            }}
-                            value={options.find((opt) => opt.ds100 === measureLocationFrom) || measureLocationFrom || ""}
-                            onChange={(_event, newValue) => {
-                                if (typeof newValue === 'string') {
-                                    setMeasureLocationFrom(newValue);
-                                } else if (newValue && newValue.ds100) {
-                                    setMeasureLocationFrom(newValue.langname);
-                                } else {
-                                    setMeasureLocationFrom("");
-                                }
-                            }}
-                            onInputChange={(_event, newInputValue) => {
-                                setMeasureLocationFrom(newInputValue);
-                            }}
-                            filterOptions={(options, params) => {
-                                // Bereinigt die Eingabe von Leerzeichen und Bindestrichen am Ende
-                                const input = params.inputValue.trim().toLowerCase().replace(/[- ]+$/, "");
-                                if (!input) return options.slice(0, 10);
-
-                                return options
-                                    .filter(
-                                        (option) =>
-                                            option.ds100.toLowerCase().includes(input) ||
-                                            option.langname.toLowerCase().includes(input)
-                                    )
-                                    .sort((a, b) => {
-                                        const aDs = a.ds100.toLowerCase();
-                                        const bDs = b.ds100.toLowerCase();
-
-                                        // 1. Priorität: Exakter DS100-Treffer (z.B. "mh" getippt für "MH")
-                                        if (aDs === input && bDs !== input) return -1;
-                                        if (bDs === input && aDs !== input) return 1;
-
-                                        // 2. Priorität: DS100 beginnt mit der Eingabe (z.B. "m" oder "mh")
-                                        const aStartsDs = aDs.startsWith(input);
-                                        const bStartsDs = bDs.startsWith(input);
-                                        if (aStartsDs && !bStartsDs) return -1;
-                                        if (!aStartsDs && bStartsDs) return 1;
-
-                                        // 3. Priorität: Irgendein anderer DS100-Treffer
-                                        const aMatchDs = aDs.includes(input);
-                                        const bMatchDs = bDs.includes(input);
-                                        if (aMatchDs && !bMatchDs) return -1;
-                                        if (!aMatchDs && bMatchDs) return 1;
-
-                                        return 0;
-                                    })
-                                    .slice(0, 10);
-                            }}
-                            renderInput={(params) => (
-                                <TextField {...params} label="Im Bahnhof/ von Zmst/ von Zfst"/>
-                            )}
+                        <AutocompleteBst label="Im Bahnhof/ von Zmst/ von Zfst"
+                                         value={measureLocationFrom}
+                                         setValue={setMeasureLocationFrom}
+                                         max={20}
                         />
                     </InputContainer>
                     <Button onClick={switchFromTo}
                             startIcon={<Cached/>}>Tauschen</Button>
                     <InputContainer>
-                        <Autocomplete
-                            freeSolo
-                            options={options}
-                            // getOptionLabel={(option) => {
-                            //     if (typeof option === 'string') return option;
-                            //     return option.langname;
-                            // }}
-                            getOptionLabel={(option) => {
-                                if (typeof option === 'string') return option;
-                                return `${option.ds100} - ${option.langname}`;
-                            }}
-                            value={options.find((opt) => opt.ds100 === measureLocationTo) || measureLocationTo || ""}
-                            onChange={(_event, newValue) => {
-                                if (typeof newValue === 'string') {
-                                    setMeasureLocationTo(newValue);
-                                } else if (newValue && newValue.ds100) {
-                                    setMeasureLocationTo(newValue.langname);
-                                } else {
-                                    setMeasureLocationTo("");
-                                }
-                            }}
-                            onInputChange={(_event, newInputValue) => {
-                                setMeasureLocationTo(newInputValue);
-                            }}
-                            // filterOptions={(options, params) => {
-                            //     const input = params.inputValue.toLowerCase();
-                            //     const filtered = options.filter(
-                            //         (option) =>
-                            //             option.langname.toLowerCase().includes(input) ||
-                            //             option.ds100.toLowerCase().includes(input)
-                            //     );
-                            //     return filtered.slice(0, 10);
-                            // }}
-                            filterOptions={(options, params) => {
-                                // Bereinigt die Eingabe von Leerzeichen und Bindestrichen am Ende
-                                const input = params.inputValue.trim().toLowerCase().replace(/[- ]+$/, "");
-                                if (!input) return options.slice(0, 10);
-
-                                return options
-                                    .filter(
-                                        (option) =>
-                                            option.ds100.toLowerCase().includes(input) ||
-                                            option.langname.toLowerCase().includes(input)
-                                    )
-                                    .sort((a, b) => {
-                                        const aDs = a.ds100.toLowerCase();
-                                        const bDs = b.ds100.toLowerCase();
-
-                                        // 1. Priorität: Exakter DS100-Treffer (z.B. "mh" getippt für "MH")
-                                        if (aDs === input && bDs !== input) return -1;
-                                        if (bDs === input && aDs !== input) return 1;
-
-                                        // 2. Priorität: DS100 beginnt mit der Eingabe (z.B. "m" oder "mh")
-                                        const aStartsDs = aDs.startsWith(input);
-                                        const bStartsDs = bDs.startsWith(input);
-                                        if (aStartsDs && !bStartsDs) return -1;
-                                        if (!aStartsDs && bStartsDs) return 1;
-
-                                        // 3. Priorität: Irgendein anderer DS100-Treffer
-                                        const aMatchDs = aDs.includes(input);
-                                        const bMatchDs = bDs.includes(input);
-                                        if (aMatchDs && !bMatchDs) return -1;
-                                        if (!aMatchDs && bMatchDs) return 1;
-
-                                        return 0;
-                                    })
-                                    .slice(0, 10);
-                            }}
-                            renderInput={(params) => (
-                                <TextField {...params} label="Bahnhofsgleis(e)/ bis Zmst/ bis Zfst"/>
-                            )}
+                        <AutocompleteBst label="Bahnhofsgleis(e)/ bis Zmst/ bis Zfst"
+                                         value={measureLocationTo}
+                                         setValue={setMeasureLocationTo}
+                                         max={20}
                         />
                     </InputContainer>
                     <InputContainer>
-                        <TextField label={"bei Bedarf von km bis km/ in km/ von Sig bis Sig/ an Sig"}
-                                   value={measureLocationDetails}
-                                   onChange={(e) => {
-                                       setMeasureLocationDetails(e.target.value)
-                                   }}
-                                   slotProps={{
-                                       input: {
-                                           endAdornment: measureLocationDetails && (
-                                               <InputAdornment position={"end"}>
-                                                   <IconButton size={"small"}
-                                                               onClick={() => setMeasureLocationDetails("")}
-                                                               sx={{
-                                                                   padding: '2px', // Autocomplete-Standard
-                                                                   marginRight: '-2px',
-                                                                   visibility: 'hidden',
-                                                                   '.MuiOutlinedInput-root:hover &': {
-                                                                       visibility: 'visible',
-                                                                   },
-                                                                   // visibility: measureLocationDetails ? 'visible' : 'hidden',
-                                                                   // '&:hover': {backgroundColor: 'rgba(0, 0, 0, 0.04)'}
-                                                               }}
-                                                   >
-                                                       <Clear fontSize={"small"}/>
-                                                   </IconButton>
-                                               </InputAdornment>
-                                           )
-                                       }
-                                   }}
+                        <TextFieldComponent label="bei Bedarf von km bis km/ in km/ von Sig bis Sig/ an Sig"
+                                            value={measureLocationDetails}
+                                            setValue={setMeasureLocationDetails}
+                                            max={20}
                         />
+                        {/*<TextField label={"bei Bedarf von km bis km/ in km/ von Sig bis Sig/ an Sig"}*/}
+                        {/*           value={measureLocationDetails}*/}
+                        {/*           onChange={(e) => {*/}
+                        {/*               setMeasureLocationDetails(e.target.value)*/}
+                        {/*           }}*/}
+                        {/*           slotProps={{*/}
+                        {/*               input: {*/}
+                        {/*                   endAdornment: measureLocationDetails && (*/}
+                        {/*                       <InputAdornment position={"end"}>*/}
+                        {/*                           <IconButton size={"small"}*/}
+                        {/*                                       onClick={() => setMeasureLocationDetails("")}*/}
+                        {/*                                       sx={{*/}
+                        {/*                                           padding: '2px',*/}
+                        {/*                                           marginRight: '-2px',*/}
+                        {/*                                           // visibility: 'hidden',*/}
+                        {/*                                           // '.MuiInput-root:hover &': {*/}
+                        {/*                                           //     visibility: 'visible',*/}
+                        {/*                                           // },*/}
+                        {/*                                           // visibility: measureLocationDetails ? 'visible' : 'hidden',*/}
+                        {/*                                           // '&:hover': {backgroundColor: 'rgba(0, 0, 0, 0.04)'}*/}
+                        {/*                                       }}*/}
+                        {/*                           >*/}
+                        {/*                               <Clear fontSize={"small"}/>*/}
+                        {/*                           </IconButton>*/}
+                        {/*                       </InputAdornment>*/}
+                        {/*                   )*/}
+                        {/*               }*/}
+                        {/*           }}*/}
+                        {/*/>*/}
                     </InputContainer>
                     <InputContainer>
                         <FormControl fullWidth>

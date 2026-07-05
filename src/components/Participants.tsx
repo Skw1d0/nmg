@@ -9,12 +9,12 @@ import Typography from "@mui/material/Typography";
 import dayjs, {type Dayjs} from "dayjs";
 import {useState} from "react";
 import ParticipantsDialog from "./ParticipantsDialog.tsx";
-import {Add, ArrowForward, LocalPhone, People, Person} from "@mui/icons-material";
+import {Add, ArrowForward, GroupAdd, LocalPhone, People, Person} from "@mui/icons-material";
 import {DateTimeInput} from "./DateTimeInput.tsx";
-import ParticipantsEmptyState from "./ParticipantsEmptyState.tsx";
 import FormSection from "./FormSection.tsx";
 import InputContainer from "./InputContainer.tsx";
 import AnimatedCard from "./AnimatedCard.tsx";
+import EmptyState from "./EmptyState.tsx";
 
 type ParticipantProps = {
     id: string;
@@ -99,7 +99,7 @@ export default function Participants(props: ParticipantProps) {
             <Box>
                 <Stack direction={"column"} spacing={1}>
                     {event?.participants.length ? event.participants.map((participant) => (
-                        <AnimatedCard>
+                        <AnimatedCard key={event.id}>
                             <FormSection key={participant.id}
                                          icon={<People color="secondary"/>}
                                          title={participant.organisation}>
@@ -181,7 +181,13 @@ export default function Participants(props: ParticipantProps) {
                         //     </CardActions>
                         // </Card>
                     )) : (
-                        <ParticipantsEmptyState onAdd={handleParticipantsDialogOpen}/>
+                        <EmptyState title="Noch keine Beteiligten"
+                                    subtitle="Lege den ersten Beteiligten für dieses Ereignis an, um ihn hier zu sehen."
+                                    buttonText="Beteiligten hinzufügen"
+                                    icon={<GroupAdd sx={{fontSize: 60, color: "primary.main"}}/>}
+                                    onClick={handleParticipantsDialogOpen}
+                        />
+                        // <EmptyParticipantsState onAdd={handleParticipantsDialogOpen}/>
                     )}
                     {/*<Button variant="contained"*/}
                     {/*        onClick={handleParticipantsDialogOpen}>Hinzufügen</Button>*/}

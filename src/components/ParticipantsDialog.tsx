@@ -1,18 +1,18 @@
 import {
-    Autocomplete,
     Box,
     Button,
     Dialog,
     DialogContent,
     DialogTitle,
     Stack,
-    TextField
 } from "@mui/material";
 import {useState} from "react";
 import useStore, {type Event, type Participant} from "../hooks/useStore.tsx";
 import {v4 as uuid4} from "uuid";
 import {Participants, ParticipantsFunctions} from "../tools/data.ts";
 import InputContainer from "./InputContainer.tsx";
+import TextFieldComponent from "./TextFieldComponent.tsx";
+import AutocompleteString from "./AutocompleteString.tsx";
 
 type ParticipantDialogProps = {
     eventId: string
@@ -85,41 +85,59 @@ export default function ParticipantsDialog(props: ParticipantDialogProps) {
             <DialogContent>
                 <Stack direction={"column"} spacing={1} sx={{pt: 1}}>
                     <InputContainer>
-                        <Autocomplete freeSolo
-                                      options={Participants}
-                                      value={participantsOrganisation}
-                                      onChange={(_event, newValue) => {
-                                          setParticipantsOrganisation(newValue || "")
-                                      }}
-                                      onInputChange={(_event, newInputValue) => {
-                                          setParticipantsOrganisation(newInputValue);
-                                      }}
-                                      renderInput={(params) => <TextField {...params}
-                                                                          label="EVU/ EIU, Institut/ Organisation"/>}/>
+                        <AutocompleteString label="EVU/ EIU, Institut/ Organisation"
+                                            value={participantsOrganisation}
+                                            setValue={setParticipantsOrganisation}
+                                            options={Participants}
+                                            max={20}/>
+                        {/*<Autocomplete freeSolo*/}
+                        {/*              options={Participants}*/}
+                        {/*              value={participantsOrganisation}*/}
+                        {/*              onChange={(_event, newValue) => {*/}
+                        {/*                  setParticipantsOrganisation(newValue || "")*/}
+                        {/*              }}*/}
+                        {/*              onInputChange={(_event, newInputValue) => {*/}
+                        {/*                  setParticipantsOrganisation(newInputValue);*/}
+                        {/*              }}*/}
+                        {/*              renderInput={(params) => <TextField {...params}*/}
+                        {/*                                                  label="EVU/ EIU, Institut/ Organisation"/>}/>*/}
                     </InputContainer>
                     <InputContainer>
-                        <TextField label={"Name"}
-                                   value={participantsName}
-                                   onChange={(event) => setParticipantsName(event.target.value)}
-                        />
+                        <TextFieldComponent label="Name"
+                                            value={participantsName}
+                                            setValue={setParticipantsName}
+                                            max={20}/>
+                        {/*<TextField label={"Name"}*/}
+                        {/*           value={participantsName}*/}
+                        {/*           onChange={(event) => setParticipantsName(event.target.value)}*/}
+                        {/*/>*/}
                     </InputContainer>
                     <InputContainer>
-                        <Autocomplete freeSolo
-                                      options={ParticipantsFunctions}
-                                      value={participantsFunction}
-                                      onChange={(_event, newValue) => {
-                                          setParticipantsFunction(newValue || "")
-                                      }}
-                                      onInputChange={(_event, newInputValue) => {
-                                          setParticipantsFunction(newInputValue);
-                                      }}
-                                      renderInput={(params) => <TextField {...params}
-                                                                          label="Funktion"/>}/>
+                        <AutocompleteString label="Funktion"
+                                            value={participantsFunction}
+                                            setValue={setParticipantsFunction}
+                                            options={ParticipantsFunctions}
+                                            max={20}/>
+                        {/*<Autocomplete freeSolo*/}
+                        {/*              options={ParticipantsFunctions}*/}
+                        {/*              value={participantsFunction}*/}
+                        {/*              onChange={(_event, newValue) => {*/}
+                        {/*                  setParticipantsFunction(newValue || "")*/}
+                        {/*              }}*/}
+                        {/*              onInputChange={(_event, newInputValue) => {*/}
+                        {/*                  setParticipantsFunction(newInputValue);*/}
+                        {/*              }}*/}
+                        {/*              renderInput={(params) => <TextField {...params}*/}
+                        {/*                                                  label="Funktion"/>}/>*/}
                     </InputContainer>
                     <InputContainer>
-                        <TextField label={"Rufnummer"}
-                                   value={participantsCall}
-                                   onChange={(event) => setParticipantsCall(event.target.value)}/>
+                        <TextFieldComponent label="Rufnummer"
+                                            value={participantsCall}
+                                            setValue={setParticipantsCall}
+                                            max={20}/>
+                        {/*<TextField label={"Rufnummer"}*/}
+                        {/*           value={participantsCall}*/}
+                        {/*           onChange={(event) => setParticipantsCall(event.target.value)}/>*/}
                     </InputContainer>
                     <Box sx={{display: "flex", justifyContent: "end", gap: 1, pt: 2}}>
                         {props.selectedParticipant ? (

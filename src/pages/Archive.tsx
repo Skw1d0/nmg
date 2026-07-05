@@ -5,9 +5,9 @@ import Typography from "@mui/material/Typography";
 import {useNavigate} from "react-router";
 import useStore from "../hooks/useStore.tsx";
 import dayjs from "dayjs";
-import EventsEmptyState from "../components/EventsEmptyState.tsx";
 import FormSection from "../components/FormSection.tsx";
 import AnimatedCard from "../components/AnimatedCard.tsx";
+import EmptyState from "../components/EmptyState.tsx";
 
 export default function Archive() {
     const navigate = useNavigate()
@@ -27,7 +27,7 @@ export default function Archive() {
                     {events.length > 0 ? (
                         <Stack direction="column" spacing={1}>
                             {events.map((event) => (
-                                <AnimatedCard>
+                                <AnimatedCard key={event.id}>
                                     <Box
                                         onMouseDown={(e) => e.preventDefault()}
                                         onClick={(e) => {
@@ -58,20 +58,26 @@ export default function Archive() {
                         </Stack>
                     ) : (
                         // <Typography sx={{m: 2}}>Bitte ein neues Ereignis anlegen</Typography>
-                        <EventsEmptyState onAdd={handleCreateNewEvent}/>
+                        <EmptyState title="Noch kein Ereignis"
+                                    subtitle="Lege das erste Ereignis für dieses Ereignis an, um es hier zu sehen."
+                                    buttonText="Ereignis hinzufügen"
+                                    icon={<RailwayAlert sx={{fontSize: 60, color: "primary.main"}}/>}
+                                    onClick={handleCreateNewEvent}
+                        />
+                        // <EmptyEventsState onClick={handleCreateNewEvent}/>
                     )}
                 </Container>
                 {/*</Stack>*/}
             </Box>
-                {events.length > 0 && (
-                    <Fab sx={{position: "fixed", bottom: 10, right: 10}}
-                         color="primary"
-                         aria-label="add"
-                         onClick={handleCreateNewEvent}
-                    >
-                        <Add/>
-                    </Fab>
-                )}
+            {events.length > 0 && (
+                <Fab sx={{position: "fixed", bottom: 10, right: 10}}
+                     color="primary"
+                     aria-label="add"
+                     onClick={handleCreateNewEvent}
+                >
+                    <Add/>
+                </Fab>
+            )}
         </>
     )
 }

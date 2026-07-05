@@ -7,17 +7,17 @@ import {
     Stack,
 } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import {Add, ExpandMore, Shield} from "@mui/icons-material";
+import {Add, AddModerator, ExpandMore, Shield} from "@mui/icons-material";
 import {useState} from "react";
 import MeasuresDialog from "./MeasuresDialog.tsx";
 import MeasureTextBox from "./MeasureTextBox.tsx";
 import data from "../tools/data.ts";
 import LocationInfo from "./LocationInfo.tsx";
 import {DateTimeInput} from "./DateTimeInput.tsx";
-import MeasuresEmptyState from "./MeasuresEmptyState.tsx";
 import FormSection from "./FormSection.tsx";
 import InputContainer from "./InputContainer.tsx";
 import AnimatedCard from "./AnimatedCard.tsx";
+import EmptyState from "./EmptyState.tsx";
 
 
 type MeasuresProps = {
@@ -153,7 +153,7 @@ export default function Measures(props: MeasuresProps) {
             <Stack direction="column" spacing={1}>
                 {event?.measures.length ? event.measures.map((measure) => (
 
-                    <AnimatedCard>
+                    <AnimatedCard key={measure.id}>
                         <FormSection key={measure.id}
                                      icon={<Shield color="secondary"/>}
                                      title={measure.locationFrom + (measure.locationTo && ` - ${measure.locationTo}`)}>
@@ -306,7 +306,13 @@ export default function Measures(props: MeasuresProps) {
                     // </Card>
                 )) : (
                     // <Typography sx={{py: 2}}>Bitte eine Maßnahme hinzufügen.</Typography>
-                    <MeasuresEmptyState onAdd={handleMeasureDialogOpen}/>
+                    // <EmptyMeasuresState onAdd={handleMeasureDialogOpen}/>
+                    <EmptyState title="Noch keine Maßnahme"
+                                subtitle="Lege die erste Maßnahme für dieses Ereignis an, um sie hier zu sehen."
+                                buttonText="Maßnahme hinzufügen"
+                                icon={<AddModerator sx={{fontSize: 60, color: "primary.main"}}/>}
+                                onClick={handleMeasureDialogOpen}
+                    />
                 )}
                 {/*<Button variant="contained"*/}
                 {/*        onClick={handleMeasureDialogOpen}>Hinzufügen</Button>*/}

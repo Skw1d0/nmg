@@ -157,7 +157,7 @@ export const darkTheme = createTheme(
                 styleOverrides: {
                     root: {
                         "&.Mui-selected": {
-                            color: "#EC0016",
+                            color: "#ff7d8a",
                         },
                     },
                 },
@@ -170,10 +170,15 @@ export const darkTheme = createTheme(
                 dark: "#b4b4b4ff",
             },
             secondary: {
-                light: "#F75056",
-                main: "#EC0016",
-                dark: "#9B000E",
+                light: "#fbacb2",
+                main: "#ff7d8a",
+                dark: "#fd4354",
             },
+            // secondary: {
+            //     light: "#F75056",
+            //     main: "#EC0016",
+            //     dark: "#9B000E",
+            // },
             info: {
                 light: "#FACA7F",
                 main: "#F39200",

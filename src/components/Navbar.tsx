@@ -4,7 +4,7 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import {DarkMode, LightMode} from "@mui/icons-material";
 import useStore from "../hooks/useStore.tsx";
-import {Box, Container} from "@mui/material";
+import {Box, Container, Stack} from "@mui/material";
 import logo from "../assets/512.png"
 
 function Navbar() {
@@ -23,7 +23,11 @@ function Navbar() {
                              alt="Logo"
                              src={logo}
                         />
-                        <Typography variant="h5" sx={{flexGrow: 1}}>Notes</Typography>
+                        <Stack direction="column" sx={{flexGrow: 1}} spacing={-1}>
+                            <Typography variant="h5" sx={{flexGrow: 1}}>Notfallmanagement</Typography>
+                            <Typography variant="body2" sx={{flexGrow: 1}} color="secondary">Schutzplan &
+                                Notizen</Typography>
+                        </Stack>
                         <IconButton color="primary" onClick={() => toggleDarkMode()}>
                             {darkMode ? <DarkMode/> : <LightMode/>}
                         </IconButton>
