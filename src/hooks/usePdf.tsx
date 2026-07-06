@@ -280,7 +280,7 @@ export function usePdf() {
                     font: helveticaFont,
                 })
                 secondPage.drawText(event.initials, {
-                    x: 565,
+                    x: 573,
                     y: 450 - (index * 28),
                     size: 10,
                     font: helveticaFont,
@@ -292,28 +292,62 @@ export function usePdf() {
                     font: helveticaFont,
                 })
                 secondPage.drawText(event.initials, {
-                    x: 785,
+                    x: 790,
                     y: 450 - (index * 28),
                     size: 10,
                     font: helveticaFont,
                 })
             })
 
-            getParticipantsIntroducedNumbers(id)?.forEach((numbers, index) => {
-                secondPage.drawText(JSON.stringify(numbers).slice(1, -1), {
-                    x: 490,
-                    y: 450 - (index * 30),
-                    size: 10,
-                    font: helveticaFont,
-                })
+            const participantsIntroducedNumbers = getParticipantsIntroducedNumbers(id)
+            participantsIntroducedNumbers?.forEach((numbers, index) => {
+                if (participantsIntroducedNumbers && participantsIntroducedNumbers[length]?.length <= 8) {
+                    secondPage.drawText(JSON.stringify(numbers).slice(1, -1), {
+                        x: 485,
+                        y: 450 - (index * 30),
+                        size: 10,
+                        font: helveticaFont,
+                    })
+                } else {
+                    secondPage.drawText(JSON.stringify(numbers.slice(0, 9)).slice(1, -1), {
+                        x: 485,
+                        y: 450 - (index * 30 - 5),
+                        size: 10,
+                        font: helveticaFont,
+                    })
+                    secondPage.drawText(JSON.stringify(numbers.slice(9)).slice(1, -1), {
+                        x: 485,
+                        y: 450 - (index * 30 + 7),
+                        size: 10,
+                        font: helveticaFont,
+                    })
+                }
             })
-            getParticipantsLiftedNumbers(id)?.forEach((numbers, index) => {
-                secondPage.drawText(JSON.stringify(numbers).slice(1, -1), {
-                    x: 704,
-                    y: 450 - (index * 30),
-                    size: 10,
-                    font: helveticaFont,
-                })
+
+            const participantsLiftedNumbers = getParticipantsLiftedNumbers(id)
+            participantsLiftedNumbers?.forEach((numbers, index) => {
+                if (participantsLiftedNumbers && participantsLiftedNumbers[length]?.length <= 9) {
+                    secondPage.drawText(JSON.stringify(numbers).slice(1, -1), {
+                        x: 699,
+                        y: 450 - (index * 30),
+                        size: 10,
+                        font: helveticaFont,
+                    })
+                } else {
+                    secondPage.drawText(JSON.stringify(numbers.slice(0, 9)).slice(1, -1), {
+                        x: 699,
+                        y: 450 - (index * 30 - 5),
+                        size: 10,
+                        font: helveticaFont,
+                    })
+                    secondPage.drawText(JSON.stringify(numbers.slice(9)).slice(1, -1), {
+                        x: 699,
+                        y: 450 - (index * 30 + 7),
+                        size: 10,
+                        font: helveticaFont,
+                    })
+                }
+
             })
 
             // insertLineBreaks(event?.notes.replace(/[\r\n]+/g, '') || "", 95).map((line, index) => {

@@ -101,7 +101,7 @@ function NavbarEvent(props: NavbarEventProps) {
                                     color="primary">
                             <ArrowBack/>
                         </IconButton>
-                        <Stack direction="column" spacing={0.2} sx={{flexGrow: 1}}>
+                        <Stack direction="column" spacing={-0.2} sx={{flexGrow: 1}}>
                             <Typography
                                 sx={{
                                     overflow: "hidden",

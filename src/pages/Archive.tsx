@@ -59,7 +59,7 @@ export default function Archive() {
                     ) : (
                         // <Typography sx={{m: 2}}>Bitte ein neues Ereignis anlegen</Typography>
                         <EmptyState title="Noch kein Ereignis"
-                                    subtitle="Lege das erste Ereignis für dieses Ereignis an, um es hier zu sehen."
+                                    subtitle="Lege das erste Ereignis an, um es hier zu sehen."
                                     buttonText="Ereignis hinzufügen"
                                     icon={<RailwayAlert sx={{fontSize: 60, color: "primary.main"}}/>}
                                     onClick={handleCreateNewEvent}

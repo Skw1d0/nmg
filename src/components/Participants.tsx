@@ -99,7 +99,7 @@ export default function Participants(props: ParticipantProps) {
             <Box>
                 <Stack direction={"column"} spacing={1}>
                     {event?.participants.length ? event.participants.map((participant) => (
-                        <AnimatedCard key={event.id}>
+                        <AnimatedCard key={participant.id}>
                             <FormSection key={participant.id}
                                          icon={<People color="secondary"/>}
                                          title={participant.organisation}>
