@@ -108,12 +108,18 @@ function NavbarEvent(props: NavbarEventProps) {
                                     maxHeight: 22,
                                     fontWeight: 800,
                                 }}>{props.event.description || "Ereignis"}</Typography>
-                            <Typography
-                                sx={{
-                                    fontWeight: 400,
-                                    fontSize: 13,
-                                    color: "secondary.main",
-                                }}>{dayjs(props.event.protectionFrom).format("DD.MM.YYYY")}</Typography>
+                            {dayjs(props.event.protectionFrom)?.isValid()
+                                && (
+                                    <Typography
+                                        sx={{
+                                            fontWeight: 400,
+                                            fontSize: 13,
+                                            color: "secondary.main",
+                                        }}>
+                                        {dayjs(props.event.protectionFrom).format("DD.MM.YYYY")}
+                                    </Typography>
+                                )
+                            }
                         </Stack>
                         <IconButton color="primary" onClick={() => toggleDarkMode()}>
                             {darkMode ? <DarkMode/> : <LightMode/>}

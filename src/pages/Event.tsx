@@ -41,10 +41,22 @@ function Event() {
     }
 
     return (
-        <Box sx={{display: "flex", flexDirection: "column", height: "100dvh"}}>
+        <Box
+            // sx={{display: "flex", flexDirection: "column", height: "100dvh"}}
+        >
             <NavbarEvent event={event}/>
             <Container maxWidth="md"
-                       sx={{flexGrow: 1, overflow: "auto", scrollbarWidth: "none", p: 1, pb: 7.5}}>
+                       sx={{
+                           // flexGrow: 1,
+                           // overflow: "auto",
+                           // scrollbarWidth: "none",
+                           // p: 1,
+                           // pb: 7.5,
+                           // mb: 8.5,
+                           mt: 2,
+                           mb: 17,
+
+                       }}>
                 {componentID === 0 && <Generals id={id}/>}
                 {componentID === 1 && <Measures id={id}/>}
                 {componentID === 2 && <Participants id={id}/>}
@@ -54,7 +66,14 @@ function Event() {
                 <BottomNavigation showLabels
                                   value={componentID}
                                   onChange={(_event, newValue) => setComponentID(newValue)}
-                                  sx={{minHeight: 70}}>
+                                  sx={{
+                                      position: "fixed",
+                                      width: "100%",
+                                      bottom: 0,
+                                      minHeight: 70,
+                                      margin: "auto",
+                                  }}
+                >
                     <BottomNavigationAction label="Allgemeines" icon={<FolderOutlined/>}/>
                     <BottomNavigationAction label="Maßnahme" icon={<ShieldOutlined/>}/>
                     <BottomNavigationAction label="Beteiligte" icon={<PeopleOutlined/>}/>

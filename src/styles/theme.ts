@@ -61,7 +61,9 @@ export const lightTheme = createTheme(
                 styleOverrides: {
                     root: {
                         "&.Mui-selected": {
-                            color: "#EC0016",
+                            // color: "#EC0016",
+                            color: "#eff3f6",
+                            backgroundColor: "#282D37",
                         },
                     },
                 },
@@ -74,14 +76,31 @@ export const lightTheme = createTheme(
                 dark: "#131821",
             },
             secondary: {
+                light: "#3d6abc",
+                main: "#2c4d88",
+                dark: "#1b3053",
+            },
+            // secondary: {
+            //     light: "#658fea",
+            //     main: "#2563EB",
+            //     dark: "#194095",
+            // },
+
+
+            // secondary: {
+            //     light: "#F75056",
+            //     main: "#EC0016",
+            //     dark: "#9B000E",
+            // },
+            // info: {
+            //     light: "#FACA7F",
+            //     main: "#F39200",
+            //     dark: "#C05E00",
+            // },
+            error: {
                 light: "#F75056",
                 main: "#EC0016",
                 dark: "#9B000E",
-            },
-            info: {
-                light: "#FACA7F",
-                main: "#F39200",
-                dark: "#C05E00",
             },
             success: {
                 light: "#8CBC80",
@@ -157,7 +176,8 @@ export const darkTheme = createTheme(
                 styleOverrides: {
                     root: {
                         "&.Mui-selected": {
-                            color: "#ff7d8a",
+                            color: "#131821",
+                            backgroundColor: "#d6d6d6",
                         },
                     },
                 },
@@ -165,24 +185,41 @@ export const darkTheme = createTheme(
         },
         palette: {
             primary: {
-                light: "#ffffffff",
-                main: "#d6d6d6ff",
-                dark: "#b4b4b4ff",
+                light: "#ffffff",
+                main: "#d6d6d6",
+                dark: "#b4b4b4",
             },
             secondary: {
-                light: "#fbacb2",
-                main: "#ff7d8a",
-                dark: "#fd4354",
+                light: "#97a7c5",
+                main: "#7f97c5",
+                dark: "#5a6b8a",
             },
+            // secondary: {
+            //     light: "#3bbdf6",
+            //     main: "#0EA5E9",
+            //     dark: "#0a668f",
+            // },
+
+
+            // secondary: {
+            //     light: "#fbacb2",
+            //     main: "#ff7d8a",
+            //     dark: "#fd4354",
+            // },
             // secondary: {
             //     light: "#F75056",
             //     main: "#EC0016",
             //     dark: "#9B000E",
             // },
-            info: {
-                light: "#FACA7F",
-                main: "#F39200",
-                dark: "#C05E00",
+            // info: {
+            //     light: "#FACA7F",
+            //     main: "#F39200",
+            //     dark: "#C05E00",
+            // },
+            error: {
+                light: "#fbacb2",
+                main: "#ff7d8a",
+                dark: "#fd4354",
             },
             success: {
                 light: "#8CBC80",

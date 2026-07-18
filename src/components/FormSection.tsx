@@ -1,4 +1,4 @@
-import {Box, Typography, Chip,} from "@mui/material";
+import {Box, Typography, Chip, Stack,} from "@mui/material";
 import type {ReactNode} from "react";
 
 type FormSectionProps = {
@@ -7,10 +7,21 @@ type FormSectionProps = {
     badge?: string;
     backgroundColor?: string;
     hideTitle?: boolean;
+    allFilled?: boolean;
     children: ReactNode;
 }
 
-function FormSection({icon, title, badge, backgroundColor, children, hideTitle = false}: FormSectionProps) {
+function FormSection(
+    {
+        icon,
+        title,
+        badge,
+        backgroundColor,
+        children,
+        allFilled,
+        hideTitle = false
+    }: FormSectionProps) {
+
     return (
         <Box sx={{
             backgroundColor: backgroundColor || "background.paper",
@@ -19,7 +30,10 @@ function FormSection({icon, title, badge, backgroundColor, children, hideTitle =
             borderBottom: 1,
             borderRight: 1,
             borderTop: 1,
-            borderColor: "secondary.main",
+            borderColor:
+                allFilled === undefined
+                    ? "secondary.main"
+                    : allFilled ? "success.main" : "error.main",
             mb: 0,
             overflow: "hidden",
         }}>
@@ -31,18 +45,32 @@ function FormSection({icon, title, badge, backgroundColor, children, hideTitle =
                 pt: 1.75,
                 pb: 1,
             }}>
-                {!hideTitle && (
-                    <>
-                        <Box sx={{display: "flex", alignItems: "center", gap: 1,}}>
-                            {icon}
-                            <Typography variant="h6" sx={{fontWeight: 500}}>{title}</Typography>
-                        </Box>
-                        {badge && (
-                            <Chip label={badge} size="small"
-                                  sx={{fontSize: 11, height: 20, backgroundColor: "action.hover"}}/>
-                        )}
-                    </>
-                )}
+                {!hideTitle
+                    && (
+                        <>
+                            <Stack direction="row" spacing={1}>
+                                <Typography sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    color: allFilled === undefined
+                                        ? ""
+                                        : allFilled ? "success.main" : "error.main"
+                                }}>
+                                    {icon}
+                                </Typography>
+                                <Typography variant="h6"
+                                            sx={{fontWeight: 500}}>{title}</Typography>
+                            </Stack>
+                            {badge
+                                && (
+                                    <Chip label={badge}
+                                          size="small"
+                                          sx={{fontSize: 11, height: 20, backgroundColor: "action.hover"}}/>
+                                )
+                            }
+                        </>
+                    )
+                }
             </Box>
             <Box sx={{px: 2, pb: 2, display: "flex", flexDirection: "column", gap: 1.25}}>
                 {children}

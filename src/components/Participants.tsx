@@ -41,13 +41,20 @@ export default function Participants(props: ParticipantProps) {
 
         const newEvent: Event = {
             ...event,
-            participants: event.participants.filter((participant) => participant.id !== id)
+            participants: event.participants.filter((participant) => participant.id !== id),
+            measures: event.measures.map((measure) => {
+                return {
+                    ...measure,
+                    participantsIntroduced: measure.participantsIntroduced.filter((p) => p.id !== id),
+                    participantsLifted: measure.participantsLifted.filter((p) => p.id !== id),
+                }
+            })
         }
 
         changeEventById(event.id, newEvent);
     }
 
-    function handleChangeParticipantsFrom(participantId: string, value: Dayjs) {
+    function handleChangeParticipantsFrom(participantId: string, value: Dayjs | null) {
         if (!event) return
 
         const newEvent: Event = {
@@ -56,7 +63,7 @@ export default function Participants(props: ParticipantProps) {
                 if (participant.id === participantId) {
                     return {
                         ...participant,
-                        from: value
+                        from: value && value.isValid() ? value : null
                     }
                 }
                 return {
@@ -68,7 +75,7 @@ export default function Participants(props: ParticipantProps) {
         changeEventById(event.id, newEvent);
     }
 
-    function handleChangeParticipantsUntil(participantId: string, value: Dayjs) {
+    function handleChangeParticipantsUntil(participantId: string, value: Dayjs | null) {
         if (!event) return
 
         const newEvent: Event = {
@@ -77,7 +84,7 @@ export default function Participants(props: ParticipantProps) {
                 if (participant.id === participantId) {
                     return {
                         ...participant,
-                        until: value
+                        until: value && value.isValid() ? value : null
                     }
                 }
                 return {
@@ -98,97 +105,101 @@ export default function Participants(props: ParticipantProps) {
         <>
             <Box>
                 <Stack direction={"column"} spacing={1}>
-                    {event?.participants.length ? event.participants.map((participant) => (
-                        <AnimatedCard key={participant.id}>
-                            <FormSection key={participant.id}
-                                         icon={<People color="secondary"/>}
-                                         title={participant.organisation}>
-
-                                <Stack direction="column"
-                                       spacing={1}
-                                       sx={{width: "100%"}}>
-                                    {(participant.name || participant.call) && (
-                                        <Stack direction="column" spacing={1} sx={{py: 2}}>
-                                            {participant.name && (
-                                                <Stack direction="row" spacing={1}>
-                                                    <Person fontSize="small"/>
-                                                    <Typography>{participant.name} {participant.function && ` (${participant.function})`}</Typography>
+                    {event?.participants.length
+                        ? event.participants.map((participant) => (
+                                <AnimatedCard key={participant.id}>
+                                    <FormSection key={participant.id}
+                                                 icon={<People/>}
+                                                 allFilled={Boolean(participant.until)}
+                                                 title={participant.organisation}
+                                    >
+                                        <Stack direction="column"
+                                               spacing={1}
+                                               sx={{width: "100%"}}>
+                                            {(participant.name || participant.call) && (
+                                                <Stack direction="column" spacing={1} sx={{py: 2}}>
+                                                    {participant.name && (
+                                                        <Stack direction="row" spacing={1}>
+                                                            <Person fontSize="small"/>
+                                                            <Typography>{participant.name} {participant.function && ` (${participant.function})`}</Typography>
+                                                        </Stack>
+                                                    )}
+                                                    {participant.call && (
+                                                        <Stack direction="row" spacing={1}>
+                                                            <LocalPhone fontSize="small"/>
+                                                            <Link href={`tel:${participant.call}`}>{participant.call}</Link>
+                                                        </Stack>
+                                                    )}
                                                 </Stack>
                                             )}
-                                            {participant.call && (
+
+                                            <InputContainer>
                                                 <Stack direction="row" spacing={1}>
-                                                    <LocalPhone fontSize="small"/>
-                                                    <Link href={`tel:${participant.call}`}>{participant.call}</Link>
+                                                    <DateTimeInput label="Anmeldung"
+                                                                   format="HH:mm"
+                                                                   value={participant.from && dayjs(participant.from)}
+                                                                   handleChange={(value) => handleChangeParticipantsFrom(participant.id, value)}/>
+                                                    <Box sx={{display: "flex", alignItems: "center"}}>
+                                                        <ArrowForward/>
+                                                    </Box>
+                                                    <DateTimeInput label="Abmeldung"
+                                                                   format="HH:mm"
+                                                                   value={participant.until && dayjs(participant.until)}
+                                                                   handleChange={(value) => handleChangeParticipantsUntil(participant.id, value)}/>
                                                 </Stack>
-                                            )}
+                                            </InputContainer>
                                         </Stack>
-                                    )}
+                                        <Box sx={{
+                                            display: "flex",
+                                            justifyContent: "end"
+                                        }}>
+                                            <Button onClick={() => handleEditParticipant(participant)}>Bearbeiten</Button>
+                                            <Button
+                                                onClick={() => handleDeleteParticipantsById(participant.id)}>Löschen</Button>
+                                        </Box>
+                                    </FormSection>
+                                </AnimatedCard>
 
-                                    <InputContainer>
-                                        <Stack direction="row" spacing={1}>
-                                            <DateTimeInput label="Anmeldung"
-                                                           format="HH:mm"
-                                                           value={participant.from && dayjs(participant.from)}
-                                                           handleChange={(value) => handleChangeParticipantsFrom(participant.id, value)}/>
-                                            <Box sx={{display: "flex", alignItems: "center"}}>
-                                                <ArrowForward/>
-                                            </Box>
-                                            <DateTimeInput label="Abmeldung"
-                                                           format="HH:mm"
-                                                           value={participant.until && dayjs(participant.until)}
-                                                           handleChange={(value) => handleChangeParticipantsUntil(participant.id, value)}/>
-                                        </Stack>
-                                    </InputContainer>
-                                </Stack>
-                                <Box sx={{
-                                    display: "flex",
-                                    justifyContent: "end"
-                                }}>
-                                    <Button onClick={() => handleEditParticipant(participant)}>Bearbeiten</Button>
-                                    <Button
-                                        onClick={() => handleDeleteParticipantsById(participant.id)}>Löschen</Button>
-                                </Box>
-                            </FormSection>
-                        </AnimatedCard>
-
-                        // <Card key={participant.id}
-                        //       variant="outlined"
-                        //       sx={{mb: 1}}>
-                        //     <CardHeader title={participant.organisation}/>
-                        //     <CardContent>
-                        //         <Stack direction="column"
-                        //                spacing={1}
-                        //                sx={{width: "100%"}}>
-                        //             <Stack direction="column" sx={{pb: 2}}>
-                        //                 <Typography>{participant.name} {participant.function && ` (${participant.function})`}</Typography>
-                        //
-                        //                 <Link
-                        //                     href={`tel:${participant.call}`}>{participant.call}</Link>
-                        //             </Stack>
-                        //             <DateTimeInput label="Anmeldung"
-                        //                            value={participant.from && dayjs(participant.from)}
-                        //                            handleChange={(value) => handleChangeParticipantsFrom(participant.id, value)}/>
-                        //             <DateTimeInput label="Abmeldung"
-                        //                            value={participant.until && dayjs(participant.until)}
-                        //                            handleChange={(value) => handleChangeParticipantsUntil(participant.id, value)}/>
-                        //
-                        //         </Stack>
-                        //     </CardContent>
-                        //     <CardActions>
-                        //         <Typography sx={{flexGrow: 1}}/>
-                        //         <Button onClick={() => handleEditParticipant(participant)}>Bearbeiten</Button>
-                        //         <Button onClick={() => handleDeleteParticipantsById(participant.id)}>Löschen</Button>
-                        //     </CardActions>
-                        // </Card>
-                    )) : (
-                        <EmptyState title="Noch keine Beteiligten"
-                                    subtitle="Lege den ersten Beteiligten für dieses Ereignis an, um ihn hier zu sehen."
-                                    buttonText="Beteiligten hinzufügen"
-                                    icon={<GroupAdd sx={{fontSize: 60, color: "primary.main"}}/>}
-                                    onClick={handleParticipantsDialogOpen}
-                        />
-                        // <EmptyParticipantsState onAdd={handleParticipantsDialogOpen}/>
-                    )}
+                                // <Card key={participant.id}
+                                //       variant="outlined"
+                                //       sx={{mb: 1}}>
+                                //     <CardHeader title={participant.organisation}/>
+                                //     <CardContent>
+                                //         <Stack direction="column"
+                                //                spacing={1}
+                                //                sx={{width: "100%"}}>
+                                //             <Stack direction="column" sx={{pb: 2}}>
+                                //                 <Typography>{participant.name} {participant.function && ` (${participant.function})`}</Typography>
+                                //
+                                //                 <Link
+                                //                     href={`tel:${participant.call}`}>{participant.call}</Link>
+                                //             </Stack>
+                                //             <DateTimeInput label="Anmeldung"
+                                //                            value={participant.from && dayjs(participant.from)}
+                                //                            handleChange={(value) => handleChangeParticipantsFrom(participant.id, value)}/>
+                                //             <DateTimeInput label="Abmeldung"
+                                //                            value={participant.until && dayjs(participant.until)}
+                                //                            handleChange={(value) => handleChangeParticipantsUntil(participant.id, value)}/>
+                                //
+                                //         </Stack>
+                                //     </CardContent>
+                                //     <CardActions>
+                                //         <Typography sx={{flexGrow: 1}}/>
+                                //         <Button onClick={() => handleEditParticipant(participant)}>Bearbeiten</Button>
+                                //         <Button onClick={() => handleDeleteParticipantsById(participant.id)}>Löschen</Button>
+                                //     </CardActions>
+                                // </Card>
+                            )
+                        )
+                        : (
+                            <EmptyState title="Noch keine Beteiligten"
+                                        subtitle="Lege den ersten Beteiligten für dieses Ereignis an, um ihn hier zu sehen."
+                                        buttonText="Beteiligten hinzufügen"
+                                        icon={<GroupAdd sx={{fontSize: 60, color: "primary.main"}}/>}
+                                        onClick={handleParticipantsDialogOpen}
+                            />
+                            // <EmptyParticipantsState onAdd={handleParticipantsDialogOpen}/>
+                        )}
                     {/*<Button variant="contained"*/}
                     {/*        onClick={handleParticipantsDialogOpen}>Hinzufügen</Button>*/}
                 </Stack>

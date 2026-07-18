@@ -26,35 +26,51 @@ export default function Archive() {
                            sx={{flexGrow: 1, overflow: "auto", scrollbarWidth: "none", p: 1, pb: 7.5}}>
                     {events.length > 0 ? (
                         <Stack direction="column" spacing={1}>
-                            {events.map((event) => (
-                                <AnimatedCard key={event.id}>
-                                    <Box
-                                        onMouseDown={(e) => e.preventDefault()}
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            navigate(`/event/${event.id}`);
-                                        }}
-                                        sx={{cursor: "pointer"}}>
-                                        <FormSection icon={<RailwayAlert/>}
-                                                     title={event.description || "Ereignis"}>
-                                            <Typography color="secondary" variant="body2">
-                                                {dayjs(event.protectionFrom).format("DD.MM.YYYY HH:mm")} Uhr
-                                            </Typography>
-                                        </FormSection>
-                                    </Box>
-                                </AnimatedCard>
-                                // <Card key={event.id} variant="outlined"
-                                //       sx={{mb: 1, cursor: "pointer", minHeight: 100}}
-                                //       onMouseDown={(e) => e.preventDefault()}
-                                //       onClick={(e) => {
-                                //           e.stopPropagation();
-                                //           navigate(`/event/${event.id}`)
-                                //       }}
-                                // >
-                                //     <CardHeader title={event.description || "Ereignis"}
-                                //                 subheader={dayjs(event.protectionFrom).format("DD.MM.YYYY HH:mm")}/>
-                                // </Card>
-                            ))}
+                            {events
+                                .sort((a, b) => {
+                                    const aDate = a.protectionFrom ? dayjs(a.protectionFrom) : null;
+                                    const bDate = b.protectionFrom ? dayjs(b.protectionFrom) : null;
+
+                                    if (!aDate || !bDate) return 0;
+
+                                    if (aDate.isBefore(bDate)) return 1;
+                                    if (aDate.isAfter(bDate)) return -1;
+                                    return 0;
+                                })
+                                .map((event) => (
+                                    <AnimatedCard key={event.id}>
+                                        <Box
+                                            onMouseDown={(e) => e.preventDefault()}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                navigate(`/event/${event.id}`);
+                                            }}
+                                            sx={{cursor: "pointer"}}>
+                                            <FormSection icon={<RailwayAlert/>}
+                                                         title={event.description || "Ereignis"}>
+                                                {dayjs(event.protectionFrom)?.isValid()
+                                                    && (
+                                                        <Typography
+                                                            // color="secondary"
+                                                            variant="body2">
+                                                            {dayjs(event.protectionFrom).format("DD.MM.YYYY HH:mm")} Uhr
+                                                        </Typography>
+                                                    )}
+                                            </FormSection>
+                                        </Box>
+                                    </AnimatedCard>
+                                    // <Card key={event.id} variant="outlined"
+                                    //       sx={{mb: 1, cursor: "pointer", minHeight: 100}}
+                                    //       onMouseDown={(e) => e.preventDefault()}
+                                    //       onClick={(e) => {
+                                    //           e.stopPropagation();
+                                    //           navigate(`/event/${event.id}`)
+                                    //       }}
+                                    // >
+                                    //     <CardHeader title={event.description || "Ereignis"}
+                                    //                 subheader={dayjs(event.protectionFrom).format("DD.MM.YYYY HH:mm")}/>
+                                    // </Card>
+                                ))}
                         </Stack>
                     ) : (
                         // <Typography sx={{m: 2}}>Bitte ein neues Ereignis anlegen</Typography>

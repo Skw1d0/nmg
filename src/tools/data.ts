@@ -90,6 +90,7 @@ export const Participants = [
     "Johanniter",
     "Malthäser",
     "ASB",
+    "Bestatter",
     "THW",
     "EBA",
     "BEU",

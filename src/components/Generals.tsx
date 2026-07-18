@@ -15,7 +15,6 @@ import AnimatedCard from "./AnimatedCard.tsx";
 import AutocompleteString from "./AutocompleteString.tsx";
 import TextFieldComponent from "./TextFieldComponent.tsx";
 
-
 type GeneralsProps = {
     id: string;
 }
@@ -25,6 +24,10 @@ export default function Generals(props: GeneralsProps) {
 
     const event = useStore((state) => state.events.find((e) => e.id === props.id))
     if (!event) return null;
+
+    const allGeneralsFilled = Boolean(event.description && event.name && event.initials && event.district && event.eventNumber)
+    const allProtectionFilled = Boolean(event.protectionFrom && event.protectionUntil)
+    const allOnSiteFilled = Boolean(event.onSiteFrom && event.onSiteUntil)
 
     function handleChangeDescription(value: string) {
         if (!event) return;
@@ -37,45 +40,45 @@ export default function Generals(props: GeneralsProps) {
         changeEventById(event.id, newEvent);
     }
 
-    function handleChangeProtectionFrom(value: Dayjs) {
+    function handleChangeProtectionFrom(value: Dayjs | null) {
         if (!event) return;
 
         const newEvent = {
             ...event,
-            protectionFrom: value
+            protectionFrom: value && value.isValid() ? value : null
         }
 
         changeEventById(event.id, newEvent);
     }
 
-    function handleChangeProtectionUntil(value: Dayjs) {
+    function handleChangeProtectionUntil(value: Dayjs | null) {
         if (!event) return;
 
         const newEvent = {
             ...event,
-            protectionUntil: value
+            protectionUntil: value && value.isValid() ? value : null
         }
 
         changeEventById(event.id, newEvent);
     }
 
-    function handleChangeOnSiteFrom(value: Dayjs) {
+    function handleChangeOnSiteFrom(value: Dayjs | null) {
         if (!event) return;
 
         const newEvent = {
             ...event,
-            onSiteFrom: value
+            onSiteFrom: value && value.isValid() ? value : null
         }
 
         changeEventById(event.id, newEvent);
     }
 
-    function handleChangeOnSiteUntil(value: Dayjs) {
+    function handleChangeOnSiteUntil(value: Dayjs | null) {
         if (!event) return;
 
         const newEvent = {
             ...event,
-            onSiteUntil: value
+            onSiteUntil: value && value.isValid() ? value : null
         }
 
         changeEventById(event.id, newEvent);
@@ -132,7 +135,10 @@ export default function Generals(props: GeneralsProps) {
         <Box>
             <Stack direction={"column"} spacing={1}>
                 <AnimatedCard>
-                    <FormSection icon={<Info color="secondary"/>} title="Allgemeines">
+                    <FormSection icon={<Info/>}
+                                 title="Allgemeines"
+                                 allFilled={allGeneralsFilled}
+                    >
                         <Stack direction="column" spacing={1}>
                             <InputContainer>
                                 <AutocompleteString label="Beschreibung des Ereignisses"
@@ -140,18 +146,6 @@ export default function Generals(props: GeneralsProps) {
                                                     setValue={handleChangeDescription}
                                                     options={Descriptions}
                                 />
-                                {/*<Autocomplete freeSolo*/}
-                                {/*              options={Descriptions}*/}
-                                {/*              value={event.description}*/}
-                                {/*              onChange={(_event, newValue) => {*/}
-                                {/*                  handleChangeDescription(newValue || "")*/}
-                                {/*              }}*/}
-                                {/*              onInputChange={(_event, newInputValue) => {*/}
-                                {/*                  handleChangeDescription(newInputValue);*/}
-                                {/*              }}*/}
-                                {/*              renderInput={(params) => <TextField {...params}*/}
-                                {/*                                                  label="Beschreibung des Ereignisses"/>}*/}
-                                {/*/>*/}
                             </InputContainer>
                             <InputContainer>
                                 <Stack direction="row" spacing={1}>
@@ -160,25 +154,11 @@ export default function Generals(props: GeneralsProps) {
                                                         setValue={handleChangeName}
                                                         fullWidth
                                                         max={20}/>
-                                    {/*<TextField*/}
-                                    {/*    label="Name"*/}
-                                    {/*    value={event.name}*/}
-                                    {/*    onChange={(e) => handleChangeName(e.target.value)}*/}
-                                    {/*    fullWidth={true}*/}
-                                    {/*/>*/}
-
-
                                     <TextFieldComponent label="Namenszeichen"
                                                         value={event.initials}
                                                         setValue={handleChangeInitials}
                                                         max={5}
                                     />
-                                    {/*<TextField*/}
-                                    {/*    label="Namenszeichen"*/}
-                                    {/*    value={event.initials}*/}
-                                    {/*    onChange={(e) => handleChangeInitials(e.target.value)}*/}
-                                    {/*    sx={{width: 260}}*/}
-                                    {/*/>*/}
                                 </Stack>
                             </InputContainer>
                             <InputContainer>
@@ -188,17 +168,6 @@ export default function Generals(props: GeneralsProps) {
                                                     options={Districts}
                                                     max={25}
                                 />
-                                {/*<Autocomplete freeSolo*/}
-                                {/*              options={Districts}*/}
-                                {/*              value={event.district}*/}
-                                {/*              onChange={(_event, newValue) => {*/}
-                                {/*                  handleChangeDistrict(newValue || "")*/}
-                                {/*              }}*/}
-                                {/*              onInputChange={(_event, newInputValue) => {*/}
-                                {/*                  handleChangeDistrict(newInputValue);*/}
-                                {/*              }}*/}
-                                {/*              renderInput={(params) => <TextField {...params} label="Notfallbezirk"/>}*/}
-                                {/*/>*/}
                             </InputContainer>
                             <InputContainer>
                                 <TextFieldComponent label="Ereignisnummer"
@@ -206,17 +175,16 @@ export default function Generals(props: GeneralsProps) {
                                                     setValue={handleChangeEventNumber}
                                                     max={15}
                                 />
-                                {/*<TextField*/}
-                                {/*    label="Ereignisnummer"*/}
-                                {/*    value={event.eventNumber}*/}
-                                {/*    onChange={(e) => handleChangeEventNumber(e.target.value)}/>*/}
                             </InputContainer>
                         </Stack>
                     </FormSection>
                 </AnimatedCard>
 
                 <AnimatedCard>
-                    <FormSection icon={<AccessTimeFilled color="secondary"/>} title="Gesamtschutzdauer">
+                    <FormSection icon={<AccessTimeFilled/>}
+                                 title="Gesamtschutzdauer"
+                                 allFilled={allProtectionFilled}
+                    >
                         <InputContainer>
                             <Stack direction="row" spacing={1}>
                                 <DateTimeInput label="Von"
@@ -235,8 +203,10 @@ export default function Generals(props: GeneralsProps) {
                     </FormSection>
                 </AnimatedCard>
                 <AnimatedCard>
-                    <FormSection icon={<AdminPanelSettings color="secondary"/>}
-                                 title="Notfallmanager am Ereignisort">
+                    <FormSection icon={<AdminPanelSettings/>}
+                                 title="Notfallmanager am Ereignisort"
+                                 allFilled={allOnSiteFilled}
+                    >
                         <InputContainer>
                             <Stack direction="row" spacing={1}>
                                 <DateTimeInput label="Von"
@@ -254,6 +224,9 @@ export default function Generals(props: GeneralsProps) {
                         </InputContainer>
                     </FormSection>
                 </AnimatedCard>
+
+
+                {/* --- START OLD CODE --- */}
 
                 {/*<Card variant="outlined">*/}
                 {/*    <CardHeader title="Allgemeines"/>*/}
@@ -331,6 +304,8 @@ export default function Generals(props: GeneralsProps) {
                 {/*        </Stack>*/}
                 {/*    </CardContent>*/}
                 {/*</Card>*/}
+
+                {/* ---- END OLD CODE --- */}
             </Stack>
         </Box>
     )

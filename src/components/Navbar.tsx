@@ -25,8 +25,11 @@ function Navbar() {
                         />
                         <Stack direction="column" sx={{flexGrow: 1}} spacing={-1}>
                             <Typography variant="h5" sx={{flexGrow: 1}}>Notfallmanagement</Typography>
-                            <Typography variant="body2" sx={{flexGrow: 1}} color="secondary">Schutzplan &
-                                Notizen</Typography>
+                            <Typography variant="body2" sx={{flexGrow: 1}}
+                                        color="secondary"
+                            >
+                                Schutzplan & Notizen
+                            </Typography>
                         </Stack>
                         <IconButton color="primary" onClick={() => toggleDarkMode()}>
                             {darkMode ? <DarkMode/> : <LightMode/>}

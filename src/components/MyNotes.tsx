@@ -119,7 +119,11 @@ export default function MyNotes(props: MyNotesProps) {
         <>
             <Stack direction="column" spacing={1}>
                 <AnimatedCard>
-                    <FormSection icon={<Notes color="secondary"/>} title={"Notizen für die Schutzmaßnahme"}>
+                    <FormSection
+                        icon={<Notes/>}
+                        allFilled={Boolean(event.notes)}
+                        title={"Notizen für die Schutzmaßnahme"}
+                    >
                         <InputContainer>
                             <FormControl fullWidth>
                                 <TextField fullWidth
@@ -150,17 +154,21 @@ export default function MyNotes(props: MyNotesProps) {
                 {event.myNotes?.map(
                     (myNote, index) => (
                         <AnimatedCard key={myNote.id}>
-                            <FormSection icon={<FormatListBulleted color="secondary"/>}
+                            <FormSection icon={<FormatListBulleted/>}
                                          title="Persönliche Notizen"
                                          hideTitle={true}
-                                         badge={`${(index + 1).toString()} / ${(event.myNotes.length)}`}>
+                                         badge={`${(index + 1).toString()} / ${(event.myNotes.length)}`}
+                            >
                                 <Stack direction="column" spacing={1}>
-                                    <Typography color="secondary"
-                                                sx={{fontSize: 13}}>{dayjs(myNote.date).format("DD.MM.YYYY HH.mm")}</Typography>
+                                    <Typography
+                                        // color="secondary"
+                                        sx={{fontSize: 13}}>{dayjs(myNote.date).format("DD.MM.YYYY HH.mm")}</Typography>
                                     <Divider/>
-                                    {myNote.note.split("\n").map((zeile, index) => (
-                                        <Typography key={myNote + "" + index}>{zeile}</Typography>
-                                    ))}
+                                    <Stack direction="column" spacing={0}>
+                                        {myNote.note.split("\n").map((zeile, index) => (
+                                            <Typography key={myNote + "" + index}>{zeile}</Typography>
+                                        ))}
+                                    </Stack>
                                 </Stack>
                                 <Box sx={{display: "flex", justifyContent: "end"}}>
                                     <Button onClick={() => handleEditNoteById(myNote.id)}>Bearbeiten</Button>

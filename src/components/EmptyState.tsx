@@ -29,7 +29,10 @@ function EmptyState({title, subtitle, buttonText, icon, onClick}: EmptyEventsSta
                 {icon}
                 {/*<RailwayAlert sx={{fontSize: 60, color: "primary.main"}}/>*/}
             </Box>
-            <Typography variant="subtitle1" sx={{fontWeight: 500}} color="secondary">
+            <Typography variant="subtitle1"
+                        sx={{fontWeight: 500}}
+                        color="secondary"
+            >
                 {title}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{mb: 2, maxWidth: 230}}>

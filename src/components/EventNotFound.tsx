@@ -20,7 +20,9 @@ function EventNotFound({onAdd}: { onAdd: () => void }) {
             }}>
                 <GppBad sx={{fontSize: 60, color: "primary.main"}}/>
             </Box>
-            <Typography variant="subtitle1" sx={{fontWeight: 500}}>
+            <Typography variant="subtitle1"
+                        color="secondary"
+                        sx={{fontWeight: 500}}>
                 Ups... Ereignis nicht gefunden
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{mb: 2, maxWidth: 280}}>
