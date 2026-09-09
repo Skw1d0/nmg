@@ -254,6 +254,7 @@ export default function Measures(props: MeasuresProps) {
                                     <InputContainer>
                                         <Stack direction="column" spacing={1} sx={{pb: 2}}>
                                             <DateTimeInput label="Eingeführt"
+                                                           format={"DD.MM.YYYY HH:mm"}
                                                            value={measure.from && dayjs(measure.from)}
                                                            handleChange={(value) => handleChangeMeasureFromById(measure.id, value)}/>
                                             {measure.from
@@ -274,6 +275,7 @@ export default function Measures(props: MeasuresProps) {
                                     <InputContainer>
                                         <Stack direction="column" spacing={1}>
                                             <DateTimeInput label="Aufgehoben"
+                                                           format={"DD.MM.YYYY HH:mm"}
                                                            value={measure.until && dayjs(measure.until)}
                                                            handleChange={(value) => handleChangeMeasureUntilById(measure.id, value)}/>
                                             {measure.until

@@ -136,14 +136,14 @@ export default function Participants(props: ParticipantProps) {
                                             <InputContainer>
                                                 <Stack direction="row" spacing={1}>
                                                     <DateTimeInput label="Anmeldung"
-                                                                   format="HH:mm"
+                                                        // format="HH:mm"
                                                                    value={participant.from && dayjs(participant.from)}
                                                                    handleChange={(value) => handleChangeParticipantsFrom(participant.id, value)}/>
                                                     <Box sx={{display: "flex", alignItems: "center"}}>
                                                         <ArrowForward/>
                                                     </Box>
                                                     <DateTimeInput label="Abmeldung"
-                                                                   format="HH:mm"
+                                                        // format="HH:mm"
                                                                    value={participant.until && dayjs(participant.until)}
                                                                    handleChange={(value) => handleChangeParticipantsUntil(participant.id, value)}/>
                                                 </Stack>

@@ -188,14 +188,14 @@ export default function Generals(props: GeneralsProps) {
                         <InputContainer>
                             <Stack direction="row" spacing={1}>
                                 <DateTimeInput label="Von"
-                                               format="HH:mm"
+                                    // format="HH:mm"
                                                value={dayjs(event.protectionFrom)}
                                                handleChange={handleChangeProtectionFrom}/>
                                 <Box sx={{display: "flex", alignItems: "center"}}>
                                     <ArrowForward/>
                                 </Box>
                                 <DateTimeInput label="Bis"
-                                               format="HH:mm"
+                                    // format="HH:mm"
                                                value={dayjs(event.protectionUntil)}
                                                handleChange={handleChangeProtectionUntil}/>
                             </Stack>
@@ -210,14 +210,14 @@ export default function Generals(props: GeneralsProps) {
                         <InputContainer>
                             <Stack direction="row" spacing={1}>
                                 <DateTimeInput label="Von"
-                                               format="HH:mm"
+                                    // format="HH:mm"
                                                value={event.onSiteFrom}
                                                handleChange={handleChangeOnSiteFrom}/>
                                 <Box sx={{display: "flex", alignItems: "center"}}>
                                     <ArrowForward/>
                                 </Box>
                                 <DateTimeInput label="Bis"
-                                               format="HH:mm"
+                                    // format="HH:mm"
                                                value={event.onSiteUntil}
                                                handleChange={handleChangeOnSiteUntil}/>
                             </Stack>

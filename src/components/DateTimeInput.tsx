@@ -1,7 +1,7 @@
 import {DateTimePicker} from "@mui/x-date-pickers";
 import dayjs, {type Dayjs} from "dayjs";
 import {useState} from "react";
-import {IconButton, InputAdornment} from "@mui/material";
+import {IconButton, InputAdornment, useMediaQuery, useTheme} from "@mui/material";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import EventIcon from '@mui/icons-material/Event';
 
@@ -13,6 +13,9 @@ type DateTimePickerProps = {
 }
 
 export function DateTimeInput({label, value, handleChange, format}: DateTimePickerProps) {
+    const theme = useTheme();
+    const isSmUp = useMediaQuery(theme.breakpoints.up("sm"));
+
     const [open, setOpen] = useState(false);
     const safeValue = value && dayjs.isDayjs(value) && value.isValid() ? value : null;
 
@@ -24,7 +27,12 @@ export function DateTimeInput({label, value, handleChange, format}: DateTimePick
                         onChange={(value) => handleChange(dayjs(value))}
                         onOpen={() => setOpen(true)}
                         onClose={() => setOpen(false)}
-                        format={format}
+                        format={
+                            format
+                                ? format
+                                : isSmUp ? "DD.MM.YYYY HH:mm" : "HH:mm"
+                        }
+                        timeSteps={{minutes: 1}}
                         closeOnSelect
                         slotProps={{
                             actionBar: {
